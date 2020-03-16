@@ -4,7 +4,7 @@ import './App.css';
 import {config } from './gapiConfig';
 import {createDataObject} from './utils/createDataObject';
 
-import DatePicker from './components/date-picker';
+import CustomDatePicker from './components/date-picker';
 import DayView from './components/day-view';
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
 };
 
 const changeDate = (e) => {
-  const dataForDay = data.filter(day => {return day.date === e.target.value});
+  const dataForDay = data.filter(day => {return day.date === e});
   setDayData(dataForDay);
 }
   
@@ -49,7 +49,7 @@ const changeDate = (e) => {
 
   return (
     <div className="App">
-      <DatePicker changeDate={changeDate}/>
+      <CustomDatePicker changeDate={changeDate}/>
       {dayData && 
         <DayView dayData={dayData} />}
     </div>

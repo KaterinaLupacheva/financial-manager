@@ -1,14 +1,18 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { format } from 'date-fns'
 
-const DatePicker = ({changeDate}) => (
-    <TextField
-        id="date"
-        label="Date"
-        type="date"
-        defaultValue="2020-01-01"
-        onChange={(e) => changeDate(e)}
-    />
-);
+const CustomDatePicker = ({changeDate}) => {
+    return(
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DatePicker
+            value={new Date()}
+            onChange={(e) => changeDate(format(e, 'yyyy-MM-dd'))}
+            minDate={new Date('2020-01-01')}
+            maxDate={new Date()}
+        />
+    </MuiPickersUtilsProvider>
+)};
 
-export default DatePicker;
+export default CustomDatePicker;
