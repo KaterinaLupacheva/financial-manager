@@ -50,7 +50,8 @@ const changeDate = (e) => {
   return (
     <div className="App">
       <DatePicker changeDate={changeDate}/>
-      <DayView dayData={dayData} />
+      {dayData && 
+        <DayView dayData={dayData} />}
     </div>
   );
 }
