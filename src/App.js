@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 
 import {config } from './gapiConfig';
+import {createDataObject} from './utils/createDataObject';
 
 function App() {
   const[data, setData] = useState(null); 
@@ -11,8 +12,9 @@ function App() {
       spreadsheetId: config.SPREADSHEET_ID,
       range: 'January!B2:E',
     }).then(response => {
-      var range = response.result.values;
-      console.log('RESPONSE ' + JSON.stringify(range));
+      const range = response.result.values;
+      const data = createDataObject(range);
+      console.log('RESPONSE ' + JSON.stringify(data, null, 2));
     }, function(response) {
       console.log('ERROR')
     });
