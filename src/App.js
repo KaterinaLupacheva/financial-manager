@@ -5,7 +5,7 @@ import {config } from './gapiConfig';
 import {createDataObject} from './utils/createDataObject';
 
 import CustomDatePicker from './components/date-picker';
-import DayView from './components/day-view';
+import DataTable from './components/data-table';
 
 function App() {
   const[data, setData] = useState(null);
@@ -51,7 +51,7 @@ const changeDate = (e) => {
     <div className="App">
       <CustomDatePicker changeDate={changeDate}/>
       {dayData && 
-        <DayView dayData={dayData} />}
+        <DataTable dayData={dayData} />}
     </div>
   );
 }
