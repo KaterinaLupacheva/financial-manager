@@ -17,6 +17,18 @@ const useStyles = makeStyles({
 const DayView = ({dayData}) => {
     console.log(JSON.stringify(dayData))
     const classes = useStyles();
+
+    const ccyFormat = (num) => {
+       return `${num.toFixed(2)}`;
+    };
+
+    const total = (dayData) => {
+        let sum = dayData.reduce((a,b) => {
+            return a + parseFloat(b.sum) 
+        }, 0);
+        return sum;
+      }
+
     return(
         <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -37,6 +49,11 @@ const DayView = ({dayData}) => {
               <TableCell align="center">{row.category}</TableCell>
             </TableRow>
           ))}
+
+        <TableRow>
+            <TableCell>{`Total ${ccyFormat(total(dayData))}`}</TableCell>
+            
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
