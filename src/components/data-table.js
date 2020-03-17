@@ -1,8 +1,7 @@
 import React from 'react';
 import MaterialTable from "material-table";
 
-const Table = ({dayData}) => {
-
+const Table = ({monthData}) => {
     return(
         <MaterialTable
             title="Expenses"
@@ -12,7 +11,7 @@ const Table = ({dayData}) => {
                 {title: 'Expenses', field: 'expenses'},
                 {title: 'Category', field: 'category'}
             ]}
-            data={dayData}
+            data={monthData}
             parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
             options={{
                 search: false,
