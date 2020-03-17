@@ -18,6 +18,7 @@ function App() {
     }).then(response => {
       const range = response.result.values;
       const data = createDataObject(range);
+
       setData(data);
       // console.log('RESPONSE ' + JSON.stringify(data, null, 2));
     }, function(response) {
@@ -50,8 +51,9 @@ const changeDate = (e) => {
   return (
     <div className="App">
       <CustomDatePicker changeDate={changeDate}/>
-      {dayData && 
-        <DataTable dayData={dayData} />}
+      {/* {dayData && 
+        <DataTable dayData={dayData} />} */}
+        {data && <DataTable dayData={data} />}
     </div>
   );
 }
