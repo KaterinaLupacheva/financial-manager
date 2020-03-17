@@ -1,14 +1,15 @@
 import React from 'react';
 import MaterialTable from "material-table";
 
-const Table = ({monthData}) => {
+const Table = ({monthData, isExpenses}) => {
+    const name = isExpenses ? 'Expenses' : 'Income';
     return(
         <MaterialTable
-            title={`Expenses ${monthData.totalMonthSum.toFixed(2)}`}
+            title={`${name} ${monthData.totalMonthSum.toFixed(2)}`}
             columns={[
                 {title: 'Date', field: 'date'},
                 {title: 'Sum', field: 'sum'},
-                {title: 'Expenses', field: 'expenses'},
+                {title: `${name}`, field: 'expenses'},
                 {title: 'Category', field: 'category'}
             ]}
             data={monthData.combinedArrays}
