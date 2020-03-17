@@ -8,6 +8,7 @@ const CustomDatePicker = ({changeDate}) => {
     return(
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <DatePicker
+            label="Chose month"
             minDate={new Date('2020-01-01')}
             maxDate={new Date()}
             openTo="month"

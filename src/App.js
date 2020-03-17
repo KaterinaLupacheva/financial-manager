@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
+import AddButton from './components/add-button';
 import { format } from 'date-fns';
 
 import {config } from './gapiConfig';
@@ -64,6 +65,7 @@ const changeDate = newMonth => {
   return (
     <div className="App">
       <CustomDatePicker changeDate={changeDate}/>
+      <AddButton />
       {expensesData && <DataTable monthData={expensesData} isExpenses={true}/>}
       {incomeData && <DataTable monthData={incomeData} isExpenses={false}/>}
     </div>
