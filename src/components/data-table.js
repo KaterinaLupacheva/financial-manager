@@ -23,6 +23,7 @@ const Table = ({monthData, isExpenses}) => {
                     fontWeight: 'bold'
                   }
               }}
+              style={{borderBottom: '1px solid black'}}
         />
     )
 };
