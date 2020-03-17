@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import AddButton from './components/add-button';
 import { format } from 'date-fns';
 
 import {config } from './gapiConfig';
 import {createDataObject} from './utils/createDataObject';
 
-import CustomDatePicker from './components/date-picker';
+import PickerWithButton from './components/picker-with-button';
 import DataTable from './components/data-table';
 
 function App() {
@@ -64,8 +63,7 @@ const changeDate = newMonth => {
 
   return (
     <div className="App">
-      <CustomDatePicker changeDate={changeDate}/>
-      <AddButton />
+      <PickerWithButton changeDate={changeDate}/>
       {expensesData && <DataTable monthData={expensesData} isExpenses={true}/>}
       {incomeData && <DataTable monthData={incomeData} isExpenses={false}/>}
     </div>
