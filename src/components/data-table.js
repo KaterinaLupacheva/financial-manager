@@ -16,7 +16,12 @@ const Table = ({monthData, isExpenses}) => {
             parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
             options={{
                 search: false,
-                paging: false
+                paging: false,
+                headerStyle: {
+                    backgroundColor: '#01579b',
+                    color: '#FFF',
+                    fontWeight: 'bold'
+                  }
               }}
         />
     )
