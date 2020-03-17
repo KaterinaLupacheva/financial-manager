@@ -1,8 +1,9 @@
 export const createDataObject = (sheetsData) => {
     const transformedData = transformSheetsData(sheetsData);
     const sumPerDay = countDaySum(transformedData);
+    const totalMonthSum = Object.values(sumPerDay).reduce((a, b) => a + b);
     const combinedArrays = combineArrays(sumPerDay, transformedData);
-    return combinedArrays;
+    return {combinedArrays, totalMonthSum};
 };
 
 const transformSheetsData = sheetsData => {
@@ -24,7 +25,7 @@ const transformSheetsData = sheetsData => {
 
 const countDaySum = (monthData) => {
     const sumPerDay = monthData.reduce((acc, cur) => {
-        acc[cur.date] = acc[cur.date] + parseFloat(cur.sum) || parseFloat(cur.sum);
+        acc[cur.date] = acc[cur.date] + parseFloat(cur.sum.replace(/,/g, '')) || parseFloat(cur.sum.replace(/,/g, ''));
         return acc;
     }, {});
     return sumPerDay;
