@@ -7,7 +7,7 @@ import { format } from "date-fns";
 const useStyles = makeStyles(theme => ({
   input: {
     color: "blue",
-    padding: "0 30px",
+    padding: "0 20px",
     width: 150,
     border: "1px solid grey"
   }

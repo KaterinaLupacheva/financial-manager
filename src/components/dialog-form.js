@@ -7,25 +7,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-const DialogForm = ({ open }) => {
-  //   const [open, setOpen] = React.useState(false);
-
-  //   const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
-
-  //   const handleClose = () => {
-  //     setOpen(false);
-  //   };
-
+const DialogForm = ({ open, handleClose }) => {
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
       <Dialog
         open={open}
-        //   onClose={handleClose}
+        onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>

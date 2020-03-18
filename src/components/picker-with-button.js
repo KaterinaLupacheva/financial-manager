@@ -11,6 +11,10 @@ const PickerWithButton = ({ changeDate }) => {
     setOpen(true);
   };
 
+  const handleClose = () => {
+      setOpen(false);
+  }
+
   return (
     <div style={{ width: "100%" }}>
       <Box
@@ -23,7 +27,7 @@ const PickerWithButton = ({ changeDate }) => {
         <CustomDatePicker changeDate={changeDate} />
         <AddButton handleClickOpen={handleClickOpen} />
       </Box>
-      <DialogForm open={open} />
+      <DialogForm open={open} handleClose={handleClose} />
     </div>
   );
 };
