@@ -13,7 +13,7 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
-import {CATEGORIES} from '../utils/categories'; 
+import { CATEGORIES } from "../utils/categories";
 
 const useStyles = makeStyles(theme => ({
   toggleContainer: {
@@ -62,7 +62,9 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Add expenses or income</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          Add expenses (-) or income (+)
+        </DialogTitle>
         <DialogContent>
           <div className={classes.toggleContainer}>
             <ToggleButtonGroup
@@ -116,9 +118,13 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
               onChange={handleChange}
               className={classes.selectEmpty}
             >
-                {CATEGORIES.map(cat => (
+              {view === "expenses"
+                ? CATEGORIES.expenses.map(cat => (
                     <MenuItem value={cat}>{cat}</MenuItem>
-                ))}
+                  ))
+                : CATEGORIES.income.map(cat => (
+                    <MenuItem value={cat}>{cat}</MenuItem>
+                  ))}
             </Select>
           </FormControl>
         </DialogContent>
