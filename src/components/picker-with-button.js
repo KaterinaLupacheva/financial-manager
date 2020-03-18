@@ -12,8 +12,8 @@ const PickerWithButton = ({ changeDate }) => {
   };
 
   const handleClose = () => {
-      setOpen(false);
-  }
+    setOpen(false);
+  };
 
   return (
     <div style={{ width: "100%" }}>
