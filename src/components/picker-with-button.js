@@ -4,7 +4,7 @@ import CustomDatePicker from "./date-picker";
 import AddButton from "./add-button";
 import DialogForm from "./dialog-form";
 
-const PickerWithButton = ({ changeDate }) => {
+const PickerWithButton = ({ changeDate, handleSubmit }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -27,7 +27,11 @@ const PickerWithButton = ({ changeDate }) => {
         <CustomDatePicker changeDate={changeDate} />
         <AddButton handleClickOpen={handleClickOpen} />
       </Box>
-      <DialogForm open={open} handleClose={handleClose} />
+      <DialogForm
+        open={open}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };

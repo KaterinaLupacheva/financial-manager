@@ -68,13 +68,17 @@ function App() {
     setMonth(newMonth);
   };
 
+  const handleSubmit = (view, selectedDate, sum, type) => {
+    console.log(view, selectedDate, sum, type);
+  };
+
   useEffect(() => {
     window.gapi.load("client:auth2", initClient);
   }, [month]);
 
   return (
     <div className="App">
-      <PickerWithButton changeDate={changeDate} />
+      <PickerWithButton changeDate={changeDate} handleSubmit={handleSubmit} />
       {expensesData && <DataTable monthData={expensesData} isExpenses={true} />}
       {incomeData && <DataTable monthData={incomeData} isExpenses={false} />}
     </div>

@@ -7,16 +7,23 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { format } from "date-fns";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
+import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   toggleContainer: {
     margin: theme.spacing(2, 0)
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -24,6 +31,8 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
   const [view, setView] = useState("expenses");
   const [selectedDate, handleDateChange] = useState(new Date());
   const [sum, handleSumChange] = useState(0);
+  const [type, handleTypeChange] = useState("");
+  const [category, handleCategoryChange] = useState("");
 
   const classes = useStyles();
 
@@ -32,10 +41,12 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
   };
 
   const handleChange = e => {
-    console.log(e.target.name);
     switch (e.target.name) {
       case "sum":
         handleSumChange(e.target.value);
+        break;
+      case "type":
+        handleTypeChange(e.target.value);
         break;
       default:
     }
@@ -72,12 +83,12 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
               minDate={new Date("2020-01-01")}
               maxDate={new Date()}
               value={selectedDate}
-              onChange={e => handleDateChange(format(e, "yyyy-MM-dd"))}
+              onChange={handleDateChange}
             />
           </MuiPickersUtilsProvider>
           <TextField
             autoFocus
-            margin="dense"
+            margin="normal"
             name="sum"
             label="Sum"
             type="number"
@@ -86,13 +97,27 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
             onChange={handleChange}
           />
           <TextField
-            margin="dense"
+            margin="normal"
             name="type"
             label="Exp / Inc"
             type="text"
             required={true}
             onChange={handleChange}
           />
+
+          <FormControl required className={classes.formControl}>
+            <InputLabel>Category</InputLabel>
+            <Select
+              name="category"
+              value={category}
+              onChange={handleChange}
+              className={classes.selectEmpty}
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -101,7 +126,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
           <Button
             onClick={() => {
               handleClose();
-              handleSubmit();
+              handleSubmit(view, selectedDate, sum, type);
             }}
             color="primary"
           >
