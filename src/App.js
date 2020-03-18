@@ -68,8 +68,8 @@ function App() {
     setMonth(newMonth);
   };
 
-  const handleSubmit = (view, selectedDate, sum, type) => {
-    console.log(view, selectedDate, sum, type);
+  const handleSubmit = (view, selectedDate, sum, type, category) => {
+    console.log(view, selectedDate, sum, type, category);
   };
 
   useEffect(() => {

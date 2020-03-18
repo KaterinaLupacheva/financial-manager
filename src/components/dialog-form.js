@@ -13,6 +13,7 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import {CATEGORIES} from '../utils/categories'; 
 
 const useStyles = makeStyles(theme => ({
   toggleContainer: {
@@ -48,7 +49,9 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
       case "type":
         handleTypeChange(e.target.value);
         break;
-      default:
+      case "category":
+        handleCategoryChange(e.target.value);
+        break;
     }
   };
 
@@ -113,9 +116,9 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
               onChange={handleChange}
               className={classes.selectEmpty}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+                {CATEGORIES.map(cat => (
+                    <MenuItem value={cat}>{cat}</MenuItem>
+                ))}
             </Select>
           </FormControl>
         </DialogContent>
@@ -126,7 +129,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
           <Button
             onClick={() => {
               handleClose();
-              handleSubmit(view, selectedDate, sum, type);
+              handleSubmit(view, selectedDate, sum, type, category);
             }}
             color="primary"
           >
