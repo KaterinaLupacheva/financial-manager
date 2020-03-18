@@ -9,10 +9,19 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 const DialogForm = ({ open, handleClose, handleSubmit }) => {
+  const [view, setView] = useState("expenses");
   const [selectedDate, handleDateChange] = useState(new Date());
   const [sum, handleSumChange] = useState(0);
+
+  const handleViewChange = (event, newView) => {
+    setView(newView);
+  };
 
   const handleChange = e => {
     console.log(e.target.name);
@@ -33,6 +42,19 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
       >
         <DialogTitle id="form-dialog-title">Add expenses or income</DialogTitle>
         <DialogContent>
+          <ToggleButtonGroup
+            value={view}
+            exclusive
+            onChange={handleViewChange}
+            aria-label="chose type"
+          >
+            <ToggleButton value="expenses" aria-label="expenses">
+              <IndeterminateCheckBoxIcon />
+            </ToggleButton>
+            <ToggleButton value="income" aria-label="income">
+              <AddBoxIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
               autoOk={true}
@@ -51,6 +73,14 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
             type="number"
             required={true}
             size="small"
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            name="type"
+            label="Exp / Inc"
+            type="text"
+            required={true}
             onChange={handleChange}
           />
         </DialogContent>
