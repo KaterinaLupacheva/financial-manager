@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { MENU_LIST_ITEMS } from "../utils/menuListItems";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -15,8 +16,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import TableChartIcon from "@material-ui/icons/TableChart";
 import BarChartIcon from "@material-ui/icons/BarChart";
@@ -137,24 +136,12 @@ const Sidebar = ({ children }) => {
         </div>
         <Divider />
         <List>
-          <ListItem button key={"Month"}>
-            <ListItemIcon>
-              <DateRangeIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Month"} />
-          </ListItem>
-          <ListItem button key={"Pivot Table"}>
-            <ListItemIcon>
-              <TableChartIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Pivot Table"} />
-          </ListItem>
-          <ListItem button key={"Charts"}>
-            <ListItemIcon>
-              <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Charts"} />
-          </ListItem>
+          {MENU_LIST_ITEMS.map(item => (
+            <ListItem button key={item.name}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItem>
+          ))}
         </List>
         <Divider />
       </Drawer>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { format } from "date-fns";
 
@@ -9,6 +10,9 @@ import PickerWithButton from "./components/picker-with-button";
 import ExpansionTable from "./components/expansion-table";
 
 import Sidebar from "./components/sidebar";
+import MonthPage from "./pages/month-page";
+import PivotTablePage from "./pages/pivot-table-page";
+import ChartsPage from "./pages/charts-page";
 
 function App() {
   const [expensesData, setExpensesData] = useState(null);
@@ -101,17 +105,27 @@ function App() {
   }, [month]);
 
   return (
-    <div className="App">
-      <Sidebar>
-        <PickerWithButton changeDate={changeDate} handleSubmit={handleSubmit} />
-        {expensesData && (
-          <ExpansionTable monthData={expensesData} isExpenses={true} />
-        )}
-        {incomeData && (
-          <ExpansionTable monthData={incomeData} isExpenses={false} />
-        )}
-      </Sidebar>
-    </div>
+    <Router>
+      <div className="App">
+        <Sidebar>
+          <PickerWithButton
+            changeDate={changeDate}
+            handleSubmit={handleSubmit}
+          />
+          {expensesData && (
+            <ExpansionTable monthData={expensesData} isExpenses={true} />
+          )}
+          {incomeData && (
+            <ExpansionTable monthData={incomeData} isExpenses={false} />
+          )}
+        </Sidebar>
+        <Switch>
+          <Route path="/month" component={MonthPage} />
+          <Route path="/table" component={PivotTablePage} />
+          <Route path="/charts" component={ChartsPage} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
