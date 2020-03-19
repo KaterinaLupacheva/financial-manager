@@ -68,8 +68,30 @@ function App() {
     setMonth(newMonth);
   };
 
+  const saveNewExpense = (selectedDate, sum, type, category) => {
+    var values = [[selectedDate, sum, type, category]];
+    var body = {
+      values: values
+    };
+
+    window.gapi.client.sheets.spreadsheets.values
+      .append({
+        spreadsheetId: config.SPREADSHEET_ID,
+        range: `${month}!B2:E`,
+        valueInputOption: "RAW",
+        resource: body
+      })
+      .then(response => {
+        var result = response.result;
+        console.log(`${result.updates.updatedCells} cells appended.`);
+      });
+  };
+
   const handleSubmit = (view, selectedDate, sum, type, category) => {
     console.log(view, selectedDate, sum, type, category);
+    if (view === "expenses") {
+      saveNewExpense(selectedDate, sum, type, category);
+    }
   };
 
   useEffect(() => {

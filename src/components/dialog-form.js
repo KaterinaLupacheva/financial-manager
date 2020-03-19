@@ -12,7 +12,13 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box
+} from "@material-ui/core";
 import { CATEGORIES } from "../utils/categories";
 
 const useStyles = makeStyles(theme => ({
@@ -20,12 +26,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2, 0)
   },
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
+    minWidth: 195
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2)
-  }
+  selectEmpty: {}
 }));
 
 const DialogForm = ({ open, handleClose, handleSubmit }) => {
@@ -81,52 +84,66 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
               </ToggleButton>
             </ToggleButtonGroup>
           </div>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DatePicker
-              autoOk={true}
-              label="Date"
-              minDate={new Date("2020-01-01")}
-              maxDate={new Date()}
-              value={selectedDate}
-              onChange={handleDateChange}
-            />
-          </MuiPickersUtilsProvider>
-          <TextField
-            autoFocus
-            margin="normal"
-            name="sum"
-            label="Sum"
-            type="number"
-            required={true}
-            size="small"
-            onChange={handleChange}
-          />
-          <TextField
-            margin="normal"
-            name="type"
-            label="Exp / Inc"
-            type="text"
-            required={true}
-            onChange={handleChange}
-          />
-
-          <FormControl required className={classes.formControl}>
-            <InputLabel>Category</InputLabel>
-            <Select
-              name="category"
-              value={category}
+          <Box
+            display="flex"
+            alignItems="baseline"
+            width="40vw"
+            justifyContent="space-between"
+          >
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                autoOk={true}
+                label="Date"
+                minDate={new Date("2020-01-01")}
+                maxDate={new Date()}
+                value={selectedDate}
+                onChange={handleDateChange}
+              />
+            </MuiPickersUtilsProvider>
+            <TextField
+              autoFocus
+              margin="normal"
+              name="sum"
+              label="Sum"
+              type="number"
+              required={true}
+              size="small"
               onChange={handleChange}
-              className={classes.selectEmpty}
-            >
-              {view === "expenses"
-                ? CATEGORIES.expenses.map(cat => (
-                    <MenuItem value={cat}>{cat}</MenuItem>
-                  ))
-                : CATEGORIES.income.map(cat => (
-                    <MenuItem value={cat}>{cat}</MenuItem>
-                  ))}
-            </Select>
-          </FormControl>
+            />
+          </Box>
+          <Box
+            display="flex"
+            alignItems="baseline"
+            width="40vw"
+            justifyContent="space-between"
+          >
+            <TextField
+              margin="normal"
+              name="type"
+              label="Exp / Inc"
+              type="text"
+              required={true}
+              onChange={handleChange}
+            />
+
+            <FormControl required className={classes.formControl}>
+              <InputLabel>Category</InputLabel>
+              <Select
+                name="category"
+                value={category}
+                onChange={handleChange}
+                className={classes.selectEmpty}
+              >
+                {view === "expenses"
+                  ? CATEGORIES.expenses.map(cat => (
+                      <MenuItem value={cat}>{cat}</MenuItem>
+                    ))
+                  : CATEGORIES.income.map(cat => (
+                      <MenuItem value={cat}>{cat}</MenuItem>
+                    ))}
+              </Select>
+            </FormControl>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
