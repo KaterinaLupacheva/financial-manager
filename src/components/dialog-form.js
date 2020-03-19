@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import { styled } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -27,9 +28,16 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     minWidth: 195
-  },
-  selectEmpty: {}
+  }
 }));
+
+const TextFieldLeftMargin = styled(TextField)({
+  marginLeft: 20
+});
+
+const TextFieldRightMargin = styled(TextField)({
+  marginRight: 20
+});
 
 const DialogForm = ({ open, handleClose, handleSubmit }) => {
   const [view, setView] = useState("expenses");
@@ -100,7 +108,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 onChange={handleDateChange}
               />
             </MuiPickersUtilsProvider>
-            <TextField
+            <TextFieldLeftMargin
               autoFocus
               margin="normal"
               name="sum"
@@ -117,7 +125,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
             width="40vw"
             justifyContent="space-between"
           >
-            <TextField
+            <TextFieldRightMargin
               margin="normal"
               name="type"
               label="Exp / Inc"
