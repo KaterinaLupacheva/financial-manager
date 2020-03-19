@@ -7,9 +7,9 @@ import { format } from "date-fns";
 const useStyles = makeStyles(theme => ({
   input: {
     color: "blue",
-    padding: "0 20px",
     width: 150,
-    border: "1px solid blue"
+    border: "1px solid blue",
+    borderRadius: "10px"
   }
 }));
 
@@ -31,7 +31,8 @@ const CustomDatePicker = ({ changeDate }) => {
           handleDateChange(e);
         }}
         textFieldStyle={{ color: "red" }}
-        InputProps={{ className: classes.input }}
+        InputProps={{ className: classes.input, disableUnderline: true }}
+        inputProps={{ min: 0, style: { textAlign: "center" } }}
       />
     </MuiPickersUtilsProvider>
   );
