@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
+    margin: 8
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -17,17 +17,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ExpensesTable = ({ monthData }) => {
+const ExpansionTable = ({ monthData, isExpenses }) => {
+  const name = isExpenses ? "Expenses" : "Income";
   const classes = useStyles();
   return (
-    <ExpansionPanel>
+    <ExpansionPanel className={classes.root}>
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
         <Typography
           className={classes.heading}
-        >{`Expenses ${monthData.totalMonthSum.toFixed(2)}`}</Typography>
+        >{`${name} ${monthData.totalMonthSum.toFixed(2)}`}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         {monthData && <DataTable monthData={monthData} isExpenses={true} />}
@@ -36,4 +37,4 @@ const ExpensesTable = ({ monthData }) => {
   );
 };
 
-export default ExpensesTable;
+export default ExpansionTable;

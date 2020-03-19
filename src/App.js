@@ -7,7 +7,7 @@ import { createDataObject } from "./utils/createDataObject";
 
 import PickerWithButton from "./components/picker-with-button";
 import DataTable from "./components/data-table";
-import ExpensesTable from "./components/expenses-table";
+import ExpansionTable from "./components/expansion-table";
 
 function App() {
   const [expensesData, setExpensesData] = useState(null);
@@ -102,8 +102,12 @@ function App() {
   return (
     <div className="App">
       <PickerWithButton changeDate={changeDate} handleSubmit={handleSubmit} />
-      {expensesData && <ExpensesTable monthData={expensesData} />}
-      {incomeData && <DataTable monthData={incomeData} isExpenses={false} />}
+      {expensesData && (
+        <ExpansionTable monthData={expensesData} isExpenses={true} />
+      )}
+      {incomeData && (
+        <ExpansionTable monthData={incomeData} isExpenses={false} />
+      )}
     </div>
   );
 }
