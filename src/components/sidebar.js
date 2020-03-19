@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { MENU_LIST_ITEMS } from "../utils/menuListItems";
 import Drawer from "@material-ui/core/Drawer";
@@ -16,9 +17,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import DateRangeIcon from "@material-ui/icons/DateRange";
-import TableChartIcon from "@material-ui/icons/TableChart";
-import BarChartIcon from "@material-ui/icons/BarChart";
 
 const drawerWidth = 240;
 
@@ -137,7 +135,7 @@ const Sidebar = ({ children }) => {
         <Divider />
         <List>
           {MENU_LIST_ITEMS.map(item => (
-            <ListItem button key={item.name}>
+            <ListItem button key={item.name} component={Link} to={item.route}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItem>
