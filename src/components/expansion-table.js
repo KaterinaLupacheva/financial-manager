@@ -12,8 +12,12 @@ const useStyles = makeStyles(theme => ({
     margin: 8
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+    fontSize: theme.typography.pxToRem(20),
+    fontWeight: theme.typography.fontWeightBold,
+    color: "red"
+  },
+  green: {
+    color: "green"
   }
 }));
 
@@ -27,7 +31,9 @@ const ExpansionTable = ({ monthData, isExpenses }) => {
         aria-controls="panel1a-content"
       >
         <Typography
-          className={classes.heading}
+          className={`${classes.heading} ${
+            isExpenses ? "" : `${classes.green}`
+          }`}
         >{`${name} ${monthData.totalMonthSum.toFixed(2)}`}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
