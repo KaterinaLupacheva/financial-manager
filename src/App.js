@@ -6,8 +6,9 @@ import { config } from "./gapiConfig";
 import { createDataObject } from "./utils/createDataObject";
 
 import PickerWithButton from "./components/picker-with-button";
-import DataTable from "./components/data-table";
 import ExpansionTable from "./components/expansion-table";
+
+import Sidebar from "./components/sidebar";
 
 function App() {
   const [expensesData, setExpensesData] = useState(null);
@@ -101,13 +102,15 @@ function App() {
 
   return (
     <div className="App">
-      <PickerWithButton changeDate={changeDate} handleSubmit={handleSubmit} />
-      {expensesData && (
-        <ExpansionTable monthData={expensesData} isExpenses={true} />
-      )}
-      {incomeData && (
-        <ExpansionTable monthData={incomeData} isExpenses={false} />
-      )}
+      <Sidebar>
+        <PickerWithButton changeDate={changeDate} handleSubmit={handleSubmit} />
+        {expensesData && (
+          <ExpansionTable monthData={expensesData} isExpenses={true} />
+        )}
+        {incomeData && (
+          <ExpansionTable monthData={incomeData} isExpenses={false} />
+        )}
+      </Sidebar>
     </div>
   );
 }
