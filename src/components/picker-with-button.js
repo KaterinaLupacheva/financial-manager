@@ -20,7 +20,9 @@ const PickerWithButton = ({ changeDate, handleSubmit }) => {
       <Box
         display="flex"
         justifyContent="space-evenly"
+        alignItems="baseline"
         m={1}
+        marginBottom={3}
         p={1}
         boxShadow={3}
       >

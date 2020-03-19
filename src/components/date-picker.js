@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     color: "blue",
     padding: "0 20px",
     width: 150,
-    border: "1px solid grey"
+    border: "1px solid blue"
   }
 }));
 
