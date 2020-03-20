@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { MENU_LIST_ITEMS } from "../utils/menuListItems";
 import Drawer from "@material-ui/core/Drawer";
@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0
   },
   selected: {
-    backgroundColor: "turquoise !important",
+    backgroundColor: "blue !important",
     color: "white",
     fontWeight: 600
   }
@@ -145,6 +145,7 @@ const Sidebar = ({ children }) => {
               key={id}
               component={Link}
               to={item.route}
+              selected={window.location.href.indexOf(item.route) > -1}
               classes={{ selected: classes.selected }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -166,4 +167,4 @@ const Sidebar = ({ children }) => {
   );
 };
 
-export default Sidebar;
+export default withRouter(Sidebar);
