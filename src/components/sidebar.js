@@ -74,6 +74,11 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginLeft: 0
+  },
+  selected: {
+    backgroundColor: "turquoise !important",
+    color: "white",
+    fontWeight: 600
   }
 }));
 
@@ -134,8 +139,14 @@ const Sidebar = ({ children }) => {
         </div>
         <Divider />
         <List>
-          {MENU_LIST_ITEMS.map(item => (
-            <ListItem button key={item.name} component={Link} to={item.route}>
+          {MENU_LIST_ITEMS.map((item, id) => (
+            <ListItem
+              button
+              key={id}
+              component={Link}
+              to={item.route}
+              classes={{ selected: classes.selected }}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItem>

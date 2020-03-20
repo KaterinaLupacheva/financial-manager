@@ -30,7 +30,6 @@ const CustomDatePicker = ({ changeDate }) => {
           changeDate(format(e, "MMMM"));
           handleDateChange(e);
         }}
-        textFieldStyle={{ color: "red" }}
         InputProps={{ className: classes.input, disableUnderline: true }}
         inputProps={{ min: 0, style: { textAlign: "center" } }}
       />

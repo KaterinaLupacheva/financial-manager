@@ -143,11 +143,15 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 className={classes.selectEmpty}
               >
                 {view === "expenses"
-                  ? CATEGORIES.expenses.map(cat => (
-                      <MenuItem value={cat}>{cat}</MenuItem>
+                  ? CATEGORIES.expenses.map((cat, id) => (
+                      <MenuItem value={cat} key={id}>
+                        {cat}
+                      </MenuItem>
                     ))
-                  : CATEGORIES.income.map(cat => (
-                      <MenuItem value={cat}>{cat}</MenuItem>
+                  : CATEGORIES.income.map((cat, id) => (
+                      <MenuItem value={cat} key={id}>
+                        {cat}
+                      </MenuItem>
                     ))}
               </Select>
             </FormControl>
