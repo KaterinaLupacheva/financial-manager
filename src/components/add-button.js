@@ -6,7 +6,8 @@ import AddCircle from "@material-ui/icons/AddCircle";
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
-    minWidth: "10vw"
+    minWidth: "10vw",
+    height: "7vh"
   }
 }));
 

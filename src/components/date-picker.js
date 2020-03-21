@@ -6,10 +6,12 @@ import { format } from "date-fns";
 
 const useStyles = makeStyles(theme => ({
   input: {
-    color: "blue",
+    color: theme.palette.secondary.text,
     width: 150,
-    border: "1px solid blue",
-    borderRadius: "10px"
+    // border: "1px solid blue",
+    borderRadius: "10px",
+    background: theme.palette.secondary.main,
+    height: "7vh"
   }
 }));
 

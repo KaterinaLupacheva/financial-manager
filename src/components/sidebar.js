@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 0
   },
   selected: {
-    backgroundColor: "blue !important",
+    backgroundColor: `${theme.palette.secondary.darkBg} !important`,
     color: "white",
     fontWeight: 600
   }
