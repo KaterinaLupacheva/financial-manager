@@ -17,27 +17,28 @@ const config = {
 const firebase = require('firebase');
 firebase.initializeApp(config);
 
+const db = admin.firestore();
+
 app.get('/finances', (req, res) => {
-    admin
-        .firestore()
-        .collection('finances')
-        .orderBy('date', 'desc')
-        .get()
-        .then((data) => {
-            let finances = [];
-            data.forEach(doc => {
-                finances.push({
-                    financeId: doc.id,
-                    sum: doc.data().sum,
-                    details: doc.data().details,
-                    category: doc.data().category,
-                    type: doc.data().type,
-                    date: doc.data().date
-                })
-            });
-            return res.json(finances);
-        })
-        .catch((err) => console.error(err)); 
+    db
+    .collection('finances')
+    .orderBy('date', 'desc')
+    .get()
+    .then((data) => {
+        let finances = [];
+        data.forEach(doc => {
+            finances.push({
+                financeId: doc.id,
+                sum: doc.data().sum,
+                details: doc.data().details,
+                category: doc.data().category,
+                type: doc.data().type,
+                date: doc.data().date
+            })
+        });
+        return res.json(finances);
+    })
+    .catch((err) => console.error(err)); 
 });
 
 app.post('/finance', (req, res) => {
@@ -49,17 +50,16 @@ app.post('/finance', (req, res) => {
         type: req.body.type
     };
 
-    admin
-        .firestore()
-        .collection('finances')
-        .add(newFinance)
-        .then((doc) => {
-            res.json({ message: `document ${doc.id} created`})
-        })
-        .catch((err) => {
-            res.status(500).json({ error: 'something went wrong'})
-            console.error(err);
-        });
+    db
+    .collection('finances')
+    .add(newFinance)
+    .then((doc) => {
+        res.json({ message: `document ${doc.id} created`})
+    })
+    .catch((err) => {
+        res.status(500).json({ error: 'something went wrong'})
+        console.error(err);
+    });
 });
 
 //signup route
@@ -71,14 +71,28 @@ app.post('/signup', (req, res) => {
         username: req.body.username
     };
 
-    firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    db.doc(`/users/${newUser.username}`).get()
+    .then(doc => {
+        if(doc.exists) {
+            return res.status(400).json({ username: 'this username is already taken'});
+        } else {
+            return firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+        }
+    })
     .then(data => {
-        return res.status(201).json({ message: `user ${data.user.uid} signup`})
+        return data.user.getIdToken();
+    })
+    .then(token => {
+        return res.status(201).json({ token });
     })
     .catch(err => {
         console.error(err);
-        return res.status(500).json({ error: err.code})
-    });
+        if(err.code === 'auth/email-already-in-use') {
+            return res.status(400).json({ error: 'Already in use'});
+        } else {
+            return res.status(500).json({ error: err.code });
+        }
+    })
 });
 
 
