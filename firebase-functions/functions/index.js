@@ -10,6 +10,7 @@ app.get('/finances', (req, res) => {
     admin
         .firestore()
         .collection('finances')
+        .orderBy('date', 'desc')
         .get()
         .then((data) => {
             let finances = [];
@@ -30,7 +31,7 @@ app.get('/finances', (req, res) => {
 
 app.post('/finance', (req, res) => {
     const newFinance = {
-        date: admin.firestore.Timestamp.fromDate(new Date()),
+        date: new Date().toISOString(),
         sum: req.body.sum,
         details: req.body.details,
         category: req.body.category,
@@ -51,4 +52,4 @@ app.post('/finance', (req, res) => {
 });
 
 
-exports.api = functions.https.onRequest(app);
+exports.api = functions.region('europe-west2').https.onRequest(app);
