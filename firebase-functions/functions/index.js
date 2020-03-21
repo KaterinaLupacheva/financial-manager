@@ -1,10 +1,21 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const app = require('express')();
 
 admin.initializeApp();
 
-const express = require('express');
-const app = express();
+const config = {
+    apiKey: "AIzaSyBNKoeVsWj8akc-XhAoB67axhgseHqulAM",
+    authDomain: "financial-manager-271220.firebaseapp.com",
+    databaseURL: "https://financial-manager-271220.firebaseio.com",
+    projectId: "financial-manager-271220",
+    storageBucket: "financial-manager-271220.appspot.com",
+    messagingSenderId: "198479107313",
+    appId: "1:198479107313:web:b578dd8aacec5f19a10550"
+  };
+
+const firebase = require('firebase');
+firebase.initializeApp(config);
 
 app.get('/finances', (req, res) => {
     admin
@@ -49,6 +60,25 @@ app.post('/finance', (req, res) => {
             res.status(500).json({ error: 'something went wrong'})
             console.error(err);
         });
+});
+
+//signup route
+app.post('/signup', (req, res) => {
+    const newUser = {
+        email: req.body.email,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+        username: req.body.username
+    };
+
+    firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    .then(data => {
+        return res.status(201).json({ message: `user ${data.user.uid} signup`})
+    })
+    .catch(err => {
+        console.error(err);
+        return res.status(500).json({ error: err.code})
+    });
 });
 
 
