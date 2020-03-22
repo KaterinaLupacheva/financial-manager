@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PickerWithButton from "../components/picker-with-button";
+import CustomDatePicker from "../components/date-picker";
 import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
 import { format } from "date-fns";
@@ -99,7 +99,7 @@ const MonthPage = () => {
 
   return (
     <div>
-      <PickerWithButton changeDate={changeDate} handleSubmit={handleSubmit} />
+      <CustomDatePicker changeDate={changeDate} />
       {expensesData && (
         <ExpansionTable monthData={expensesData} isExpenses={true} />
       )}

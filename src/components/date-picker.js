@@ -8,7 +8,6 @@ const useStyles = makeStyles(theme => ({
   input: {
     color: theme.palette.secondary.text,
     width: 150,
-    // border: "1px solid blue",
     borderRadius: "10px",
     background: theme.palette.secondary.main,
     height: "7vh"
