@@ -106,7 +106,7 @@ const MonthPage = () => {
       {incomeData && (
         <ExpansionTable monthData={incomeData} isExpenses={false} />
       )}
-      <FloatingAddButton />
+      <FloatingAddButton handleSubmit={handleSubmit} />
     </div>
   );
 };
