@@ -28,12 +28,12 @@ import ChartsPage from "./pages/charts-page";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#4C586F"
+      main: "#e1bee7"
     },
     secondary: {
       main: "#3e3e3B",
       text: "#EBECED",
-      darkBg: "#CBC5C1"
+      darkBg: "#f06292"
     }
   }
 });

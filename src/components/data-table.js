@@ -19,7 +19,7 @@ const Table = ({ monthData, isExpenses }) => {
           toolbar: false,
           paging: false,
           headerStyle: {
-            backgroundColor: "#01579b",
+            backgroundColor: "#9c27b0",
             color: "#FFF",
             fontWeight: "bold"
           }
