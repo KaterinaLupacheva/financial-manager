@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CustomDatePicker from "../components/date-picker";
 import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
+import Box from "@material-ui/core/Box";
 import { format } from "date-fns";
 
 import { config } from "../gapiConfig";
@@ -99,7 +100,15 @@ const MonthPage = () => {
 
   return (
     <div>
-      <CustomDatePicker changeDate={changeDate} />
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        marginBottom="40px"
+        marginLeft="40px"
+      >
+        <CustomDatePicker changeDate={changeDate} />
+      </Box>
       {expensesData && (
         <ExpansionTable monthData={expensesData} isExpenses={true} />
       )}
