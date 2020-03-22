@@ -17,14 +17,14 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import AddButton from './add-button'; 
+import AddButton from "./add-button";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
-    flexGrow: 1,
+    flexGrow: 1
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    textAlign: 'left'
+    textAlign: "left"
   },
   hide: {
     display: "none"

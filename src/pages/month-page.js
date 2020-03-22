@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PickerWithButton from "../components/picker-with-button";
+import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
 import { format } from "date-fns";
 
@@ -105,6 +106,7 @@ const MonthPage = () => {
       {incomeData && (
         <ExpansionTable monthData={incomeData} isExpenses={false} />
       )}
+      <FloatingAddButton />
     </div>
   );
 };
