@@ -3,6 +3,9 @@ const app = require("express")();
 
 const FBAuth = require("./util/fbauth");
 
+const cors = require('cors');
+app.use(cors());
+
 const {
   addExpense,
   getAllExpensesByUser,
