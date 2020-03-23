@@ -4,6 +4,7 @@ import "./App.css";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Sidebar from "./components/sidebar";
+import LoginPage from "./pages/login-page";
 import MonthPage from "./pages/month-page";
 import PivotTablePage from "./pages/pivot-table-page";
 import ChartsPage from "./pages/charts-page";
@@ -45,6 +46,7 @@ function App() {
         <div className="App">
           <Sidebar>
             <Switch>
+              <Route path="/login" component={LoginPage} />
               <Route path="/month" component={MonthPage} />
               <Route path="/table" component={PivotTablePage} />
               <Route path="/charts" component={ChartsPage} />

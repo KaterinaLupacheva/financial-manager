@@ -17,6 +17,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
 
 const drawerWidth = 240;
 
@@ -122,6 +123,9 @@ const Sidebar = ({ children }) => {
           <Typography variant="h6" noWrap className={classes.title}>
             Financial Manager
           </Typography>
+          <Button color="inherit" component={Link} to={"/login"}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
