@@ -50,3 +50,15 @@ exports.validateLoginData = data => {
     valid: Object.keys(errors).length === 0 ? true : false
   };
 };
+
+exports.reduceEntry = data => {
+  console.log(data);
+  let entryDetails = {};
+
+  if (!isEmpty(data.sum.toString())) entryDetails.sum = data.sum;
+  if (!isEmpty(data.details.trim())) entryDetails.details = data.details;
+  if (!isEmpty(data.category.trim())) entryDetails.category = data.category;
+  if (!isEmpty(data.date)) entryDetails.date = data.date;
+
+  return entryDetails;
+};
