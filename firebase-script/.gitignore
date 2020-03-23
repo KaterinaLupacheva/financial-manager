@@ -1,3 +1,5 @@
+/node_modules
+
 financial-manager.json
 data.json
-databaseURL.js
+databaseURL.js 
