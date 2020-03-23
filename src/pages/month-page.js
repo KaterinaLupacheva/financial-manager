@@ -7,6 +7,7 @@ import { format } from "date-fns";
 
 import { config } from "../gapiConfig";
 import { createDataObject } from "../utils/createDataObject";
+import { dataToFirestore } from "../utils/dataToFirestore";
 
 const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
@@ -23,6 +24,7 @@ const MonthPage = () => {
         response => {
           const range = response.result.values;
           const data = createDataObject(range);
+          dataToFirestore(data.combinedArrays);
           setExpensesData(data);
         },
         function(response) {
