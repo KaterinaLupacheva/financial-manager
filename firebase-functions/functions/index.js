@@ -3,7 +3,7 @@ const app = require("express")();
 
 const FBAuth = require("./util/fbauth");
 
-const { addExpense, getAllExpenses } = require("./handlers/expenses");
+const { addExpense, getAllExpensesByUser } = require("./handlers/expenses");
 const { getAllFinances, postOneFinance } = require("./handlers/finances");
 const { signup, login } = require("./handlers/users");
 
@@ -11,7 +11,7 @@ app.get("/finances", getAllFinances);
 app.post("/finance", FBAuth, postOneFinance);
 
 app.post("/expenses", FBAuth, addExpense);
-app.get("/expenses", getAllExpenses);
+app.get("/expenses", FBAuth, getAllExpensesByUser);
 
 //signup route
 app.post("/signup", signup);
