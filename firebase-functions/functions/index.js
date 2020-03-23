@@ -6,7 +6,8 @@ const FBAuth = require("./util/fbauth");
 const {
   addExpense,
   getAllExpensesByUser,
-  updateExpenseEntry
+  updateExpenseEntry,
+  deleteExpenseEntry
 } = require("./handlers/expenses");
 const { getAllFinances, postOneFinance } = require("./handlers/finances");
 const { signup, login } = require("./handlers/users");
@@ -17,6 +18,7 @@ app.post("/finance", FBAuth, postOneFinance);
 app.post("/expenses", FBAuth, addExpense);
 app.get("/expenses", FBAuth, getAllExpensesByUser);
 app.put("/expenses/:expenseId", FBAuth, updateExpenseEntry);
+app.delete("/expenses/:expenseId", FBAuth, deleteExpenseEntry);
 
 //signup route
 app.post("/signup", signup);
