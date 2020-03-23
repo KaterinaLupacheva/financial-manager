@@ -3,7 +3,7 @@ const app = require("express")();
 
 const FBAuth = require("./util/fbauth");
 
-const cors = require('cors');
+const cors = require("cors");
 app.use(cors());
 
 const {
