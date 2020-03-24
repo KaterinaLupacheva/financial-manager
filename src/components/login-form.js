@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
     margin: "10px auto"
   },
   button: {
-    margin: "20px auto"
+    margin: "20px auto",
+    backgroundColor: theme.palette.primary.greenBg
   },
   customError: {
     color: theme.palette.primary.errorText,
@@ -90,12 +91,7 @@ const LoginForm = props => {
               {errors.general}
             </Typography>
           )}
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
+          <Button type="submit" variant="contained" className={classes.button}>
             Login
           </Button>
           <br />
