@@ -63,6 +63,8 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
       case "category":
         handleCategoryChange(e.target.value);
         break;
+      default:
+        return;
     }
   };
 
