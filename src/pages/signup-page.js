@@ -1,5 +1,6 @@
 import React from "react";
+import SignupForm from "../components/signup-form";
 
-const SignupPage = () => <div>Signup page</div>;
+const SignupPage = () => <SignupForm />;
 
 export default SignupPage;

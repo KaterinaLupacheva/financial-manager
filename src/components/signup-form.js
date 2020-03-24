@@ -8,7 +8,7 @@ import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(formStyles);
 
-const LoginForm = props => {
+const SignupForm = props => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +40,7 @@ const LoginForm = props => {
       <Grid item sm />
       <Grid item sm>
         <Typography variant="h3" className={classes.title}>
-          Login
+          Signup
         </Typography>
         <form noValidate onSubmit={handleSubmit}>
           <TextField
@@ -73,7 +73,7 @@ const LoginForm = props => {
             </Typography>
           )}
           <Button type="submit" variant="contained" className={classes.button}>
-            Login
+            Signup
           </Button>
           <br />
           <small>
@@ -86,4 +86,4 @@ const LoginForm = props => {
   );
 };
 
-export default withRouter(LoginForm);
+export default withRouter(SignupForm);

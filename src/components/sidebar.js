@@ -126,6 +126,9 @@ const Sidebar = ({ children }) => {
           <Button color="inherit" component={Link} to={"/login"}>
             Login
           </Button>
+          <Button color="inherit" component={Link} to={"/signup"}>
+            Sign Up
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
