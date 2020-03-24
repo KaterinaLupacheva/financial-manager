@@ -2,7 +2,7 @@
   "name": "financial-manager",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://us-central1-financial-manager-271220.cloudfunctions.net/api",
+  "proxy": "https://europe-west2-financial-manager-271220.cloudfunctions.net/api",
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
     "@material-ui/core": "^4.9.7",

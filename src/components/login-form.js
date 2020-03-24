@@ -24,10 +24,7 @@ const LoginForm = props => {
     };
 
     axios
-      .post(
-        "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
-        userData
-      )
+      .post("/login", userData)
       .then(res => {
         setUser(res.data.token);
       })
