@@ -28,6 +28,7 @@ const LoginForm = props => {
       )
       .then(res => {
         console.log(res.data);
+        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
         props.history.push("/");
       })
       .catch(err => {

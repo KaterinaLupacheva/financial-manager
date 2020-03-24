@@ -12,22 +12,27 @@ const SignupForm = props => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleSubmit = event => {
     event.preventDefault();
-    const userData = {
+    const newUserData = {
       email,
-      password
+      password,
+      confirmPassword,
+      username
     };
 
     axios
       .post(
-        "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
-        userData
+        "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/signup",
+        newUserData
       )
       .then(res => {
         console.log(res.data);
+        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
         props.history.push("/");
       })
       .catch(err => {
@@ -67,6 +72,30 @@ const SignupForm = props => {
             onChange={event => setPassword(event.target.value)}
             fullWidth
           />
+          <TextField
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            label="Confirm Password"
+            helperText={errors.confirmPassword}
+            error={errors.confirmPassword ? true : false}
+            className={classes.textfield}
+            value={confirmPassword}
+            onChange={event => setConfirmPassword(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="username"
+            name="username"
+            type="text"
+            label="Username"
+            helperText={errors.username}
+            error={errors.username ? true : false}
+            className={classes.textfield}
+            value={username}
+            onChange={event => setUsername(event.target.value)}
+            fullWidth
+          />
           {errors.general && (
             <Typography variant="body2" className={classes.customError}>
               {errors.general}
@@ -77,7 +106,7 @@ const SignupForm = props => {
           </Button>
           <br />
           <small>
-            Don't have an account? Signup <Link to="/signup">here</Link>
+            Already have an account? Login <Link to="/login">here</Link>
           </small>
         </form>
       </Grid>
