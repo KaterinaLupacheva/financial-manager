@@ -15,7 +15,6 @@ const SignupForm = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [username, setUsername] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleSubmit = event => {
@@ -23,8 +22,7 @@ const SignupForm = props => {
     const newUserData = {
       email,
       password,
-      confirmPassword,
-      username
+      confirmPassword
     };
 
     axios
@@ -79,18 +77,6 @@ const SignupForm = props => {
             className={classes.textfield}
             value={confirmPassword}
             onChange={event => setConfirmPassword(event.target.value)}
-            fullWidth
-          />
-          <TextField
-            id="username"
-            name="username"
-            type="text"
-            label="Username"
-            helperText={errors.username}
-            error={errors.username ? true : false}
-            className={classes.textfield}
-            value={username}
-            onChange={event => setUsername(event.target.value)}
             fullWidth
           />
           {errors.general && (
