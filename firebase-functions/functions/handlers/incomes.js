@@ -7,8 +7,7 @@ exports.addIncome = (req, res) => {
     date: new Date().toISOString(),
     sum: req.body.sum,
     details: req.body.details,
-    category: req.body.category,
-    username: req.user.username
+    category: req.body.category
   };
 
   db.collection("incomes")
@@ -24,7 +23,7 @@ exports.addIncome = (req, res) => {
 
 exports.getAllIncomesByUser = (req, res) => {
   db.collection("incomes")
-    .where("username", "==", req.user.username)
+    .where("email", "==", req.user.email)
     .orderBy("date", "desc")
     .get()
     .then(data => {
@@ -65,7 +64,7 @@ exports.deleteIncomeEntry = (req, res) => {
       if (!doc.exists) {
         return res.status(404).json({ error: "Entry not found" });
       }
-      if (doc.data().username !== req.user.username) {
+      if (doc.data().email !== req.user.email) {
         return res.status(403).json({ error: "Unauthorized" });
       } else {
         return document.delete();

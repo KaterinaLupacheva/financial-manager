@@ -29,9 +29,9 @@ exports.validateSignupData = data => {
     errors.confirmPassword = "Passwords must match";
   }
 
-  if (isEmpty(data.username)) {
-    errors.username = "Must not be empty";
-  }
+  // if (isEmpty(data.username)) {
+  //   errors.username = "Must not be empty";
+  // }
 
   return {
     errors,

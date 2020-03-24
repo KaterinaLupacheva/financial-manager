@@ -19,6 +19,7 @@ const {
   updateIncomeEntry,
   deleteIncomeEntry
 } = require("./handlers/incomes");
+
 const { signup, login } = require("./handlers/users");
 
 app.post("/expenses", FBAuth, addExpense);

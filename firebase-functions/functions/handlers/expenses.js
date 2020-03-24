@@ -8,7 +8,7 @@ exports.addExpense = (req, res) => {
     sum: req.body.sum,
     details: req.body.details,
     category: req.body.category,
-    username: req.user.username
+    email: req.user.email
   };
 
   db.collection("expenses")
@@ -24,7 +24,7 @@ exports.addExpense = (req, res) => {
 
 exports.getAllExpensesByUser = (req, res) => {
   db.collection("expenses")
-    .where("username", "==", req.user.username)
+    .where("email", "==", req.user.email)
     .orderBy("date", "desc")
     .get()
     .then(data => {
@@ -65,7 +65,7 @@ exports.deleteExpenseEntry = (req, res) => {
       if (!doc.exists) {
         return res.status(404).json({ error: "Entry not found" });
       }
-      if (doc.data().username !== req.user.username) {
+      if (doc.data().email !== req.user.email) {
         return res.status(403).json({ error: "Unauthorized" });
       } else {
         return document.delete();

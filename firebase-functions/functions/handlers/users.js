@@ -11,8 +11,7 @@ exports.signup = (req, res) => {
   const newUser = {
     email: req.body.email,
     password: req.body.password,
-    confirmPassword: req.body.confirmPassword,
-    username: req.body.username
+    confirmPassword: req.body.confirmPassword
   };
 
   const { errors, valid } = validateSignupData(newUser);
@@ -20,13 +19,11 @@ exports.signup = (req, res) => {
   if (!valid) return res.status(400).json(errors);
 
   let token, userId;
-  db.doc(`/users/${newUser.username}`)
+  db.doc(`/users/${newUser.email}`)
     .get()
     .then(doc => {
       if (doc.exists) {
-        return res
-          .status(400)
-          .json({ username: "this username is already taken" });
+        return res.status(400).json({ email: "this email is already taken" });
       } else {
         return firebase
           .auth()
@@ -40,12 +37,11 @@ exports.signup = (req, res) => {
     .then(idToken => {
       token = idToken;
       const userCredentials = {
-        username: newUser.username,
         email: newUser.email,
         createdAt: new Date().toISOString(),
         userId
       };
-      return db.doc(`/users/${newUser.username}`).set(userCredentials);
+      return db.doc(`/users/${newUser.email}`).set(userCredentials);
     })
     .then(() => {
       return res.status(201).json({ token });
