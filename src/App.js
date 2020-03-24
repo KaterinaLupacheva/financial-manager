@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import jwtDecode from "jwt-decode";
+import UserContext from "./contexts/user.context";
+import axios from "axios";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Sidebar from "./components/sidebar";
@@ -28,28 +30,48 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  let authenticated;
-  const token = localStorage.FBIdToken;
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    if (decodedToken.exp * 1000 < Date.now()) {
-      window.location.href = "/login";
-      authenticated = false;
-    } else {
-      authenticated = true;
+  const [authenticated, setAuthenticated] = useState(false);
+  const [email, setEmail] = useState("");
+  const setUser = token => {
+    console.log("TOKEN " + token);
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        window.location.href = "/login";
+        setAuthenticated(false);
+      } else {
+        const FbIdToken = `Bearer ${token}`;
+        localStorage.setItem("FBIdToken", FbIdToken);
+        axios.defaults.headers.common["Authorization"] = FbIdToken;
+        setAuthenticated(true);
+        setEmail(decodedToken.email);
+      }
     }
-  }
+  };
+
+  useEffect(() => {
+    setUser(localStorage.FBIdToken);
+  }, [authenticated]);
+
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
           <Sidebar>
             <Switch>
-              <AuthRoute path="/signup" component={SignupPage} authenticated />
-              <AuthRoute path="/login" component={LoginPage} authenticated />
-              <Route path="/month" component={MonthPage} />
-              <Route path="/table" component={PivotTablePage} />
-              <Route path="/charts" component={ChartsPage} />
+              <UserContext.Provider
+                value={{
+                  authenticated,
+                  email,
+                  setUser
+                }}
+              >
+                <AuthRoute path="/signup" component={SignupPage} />
+                <AuthRoute path="/login" component={LoginPage} />
+                <Route path="/month" component={MonthPage} />
+                <Route path="/table" component={PivotTablePage} />
+                <Route path="/charts" component={ChartsPage} />
+              </UserContext.Provider>
             </Switch>
           </Sidebar>
         </div>
