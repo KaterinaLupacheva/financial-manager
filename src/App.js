@@ -29,7 +29,9 @@ import ChartsPage from "./pages/charts-page";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#e1bee7"
+      main: "#e1bee7",
+      errorText: "#ff1744",
+      greenBg: "#00bfa5"
     },
     secondary: {
       main: "#3e3e3B",

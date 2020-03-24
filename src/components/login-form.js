@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { withRouter, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
@@ -16,11 +17,16 @@ const useStyles = makeStyles(theme => ({
     margin: "10px auto"
   },
   button: {
-    marginTop: 20
+    margin: "20px auto"
+  },
+  customError: {
+    color: theme.palette.primary.errorText,
+    fontSize: "0.8rem",
+    marginTop: 10
   }
 }));
 
-const LoginForm = () => {
+const LoginForm = props => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +46,7 @@ const LoginForm = () => {
       )
       .then(res => {
         console.log(res.data);
+        props.history.push("/");
       })
       .catch(err => {
         setErrors(err.response.data);
@@ -78,6 +85,11 @@ const LoginForm = () => {
             onChange={event => setPassword(event.target.value)}
             fullWidth
           />
+          {errors.general && (
+            <Typography variant="body2" className={classes.customError}>
+              {errors.general}
+            </Typography>
+          )}
           <Button
             type="submit"
             variant="contained"
@@ -86,6 +98,10 @@ const LoginForm = () => {
           >
             Login
           </Button>
+          <br />
+          <small>
+            Don't have an account? Signup <Link to="/signup">here</Link>
+          </small>
         </form>
       </Grid>
       <Grid item sm />
@@ -93,4 +109,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);
