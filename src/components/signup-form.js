@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { withRouter, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
+import UserContext from "../contexts/user.context";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(formStyles);
 
 const SignupForm = props => {
+  const { setUser } = useContext(UserContext);
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,9 +33,7 @@ const SignupForm = props => {
         newUserData
       )
       .then(res => {
-        console.log(res.data);
-        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
-        props.history.push("/");
+        setUser(res.data.token);
       })
       .catch(err => {
         setErrors(err.response.data);
