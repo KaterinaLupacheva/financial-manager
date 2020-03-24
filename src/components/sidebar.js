@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import UserContext from "../contexts/user.context";
 import clsx from "clsx";
 import { Link, withRouter } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -18,80 +19,16 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
+import { sidebarStyles } from "../styles/sidebar.styles";
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: "flex",
-    flexGrow: 1
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1,
-    textAlign: "left"
-  },
-  hide: {
-    display: "none"
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0
-  },
-  drawerPaper: {
-    width: drawerWidth
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end"
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    marginLeft: -drawerWidth
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    marginLeft: 0
-  },
-  selected: {
-    backgroundColor: `${theme.palette.secondary.darkBg} !important`,
-    color: "white",
-    fontWeight: 600
-  }
-}));
+const useStyles = makeStyles(sidebarStyles);
 
 const Sidebar = ({ children }) => {
+  const { authenticated, logoutUser } = useContext(UserContext);
+
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -123,12 +60,20 @@ const Sidebar = ({ children }) => {
           <Typography variant="h6" noWrap className={classes.title}>
             Financial Manager
           </Typography>
-          <Button color="inherit" component={Link} to={"/login"}>
-            Login
-          </Button>
-          <Button color="inherit" component={Link} to={"/signup"}>
-            Sign Up
-          </Button>
+          {authenticated ? (
+            <Button color="inherit" onClick={logoutUser}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to={"/login"}>
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to={"/signup"}>
+                Sign Up
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer

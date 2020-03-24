@@ -29,7 +29,6 @@ const LoginForm = props => {
         userData
       )
       .then(res => {
-        console.log(res.data);
         setUser(res.data.token);
       })
       .catch(err => {

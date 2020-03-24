@@ -32,13 +32,20 @@ const theme = createMuiTheme({
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
+
+  const logoutUser = () => {
+    localStorage.removeItem("FBIdToken");
+    delete axios.defaults.headers.common["Authorization"];
+    setAuthenticated(false);
+    setEmail("");
+  };
+
   const setUser = token => {
-    console.log("TOKEN " + token);
     if (token) {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < Date.now()) {
+        logoutUser();
         window.location.href = "/login";
-        setAuthenticated(false);
       } else {
         const FbIdToken = `Bearer ${token}`;
         localStorage.setItem("FBIdToken", FbIdToken);
@@ -57,23 +64,24 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <Sidebar>
-            <Switch>
-              <UserContext.Provider
-                value={{
-                  authenticated,
-                  email,
-                  setUser
-                }}
-              >
+          <UserContext.Provider
+            value={{
+              authenticated,
+              email,
+              setUser,
+              logoutUser
+            }}
+          >
+            <Sidebar>
+              <Switch>
                 <AuthRoute path="/signup" component={SignupPage} />
                 <AuthRoute path="/login" component={LoginPage} />
                 <Route path="/month" component={MonthPage} />
                 <Route path="/table" component={PivotTablePage} />
                 <Route path="/charts" component={ChartsPage} />
-              </UserContext.Provider>
-            </Switch>
-          </Sidebar>
+              </Switch>
+            </Sidebar>
+          </UserContext.Provider>
         </div>
       </Router>
     </MuiThemeProvider>
