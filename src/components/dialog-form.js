@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { styled } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -13,6 +12,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
+import { dialogStyles } from "../styles/dialog.styles";
 import {
   FormControl,
   InputLabel,
@@ -22,22 +22,7 @@ import {
 } from "@material-ui/core";
 import { CATEGORIES } from "../utils/categories";
 
-const useStyles = makeStyles(theme => ({
-  toggleContainer: {
-    margin: theme.spacing(2, 0)
-  },
-  formControl: {
-    minWidth: 195
-  }
-}));
-
-const TextFieldLeftMargin = styled(TextField)({
-  marginLeft: 20
-});
-
-const TextFieldRightMargin = styled(TextField)({
-  marginRight: 20
-});
+const useStyles = makeStyles(dialogStyles);
 
 const DialogForm = ({ open, handleClose, handleSubmit }) => {
   const [view, setView] = useState("expenses");
@@ -110,7 +95,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 onChange={handleDateChange}
               />
             </MuiPickersUtilsProvider>
-            <TextFieldLeftMargin
+            <TextField
               autoFocus
               margin="normal"
               name="sum"
@@ -119,6 +104,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
               required={true}
               size="small"
               onChange={handleChange}
+              className={classes.sumField}
             />
           </Box>
           <Box
@@ -127,13 +113,14 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
             width="40vw"
             justifyContent="space-between"
           >
-            <TextFieldRightMargin
+            <TextField
               margin="normal"
               name="type"
               label="Exp / Inc"
               type="text"
               required={true}
               onChange={handleChange}
+              className={classes.detailsField}
             />
 
             <FormControl required className={classes.formControl}>

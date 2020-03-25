@@ -5,7 +5,7 @@ import ExpansionTable from "../components/expansion-table";
 import Box from "@material-ui/core/Box";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
-import { createDataForTable } from "../utils/createMonthData";
+import { createDataForTable } from "../utils/formatData";
 
 const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
