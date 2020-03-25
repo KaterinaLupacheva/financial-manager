@@ -83,16 +83,14 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
   };
 
   const saveData = obj => {
-    if (view === "expenses") {
-      axios
-        .post("/expenses", obj)
-        .then(res => {
-          handleSubmit(obj);
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
+    axios
+      .post(`/${view}`, obj)
+      .then(res => {
+        handleSubmit(view);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   const clearForm = () => {

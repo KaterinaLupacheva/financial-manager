@@ -16,32 +16,31 @@ const MonthPage = () => {
     setMonth(newMonth);
   };
 
-  const handleSubmit = obj => {
-    setExpensesData({ obj, ...expensesData });
-    // if (view === "expenses") {
-    //   saveNewExpense(selectedDate, sum, type, category);
-    // }
+  const handleSubmit = view => {
+    if (view === "expenses") {
+      fetchExpenses();
+    }
+  };
+
+  const fetchExpenses = () => {
+    const startDate = getFirstDayOfMonth(month);
+    const endDate = getLastDayOfMonth(month);
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${localStorage.getItem("FBIdToken")}`;
+    axios
+      .get(`/expenses/${startDate}/${endDate}`)
+      .then(res => {
+        setExpensesData(createDataForTable(res.data));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
-    const fetchExpenses = (startDate, endDate) => {
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${localStorage.getItem("FBIdToken")}`;
-      axios
-        .get(`/expenses/${startDate}/${endDate}`)
-        .then(res => {
-          setExpensesData(createDataForTable(res.data));
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    };
-    const startDate = getFirstDayOfMonth(month);
-    const endDate = getLastDayOfMonth(month);
-
-    fetchExpenses(startDate, endDate);
-  }, [month, expensesData]);
+    fetchExpenses();
+  }, [month]);
 
   return (
     <div>
