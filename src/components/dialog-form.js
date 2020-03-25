@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -27,9 +27,10 @@ const useStyles = makeStyles(dialogStyles);
 const DialogForm = ({ open, handleClose, handleSubmit }) => {
   const [view, setView] = useState("expenses");
   const [selectedDate, handleDateChange] = useState(new Date());
-  const [sum, handleSumChange] = useState(0);
-  const [type, handleTypeChange] = useState("");
-  const [category, handleCategoryChange] = useState("");
+  const [sum, setSum] = useState("");
+  const [details, setDetails] = useState("");
+  const [category, setCategory] = useState("");
+  const [errors, setErrors] = useState({});
 
   const classes = useStyles();
 
@@ -37,20 +38,59 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
     setView(newView);
   };
 
-  const handleChange = e => {
-    switch (e.target.name) {
-      case "sum":
-        handleSumChange(e.target.value);
-        break;
-      case "type":
-        handleTypeChange(e.target.value);
-        break;
-      case "category":
-        handleCategoryChange(e.target.value);
-        break;
-      default:
-        return;
+  const validate = () => {
+    let err = {};
+    let valid = true;
+    if (isEmpty(sum)) {
+      err.sum = "Must not be empty";
+      valid = false;
     }
+    if (isEmpty(details)) {
+      err.details = "Must not be empty";
+      valid = false;
+    }
+    if (isEmpty(category)) {
+      err.category = "Must not be empty";
+      valid = false;
+    }
+    setErrors(err);
+    return valid;
+  };
+
+  const isEmpty = input => {
+    if (input.trim() === "") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const handleFormSubmit = event => {
+    event.preventDefault();
+    const isValid = validate();
+    if (isValid) {
+      const obj = {
+        view,
+        date: selectedDate,
+        sum,
+        details,
+        category
+      };
+      handleSubmit(obj);
+      clearForm();
+    }
+  };
+
+  const clearForm = () => {
+    setSum("");
+    setDetails("");
+    setCategory("");
+    setErrors({});
+    handleClose();
+  };
+
+  const handleDialogClose = () => {
+    clearForm();
   };
 
   return (
@@ -63,103 +103,110 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
         <DialogTitle id="form-dialog-title">
           Add expenses (-) or income (+)
         </DialogTitle>
-        <DialogContent>
-          <div className={classes.toggleContainer}>
-            <ToggleButtonGroup
-              value={view}
-              exclusive
-              onChange={handleViewChange}
-              aria-label="chose type"
-            >
-              <ToggleButton value="expenses" aria-label="expenses">
-                <IndeterminateCheckBoxIcon />
-              </ToggleButton>
-              <ToggleButton value="income" aria-label="income">
-                <AddBoxIcon />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div>
-          <Box
-            display="flex"
-            alignItems="baseline"
-            width="40vw"
-            justifyContent="space-between"
-          >
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker
-                autoOk={true}
-                label="Date"
-                minDate={new Date("2020-01-01")}
-                maxDate={new Date()}
-                value={selectedDate}
-                onChange={handleDateChange}
-              />
-            </MuiPickersUtilsProvider>
-            <TextField
-              autoFocus
-              margin="normal"
-              name="sum"
-              label="Sum"
-              type="number"
-              required={true}
-              size="small"
-              onChange={handleChange}
-              className={classes.sumField}
-            />
-          </Box>
-          <Box
-            display="flex"
-            alignItems="baseline"
-            width="40vw"
-            justifyContent="space-between"
-          >
-            <TextField
-              margin="normal"
-              name="type"
-              label="Exp / Inc"
-              type="text"
-              required={true}
-              onChange={handleChange}
-              className={classes.detailsField}
-            />
-
-            <FormControl required className={classes.formControl}>
-              <InputLabel>Category</InputLabel>
-              <Select
-                name="category"
-                value={category}
-                onChange={handleChange}
-                className={classes.selectEmpty}
+        <form noValidate onSubmit={handleFormSubmit}>
+          <DialogContent>
+            <div className={classes.toggleContainer}>
+              <ToggleButtonGroup
+                value={view}
+                exclusive
+                onChange={handleViewChange}
+                aria-label="chose type"
               >
-                {view === "expenses"
-                  ? CATEGORIES.expenses.map((cat, id) => (
-                      <MenuItem value={cat} key={id}>
-                        {cat}
-                      </MenuItem>
-                    ))
-                  : CATEGORIES.income.map((cat, id) => (
-                      <MenuItem value={cat} key={id}>
-                        {cat}
-                      </MenuItem>
-                    ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              handleClose();
-              handleSubmit(view, selectedDate, sum, type, category);
-            }}
-            color="primary"
-          >
-            Save
-          </Button>
-        </DialogActions>
+                <ToggleButton value="expenses" aria-label="expenses">
+                  <IndeterminateCheckBoxIcon />
+                </ToggleButton>
+                <ToggleButton value="income" aria-label="income">
+                  <AddBoxIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
+            <Box
+              display="flex"
+              alignItems="baseline"
+              width="40vw"
+              justifyContent="space-between"
+            >
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  autoOk={true}
+                  label="Date"
+                  minDate={new Date("2020-01-01")}
+                  maxDate={new Date()}
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                />
+              </MuiPickersUtilsProvider>
+              <TextField
+                autoFocus
+                margin="normal"
+                name="sum"
+                label="Sum"
+                value={sum}
+                type="number"
+                required={true}
+                size="small"
+                helperText={errors.sum}
+                error={errors.sum ? true : false}
+                onChange={e => setSum(e.target.value)}
+                className={classes.sumField}
+              />
+            </Box>
+            <Box
+              display="flex"
+              alignItems="baseline"
+              width="40vw"
+              justifyContent="space-between"
+            >
+              <TextField
+                margin="normal"
+                name="details"
+                label="Exp / Inc"
+                type="text"
+                value={details}
+                required={true}
+                helperText={errors.details}
+                error={errors.details ? true : false}
+                onChange={e => setDetails(e.target.value)}
+                className={classes.detailsField}
+              />
+
+              <FormControl required className={classes.formControl}>
+                <InputLabel>Category</InputLabel>
+                <Select
+                  name="category"
+                  value={category}
+                  error={errors.category ? true : false}
+                  onChange={e => setCategory(e.target.value)}
+                  className={classes.selectEmpty}
+                >
+                  {view === "expenses"
+                    ? CATEGORIES.expenses.map((cat, id) => (
+                        <MenuItem value={cat} key={id}>
+                          {cat}
+                        </MenuItem>
+                      ))
+                    : CATEGORIES.income.map((cat, id) => (
+                        <MenuItem value={cat} key={id}>
+                          {cat}
+                        </MenuItem>
+                      ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleDialogClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" type="submit">
+              Save
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );

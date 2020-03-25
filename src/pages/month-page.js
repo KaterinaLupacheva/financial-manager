@@ -16,8 +16,8 @@ const MonthPage = () => {
     setMonth(newMonth);
   };
 
-  const handleSubmit = (view, selectedDate, sum, type, category) => {
-    console.log(view, selectedDate, sum, type, category);
+  const handleSubmit = data => {
+    console.log(data);
     // if (view === "expenses") {
     //   saveNewExpense(selectedDate, sum, type, category);
     // }
