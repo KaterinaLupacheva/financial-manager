@@ -16,8 +16,8 @@ const MonthPage = () => {
     setMonth(newMonth);
   };
 
-  const handleSubmit = data => {
-    console.log(data);
+  const handleSubmit = obj => {
+    setExpensesData({ obj, ...expensesData });
     // if (view === "expenses") {
     //   saveNewExpense(selectedDate, sum, type, category);
     // }
@@ -25,6 +25,9 @@ const MonthPage = () => {
 
   useEffect(() => {
     const fetchExpenses = (startDate, endDate) => {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${localStorage.getItem("FBIdToken")}`;
       axios
         .get(`/expenses/${startDate}/${endDate}`)
         .then(res => {
@@ -38,7 +41,7 @@ const MonthPage = () => {
     const endDate = getLastDayOfMonth(month);
 
     fetchExpenses(startDate, endDate);
-  }, [month]);
+  }, [month, expensesData]);
 
   return (
     <div>

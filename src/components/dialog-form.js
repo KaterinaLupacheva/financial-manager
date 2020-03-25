@@ -21,6 +21,7 @@ import {
   Box
 } from "@material-ui/core";
 import { CATEGORIES } from "../utils/categories";
+import axios from "axios";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -76,8 +77,21 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
         details,
         category
       };
-      handleSubmit(obj);
+      saveData(obj);
       clearForm();
+    }
+  };
+
+  const saveData = obj => {
+    if (view === "expenses") {
+      axios
+        .post("/expenses", obj)
+        .then(res => {
+          handleSubmit(obj);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   };
 
