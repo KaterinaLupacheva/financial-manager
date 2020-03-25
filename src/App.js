@@ -10,6 +10,7 @@ import Sidebar from "./components/sidebar";
 import SignupPage from "./pages/signup-page";
 import LoginPage from "./pages/login-page";
 import MonthPage from "./pages/month-page";
+// import MonthPage from "./pages/month-page-gsheets";
 import PivotTablePage from "./pages/pivot-table-page";
 import ChartsPage from "./pages/charts-page";
 import AuthRoute from "./utils/authroute";
@@ -47,9 +48,8 @@ function App() {
         logoutUser();
         window.location.href = "/login";
       } else {
-        const FbIdToken = `Bearer ${token}`;
-        localStorage.setItem("FBIdToken", FbIdToken);
-        axios.defaults.headers.common["Authorization"] = FbIdToken;
+        localStorage.setItem("FBIdToken", token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         setAuthenticated(true);
         setEmail(decodedToken.email);
       }

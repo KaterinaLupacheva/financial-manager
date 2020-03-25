@@ -4,7 +4,7 @@ const { reduceEntry } = require("../util/validators");
 
 exports.addExpense = (req, res) => {
   const newExpense = {
-    date: new Date().toISOString(),
+    date: req.body.date,
     sum: req.body.sum,
     details: req.body.details,
     category: req.body.category,
@@ -25,6 +25,28 @@ exports.addExpense = (req, res) => {
 exports.getAllExpensesByUser = (req, res) => {
   db.collection("expenses")
     .where("email", "==", req.user.email)
+    .orderBy("date", "desc")
+    .get()
+    .then(data => {
+      let expenses = [];
+      data.forEach(doc => {
+        expenses.push({
+          expenseId: doc.id,
+          sum: doc.data().sum,
+          details: doc.data().details,
+          category: doc.data().category,
+          date: doc.data().date
+        });
+      });
+      return res.json(expenses);
+    })
+    .catch(err => console.error(err));
+};
+
+exports.getAllExpensesByMonth = (req, res) => {
+  db.collection("expenses")
+    .where("email", "==", req.user.email)
+    .where("date")
     .orderBy("date", "desc")
     .get()
     .then(data => {

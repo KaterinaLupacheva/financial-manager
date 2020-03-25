@@ -10,7 +10,7 @@ const Table = ({ monthData, isExpenses }) => {
         columns={[
           { title: "Date", field: "date" },
           { title: "Sum", field: "sum" },
-          { title: `${name}`, field: "expenses" },
+          { title: `${name}`, field: "details" },
           { title: "Category", field: "category" }
         ]}
         data={monthData.combinedArrays}
