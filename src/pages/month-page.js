@@ -3,14 +3,14 @@ import CustomDatePicker from "../components/date-picker";
 import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
 import Box from "@material-ui/core/Box";
-import { format } from "date-fns";
+import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
-import { createDataObject } from "../utils/createMonthData";
+import { createDataForTable } from "../utils/createMonthData";
 
 const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
-  const [month, setMonth] = useState(format(new Date(), "MMMM"));
+  const [month, setMonth] = useState(new Date());
 
   const changeDate = newMonth => {
     setMonth(newMonth);
@@ -24,18 +24,20 @@ const MonthPage = () => {
   };
 
   useEffect(() => {
-    const fetchExpenses = () => {
+    const fetchExpenses = (startDate, endDate) => {
       axios
-        .get("/expenses")
+        .get(`/expenses/${startDate}/${endDate}`)
         .then(res => {
-          setExpensesData(createDataObject(res.data));
+          setExpensesData(createDataForTable(res.data));
         })
         .catch(err => {
           console.log(err);
         });
     };
+    const startDate = getFirstDayOfMonth(month);
+    const endDate = getLastDayOfMonth(month);
 
-    fetchExpenses();
+    fetchExpenses(startDate, endDate);
   }, [month]);
 
   return (

@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 
-export const createDataObject = dbData => {
+export const createDataForTable = dbData => {
   const sumPerDay = countDaySum(dbData);
   const totalMonthSum = Object.values(sumPerDay).reduce((a, b) => a + b);
   const combinedArrays = combineArrays(sumPerDay, dbData);

@@ -28,7 +28,7 @@ const CustomDatePicker = ({ changeDate }) => {
         views={["year", "month"]}
         value={selectedDate}
         onChange={e => {
-          changeDate(format(e, "MMMM"));
+          changeDate(e);
           handleDateChange(e);
         }}
         InputProps={{ className: classes.input, disableUnderline: true }}
