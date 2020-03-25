@@ -112,10 +112,18 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 onChange={handleViewChange}
                 aria-label="chose type"
               >
-                <ToggleButton value="expenses" aria-label="expenses">
+                <ToggleButton
+                  value="expenses"
+                  aria-label="expenses"
+                  className={classes.toggleButton}
+                >
                   <IndeterminateCheckBoxIcon />
                 </ToggleButton>
-                <ToggleButton value="income" aria-label="income">
+                <ToggleButton
+                  value="income"
+                  aria-label="income"
+                  className={classes.toggleButton}
+                >
                   <AddBoxIcon />
                 </ToggleButton>
               </ToggleButtonGroup>
@@ -194,15 +202,21 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
               </FormControl>
             </Box>
           </DialogContent>
-          <DialogActions>
+          <DialogActions className={classes.buttons}>
             <Button
               onClick={handleDialogClose}
               color="secondary"
               variant="contained"
+              className={classes.button}
             >
               Cancel
             </Button>
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              className={classes.button}
+            >
               Save
             </Button>
           </DialogActions>
