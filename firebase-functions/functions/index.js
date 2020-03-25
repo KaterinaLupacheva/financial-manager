@@ -9,7 +9,7 @@ app.use(cors());
 const {
   addExpense,
   getAllExpensesByUser,
-  getAllExpensesByMonth,
+  getAllExpensesForPeriod,
   updateExpenseEntry,
   deleteExpenseEntry
 } = require("./handlers/expenses");
@@ -25,7 +25,7 @@ const { signup, login } = require("./handlers/users");
 
 app.post("/expenses", FBAuth, addExpense);
 app.get("/expenses", FBAuth, getAllExpensesByUser);
-app.get("/expenses/:month", FBAuth, getAllExpensesByMonth);
+app.get("/expenses/:startDate/:endDate", FBAuth, getAllExpensesForPeriod);
 app.put("/expenses/:expenseId", FBAuth, updateExpenseEntry);
 app.delete("/expenses/:expenseId", FBAuth, deleteExpenseEntry);
 

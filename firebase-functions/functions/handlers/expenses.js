@@ -43,10 +43,11 @@ exports.getAllExpensesByUser = (req, res) => {
     .catch(err => console.error(err));
 };
 
-exports.getAllExpensesByMonth = (req, res) => {
+exports.getAllExpensesForPeriod = (req, res) => {
   db.collection("expenses")
     .where("email", "==", req.user.email)
-    .where("date")
+    .where("date", ">=", req.params.startDate)
+    .where("date", "<=", req.params.endDate)
     .orderBy("date", "desc")
     .get()
     .then(data => {
