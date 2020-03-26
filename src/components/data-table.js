@@ -6,7 +6,6 @@ import axios from "axios";
 import SnackBar from "./snackbar";
 import ConfirmDialog from "./confirmDialog";
 import EditForm from "./edit-form";
-import SimpleBackdrop from "./simple-backdrop";
 
 const Table = ({ isExpenses }) => {
   const { expensesData, fetchExpenses } = useContext(MonthExpensesContext);
@@ -15,20 +14,17 @@ const Table = ({ isExpenses }) => {
   const [confirmDialogIsOpened, openConfirmDialog] = useState(false);
   const [rowData, setRowData] = useState(null);
   const [editFormIsOpened, openEditForm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const name = isExpenses ? "Expenses" : "Income";
 
   const handleResponse = res => {
     openConfirmDialog(false);
     if (res === "yes") {
-      setIsLoading(true);
       axios
         .delete(`/expenses/${rowData.expenseId}`)
         .then(res => {
           fetchExpenses();
           setMessage(res.data.message);
           openSnackbar(true);
-          setIsLoading(false);
         })
         .catch(err => {
           console.error(err);
@@ -95,7 +91,6 @@ const Table = ({ isExpenses }) => {
           rowData={rowData}
         />
       )}
-      <SimpleBackdrop open={isLoading} />
     </>
   );
 };
