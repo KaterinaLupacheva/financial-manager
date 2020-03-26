@@ -9,7 +9,8 @@ const useStyles = makeStyles(theme => ({
     width: 150,
     borderRadius: "10px",
     background: theme.palette.secondary.main,
-    height: "7vh"
+    height: "7vh",
+    cursor: "pointer"
   }
 }));
 
@@ -31,7 +32,10 @@ const CustomDatePicker = ({ changeDate }) => {
           handleDateChange(e);
         }}
         InputProps={{ className: classes.input, disableUnderline: true }}
-        inputProps={{ min: 0, style: { textAlign: "center" } }}
+        inputProps={{
+          min: 0,
+          style: { textAlign: "center", cursor: "pointer" }
+        }}
       />
     </MuiPickersUtilsProvider>
   );
