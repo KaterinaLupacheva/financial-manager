@@ -14,6 +14,7 @@ import MonthPage from "./pages/month-page";
 import PivotTablePage from "./pages/pivot-table-page";
 import ChartsPage from "./pages/charts-page";
 import AuthRoute from "./utils/authroute";
+import StartPage from "./pages/start-page";
 
 const theme = createMuiTheme({
   palette: {
@@ -31,7 +32,7 @@ const theme = createMuiTheme({
   }
 });
 
-function App() {
+const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
 
@@ -40,6 +41,7 @@ function App() {
     delete axios.defaults.headers.common["Authorization"];
     setAuthenticated(false);
     setEmail("");
+    window.location.href = "/";
   };
 
   const setUser = token => {
@@ -75,6 +77,7 @@ function App() {
           >
             <Sidebar>
               <Switch>
+                <Route exact path="/" component={StartPage} />
                 <AuthRoute path="/signup" component={SignupPage} />
                 <AuthRoute path="/login" component={LoginPage} />
                 <Route path="/month" component={MonthPage} />
@@ -87,6 +90,6 @@ function App() {
       </Router>
     </MuiThemeProvider>
   );
-}
+};
 
 export default App;
