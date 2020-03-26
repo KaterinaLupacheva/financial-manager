@@ -34,6 +34,8 @@ const MonthPage = () => {
       .then(res => {
         if (res.data.length > 0) {
           setExpensesData(createDataForTable(res.data));
+        } else {
+          setExpensesData(null);
         }
         setIsLoading(false);
       })
@@ -55,6 +57,8 @@ const MonthPage = () => {
       .then(res => {
         if (res.data.length > 0) {
           setIncomeData(createDataForTable(res.data));
+        } else {
+          setIncomeData(null);
         }
         setIsLoading(false);
       })
