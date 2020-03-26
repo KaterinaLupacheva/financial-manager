@@ -68,16 +68,38 @@ const MonthPage = () => {
     fetchIncome();
   }, [month]);
 
+  const calculateResult = () => {
+    let result = 0;
+    if (incomeData && expensesData) {
+      result =
+        incomeData.totalMonthSum.toFixed(2) -
+        expensesData.totalMonthSum.toFixed(2);
+    } else if (incomeData) {
+      result = incomeData.totalMonthSum.toFixed(2);
+    } else if (expensesData) {
+      result = -expensesData.totalMonthSum.toFixed(2);
+    }
+    return result;
+  };
+
   return (
     <div>
       <Box
         display="flex"
         flexDirection="row"
         justifyContent="flex-start"
+        alignItems="baseline"
         marginBottom="40px"
         marginLeft="40px"
       >
         <CustomDatePicker changeDate={changeDate} />
+        <Typography
+          variant="h5"
+          style={{ marginLeft: 50 }}
+        >{`Net month result`}</Typography>
+        <Typography variant="h5" style={{ marginLeft: 20, color: "#3e3e3B" }}>
+          {`${calculateResult()}`}
+        </Typography>
       </Box>
       <MonthExpensesContext.Provider
         value={{
