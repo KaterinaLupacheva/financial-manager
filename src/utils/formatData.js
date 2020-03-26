@@ -9,8 +9,9 @@ export const createDataForTable = dbData => {
 
 const countDaySum = monthData => {
   const sumPerDay = monthData.reduce((acc, cur) => {
-    acc[cur.date] =
-      acc[cur.date] + parseFloat(cur.sum.replace(/,/g, "")) ||
+    const curDate = format(new Date(cur.date), "dd.MM.yyyy");
+    acc[curDate] =
+      acc[curDate] + parseFloat(cur.sum.replace(/,/g, "")) ||
       parseFloat(cur.sum.replace(/,/g, ""));
     return acc;
   }, {});
@@ -24,7 +25,7 @@ const combineArrays = (sumPerDay, monthData) => {
   for (let [key, value] of Object.entries(sumPerDay)) {
     result.push({
       id: id,
-      date: format(new Date(key), "dd.MM.yyyy"),
+      date: key,
       sum: value.toFixed(2),
       details: "",
       category: ""
@@ -33,11 +34,12 @@ const combineArrays = (sumPerDay, monthData) => {
     id++;
 
     monthData.forEach(dayObj => {
-      if (key === dayObj.date) {
+      const dateFromDB = format(new Date(dayObj.date), "dd.MM.yyyy");
+      if (key === dateFromDB) {
         result.push({
           id: id,
           ...dayObj,
-          date: format(new Date(dayObj.date), "dd.MM.yyyy"),
+          date: dateFromDB,
           parentId: parentId
         });
         id++;
