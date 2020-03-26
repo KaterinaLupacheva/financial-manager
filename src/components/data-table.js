@@ -5,6 +5,7 @@ import MonthExpensesContext from "../contexts/monthExpenses.context";
 import axios from "axios";
 import SnackBar from "./snackbar";
 import ConfirmDialog from "./confirmDialog";
+import EditForm from "./edit-form";
 
 const Table = ({ isExpenses }) => {
   const { expensesData, fetchExpenses } = useContext(MonthExpensesContext);
@@ -12,27 +13,25 @@ const Table = ({ isExpenses }) => {
   const [snackbarIsOpened, openSnackbar] = useState(false);
   const [confirmDialogIsOpened, openConfirmDialog] = useState(false);
   const [rowData, setRowData] = useState(null);
+  const [editFormIsOpened, openEditForm] = useState(false);
   const name = isExpenses ? "Expenses" : "Income";
 
   const handleResponse = res => {
     openConfirmDialog(false);
     if (res === "yes") {
-      deleteRow();
+      axios
+        .delete(`/expenses/${rowData.expenseId}`)
+        .then(res => {
+          fetchExpenses();
+          setMessage(res.data.message);
+          openSnackbar(true);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   };
 
-  const deleteRow = () => {
-    axios
-      .delete(`/expenses/${rowData.expenseId}`)
-      .then(res => {
-        fetchExpenses();
-        setMessage(res.data.message);
-        openSnackbar(true);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
   return (
     <>
       <TableContainer component={Paper} elevation={5}>
@@ -52,7 +51,8 @@ const Table = ({ isExpenses }) => {
               backgroundColor: "#9c27b0",
               color: "#FFF",
               fontWeight: "bold"
-            }
+            },
+            actionsColumnIndex: -1
           }}
           actions={[
             rowData => ({
@@ -60,6 +60,14 @@ const Table = ({ isExpenses }) => {
               onClick: (event, rowData) => {
                 openConfirmDialog(true);
                 setRowData(rowData);
+              },
+              hidden: !rowData.expenseId
+            }),
+            rowData => ({
+              icon: "create",
+              onClick: (event, rowData) => {
+                setRowData(rowData);
+                openEditForm(true);
               },
               hidden: !rowData.expenseId
             })
@@ -76,6 +84,13 @@ const Table = ({ isExpenses }) => {
         open={confirmDialogIsOpened}
         handleResponse={handleResponse}
       />
+      {rowData && (
+        <EditForm
+          open={editFormIsOpened}
+          handleClose={() => openEditForm(false)}
+          rowData={rowData}
+        />
+      )}
     </>
   );
 };

@@ -10,3 +10,8 @@ export const getLastDayOfMonth = date => {
     "yyyy-MM-dd"
   );
 };
+
+export const formatFromDDMMYYYY = date => {
+  const dateParts = date.split(".");
+  return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], 8);
+};
