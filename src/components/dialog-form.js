@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -22,10 +22,12 @@ import {
 } from "@material-ui/core";
 import { CATEGORIES } from "../utils/categories";
 import axios from "axios";
+import MonthExpensesContext from "../contexts/monthExpenses.context";
 
 const useStyles = makeStyles(dialogStyles);
 
-const DialogForm = ({ open, handleClose, handleSubmit }) => {
+const DialogForm = ({ open, handleClose }) => {
+  const { fetchExpenses } = useContext(MonthExpensesContext);
   const INITIAL_STATE = {
     view: "expenses",
     date: new Date(),
@@ -42,6 +44,13 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
     setState({
       ...state,
       view: newView
+    });
+  };
+
+  const handleDateChange = event => {
+    setState({
+      ...state,
+      date: event
     });
   };
 
@@ -84,7 +93,9 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
     axios
       .post(`/${state.view}`, state)
       .then(res => {
-        handleSubmit(state.view);
+        if (state.view === "expenses") {
+          fetchExpenses();
+        }
       })
       .catch(err => {
         console.error(err);
@@ -144,8 +155,8 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                   label="Date"
                   minDate={new Date("2020-01-01")}
                   maxDate={new Date()}
-                  value={state.selectedDate}
-                  onChange={handleChange}
+                  value={state.date}
+                  onChange={e => handleDateChange(e)}
                 />
               </MuiPickersUtilsProvider>
               <TextField

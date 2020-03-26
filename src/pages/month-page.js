@@ -17,12 +17,6 @@ const MonthPage = () => {
     setMonth(newMonth);
   };
 
-  const handleSubmit = view => {
-    if (view === "expenses") {
-      fetchExpenses();
-    }
-  };
-
   const fetchExpenses = () => {
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
@@ -64,7 +58,7 @@ const MonthPage = () => {
         {incomeData && (
           <ExpansionTable monthData={incomeData} isExpenses={false} />
         )}
-        <FloatingAddButton handleSubmit={handleSubmit} />
+        <FloatingAddButton />
       </MonthExpensesContext.Provider>
     </div>
   );

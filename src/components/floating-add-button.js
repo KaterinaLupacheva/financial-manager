@@ -30,11 +30,7 @@ const FloatingAddButton = ({ handleSubmit }) => {
 
   return (
     <>
-      <DialogForm
-        open={open}
-        handleClose={handleClose}
-        handleSubmit={handleSubmit}
-      />
+      <DialogForm open={open} handleClose={handleClose} />
       <Fab
         color="primary"
         aria-label="add"
