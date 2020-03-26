@@ -4,12 +4,35 @@ import { TableContainer, Paper } from "@material-ui/core";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import axios from "axios";
 import SnackBar from "./snackbar";
+import ConfirmDialog from "./confirmDialog";
 
 const Table = ({ isExpenses }) => {
   const { expensesData, fetchExpenses } = useContext(MonthExpensesContext);
   const [message, setMessage] = useState("");
   const [snackbarIsOpened, openSnackbar] = useState(false);
+  const [confirmDialogIsOpened, openConfirmDialog] = useState(false);
+  const [rowData, setRowData] = useState(null);
   const name = isExpenses ? "Expenses" : "Income";
+
+  const handleResponse = res => {
+    openConfirmDialog(false);
+    if (res === "yes") {
+      deleteRow();
+    }
+  };
+
+  const deleteRow = () => {
+    axios
+      .delete(`/expenses/${rowData.expenseId}`)
+      .then(res => {
+        fetchExpenses();
+        setMessage(res.data.message);
+        openSnackbar(true);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
   return (
     <>
       <TableContainer component={Paper} elevation={5}>
@@ -22,26 +45,6 @@ const Table = ({ isExpenses }) => {
           ]}
           data={isExpenses ? expensesData.combinedArrays : ""}
           parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
-          editable={{
-            onRowDelete: oldData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    axios
-                      .delete(`/expenses/${oldData.expenseId}`)
-                      .then(res => {
-                        fetchExpenses();
-                        setMessage(res.data.message);
-                        openSnackbar(true);
-                      })
-                      .catch(err => {
-                        console.error(err);
-                      });
-                  }
-                  resolve();
-                }, 1000);
-              })
-          }}
           options={{
             toolbar: false,
             paging: false,
@@ -51,6 +54,16 @@ const Table = ({ isExpenses }) => {
               fontWeight: "bold"
             }
           }}
+          actions={[
+            rowData => ({
+              icon: "delete",
+              onClick: (event, rowData) => {
+                openConfirmDialog(true);
+                setRowData(rowData);
+              },
+              hidden: !rowData.expenseId
+            })
+          ]}
           style={{ borderBottom: "1px solid black" }}
         />
       </TableContainer>
@@ -58,6 +71,10 @@ const Table = ({ isExpenses }) => {
         isOpened={snackbarIsOpened}
         message={message}
         handleSnackBarClose={() => openSnackbar(false)}
+      />
+      <ConfirmDialog
+        open={confirmDialogIsOpened}
+        handleResponse={handleResponse}
       />
     </>
   );
