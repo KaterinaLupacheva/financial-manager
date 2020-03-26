@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import CustomDatePicker from "../components/date-picker";
 import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
-import Box from "@material-ui/core/Box";
+import { Box, Typography } from "@material-ui/core";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
 import { createDataForTable } from "../utils/formatData";
@@ -32,7 +32,9 @@ const MonthPage = () => {
         }
       })
       .then(res => {
-        setExpensesData(createDataForTable(res.data));
+        if (res.data.length > 0) {
+          setExpensesData(createDataForTable(res.data));
+        }
         setIsLoading(false);
       })
       .catch(err => {
@@ -51,7 +53,9 @@ const MonthPage = () => {
         }
       })
       .then(res => {
-        setIncomeData(createDataForTable(res.data));
+        if (res.data.length > 0) {
+          setIncomeData(createDataForTable(res.data));
+        }
         setIsLoading(false);
       })
       .catch(err => {
@@ -87,8 +91,20 @@ const MonthPage = () => {
             fetchIncome
           }}
         >
-          {expensesData && <ExpansionTable isExpenses={true} />}
-          {incomeData && <ExpansionTable isExpenses={false} />}
+          {expensesData ? (
+            <ExpansionTable isExpenses={true} />
+          ) : (
+            <Typography color="error" gutterBottom={true} variant="h4">
+              {"No expenses data"}
+            </Typography>
+          )}
+          {incomeData ? (
+            <ExpansionTable isExpenses={false} />
+          ) : (
+            <Typography color="error" variant="h4">
+              {"No income data"}
+            </Typography>
+          )}
           <FloatingAddButton />
         </MonthIncomeContext.Provider>
       </MonthExpensesContext.Provider>
