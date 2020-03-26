@@ -37,10 +37,38 @@ const Table = ({ isExpenses }) => {
       <TableContainer component={Paper} elevation={5}>
         <MaterialTable
           columns={[
-            { title: "Date", field: "date" },
-            { title: "Sum", field: "sum" },
-            { title: `${name}`, field: "details" },
-            { title: "Category", field: "category" }
+            {
+              title: "Date",
+              field: "date",
+              render: rowData => {
+                return rowData.details === "" ? (
+                  <p style={{ fontWeight: "bold" }}>{rowData.date}</p>
+                ) : (
+                  <p>{rowData.date}</p>
+                );
+              }
+            },
+            {
+              title: "Sum",
+              field: "sum",
+              render: rowData => {
+                return rowData.details === "" ? (
+                  <p style={{ fontWeight: "bold" }}>{rowData.sum}</p>
+                ) : (
+                  <p style={{ textAlign: "center" }}>{rowData.sum}</p>
+                );
+              }
+            },
+            {
+              title: `${name}`,
+              field: "details",
+              cellStyle: { textAlign: "center" }
+            },
+            {
+              title: "Category",
+              field: "category",
+              cellStyle: { textAlign: "center" }
+            }
           ]}
           data={isExpenses ? expensesData.combinedArrays : ""}
           parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
