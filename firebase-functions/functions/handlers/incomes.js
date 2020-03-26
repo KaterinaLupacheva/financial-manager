@@ -42,6 +42,29 @@ exports.getAllIncomesByUser = (req, res) => {
     .catch(err => console.error(err));
 };
 
+exports.getAllIncomesForPeriod = (req, res) => {
+  db.collection("incomes")
+    .where("email", "==", req.user.email)
+    .where("date", ">=", req.params.startDate)
+    .where("date", "<=", req.params.endDate)
+    .orderBy("date", "desc")
+    .get()
+    .then(data => {
+      let incomes = [];
+      data.forEach(doc => {
+        incomes.push({
+          incomeId: doc.id,
+          sum: doc.data().sum,
+          details: doc.data().details,
+          category: doc.data().category,
+          date: doc.data().date
+        });
+      });
+      return res.json(incomes);
+    })
+    .catch(err => console.error(err));
+};
+
 exports.updateIncomeEntry = (req, res) => {
   let entryDetails = reduceEntry(req.body);
 

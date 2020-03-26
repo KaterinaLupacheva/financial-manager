@@ -7,6 +7,7 @@ import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
 import { createDataForTable } from "../utils/formatData";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
+import MonthIncomeContext from '../contexts/monthIncome.context';
 import SimpleBackdrop from "../components/simple-backdrop";
 
 const MonthPage = () => {
@@ -23,11 +24,8 @@ const MonthPage = () => {
     setIsLoading(true);
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${localStorage.getItem("FBIdToken")}`;
     axios
-      .get(`/expenses/${startDate}/${endDate}`)
+      .get(`/expenses/${startDate}/${endDate}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem("FBIdToken")}`}})
       .then(res => {
         setExpensesData(createDataForTable(res.data));
         setIsLoading(false);
@@ -36,6 +34,10 @@ const MonthPage = () => {
         console.log(err);
       });
   };
+
+  const fetchIncome = () => {
+    
+  }
 
   useEffect(() => {
     fetchExpenses();
