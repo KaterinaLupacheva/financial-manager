@@ -42,9 +42,9 @@ const Table = ({ isExpenses }) => {
               field: "date",
               render: rowData => {
                 return rowData.details === "" ? (
-                  <p style={{ fontWeight: "bold" }}>{rowData.date}</p>
+                  <span style={{ fontWeight: "bold" }}>{rowData.date}</span>
                 ) : (
-                  <p>{rowData.date}</p>
+                  <span>{rowData.date}</span>
                 );
               }
             },
@@ -53,21 +53,19 @@ const Table = ({ isExpenses }) => {
               field: "sum",
               render: rowData => {
                 return rowData.details === "" ? (
-                  <p style={{ fontWeight: "bold" }}>{rowData.sum}</p>
+                  <span style={{ fontWeight: "bold" }}>{rowData.sum}</span>
                 ) : (
-                  <p style={{ textAlign: "center" }}>{rowData.sum}</p>
+                  <span>{rowData.sum}</span>
                 );
               }
             },
             {
               title: `${name}`,
-              field: "details",
-              cellStyle: { textAlign: "center" }
+              field: "details"
             },
             {
               title: "Category",
-              field: "category",
-              cellStyle: { textAlign: "center" }
+              field: "category"
             }
           ]}
           data={isExpenses ? expensesData.combinedArrays : ""}
