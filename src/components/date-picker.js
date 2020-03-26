@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import { format } from "date-fns";
 
 const useStyles = makeStyles(theme => ({
   input: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import DataTable from "./data-table";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -6,24 +6,17 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { expansionTableStyles } from "../styles/expansionTable.styles";
+import MonthExpensesContext from "../contexts/monthExpenses.context";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    margin: 8
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(20),
-    fontWeight: theme.typography.fontWeightBold,
-    color: "red"
-  },
-  green: {
-    color: "green"
-  }
-}));
+const useStyles = makeStyles(expansionTableStyles);
 
-const ExpansionTable = ({ monthData, isExpenses }) => {
+const ExpansionTable = ({ isExpenses }) => {
+  const { expensesData } = useContext(MonthExpensesContext);
   const name = isExpenses ? "Expenses" : "Income";
+
   const classes = useStyles();
+
   return (
     <ExpansionPanel className={classes.root}>
       <ExpansionPanelSummary
@@ -34,10 +27,12 @@ const ExpansionTable = ({ monthData, isExpenses }) => {
           className={`${classes.heading} ${
             isExpenses ? "" : `${classes.green}`
           }`}
-        >{`${name} ${monthData.totalMonthSum.toFixed(2)}`}</Typography>
+        >{`${name} ${
+          isExpenses ? expensesData.totalMonthSum.toFixed(2) : ""
+        }`}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        {monthData && <DataTable monthData={monthData} isExpenses={true} />}
+        <DataTable isExpenses={isExpenses} />
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );

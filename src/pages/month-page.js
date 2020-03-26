@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
 import { createDataForTable } from "../utils/formatData";
+import MonthExpensesContext from "../contexts/monthExpenses.context";
 
 const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
@@ -53,13 +54,18 @@ const MonthPage = () => {
       >
         <CustomDatePicker changeDate={changeDate} />
       </Box>
-      {expensesData && (
-        <ExpansionTable monthData={expensesData} isExpenses={true} />
-      )}
-      {incomeData && (
-        <ExpansionTable monthData={incomeData} isExpenses={false} />
-      )}
-      <FloatingAddButton handleSubmit={handleSubmit} />
+      <MonthExpensesContext.Provider
+        value={{
+          expensesData,
+          fetchExpenses
+        }}
+      >
+        {expensesData && <ExpansionTable isExpenses={true} />}
+        {incomeData && (
+          <ExpansionTable monthData={incomeData} isExpenses={false} />
+        )}
+        <FloatingAddButton handleSubmit={handleSubmit} />
+      </MonthExpensesContext.Provider>
     </div>
   );
 };
