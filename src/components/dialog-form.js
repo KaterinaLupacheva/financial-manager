@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -26,31 +26,44 @@ import axios from "axios";
 const useStyles = makeStyles(dialogStyles);
 
 const DialogForm = ({ open, handleClose, handleSubmit }) => {
-  const [view, setView] = useState("expenses");
-  const [selectedDate, handleDateChange] = useState(new Date());
-  const [sum, setSum] = useState("");
-  const [details, setDetails] = useState("");
-  const [category, setCategory] = useState("");
+  const INITIAL_STATE = {
+    view: "expenses",
+    date: new Date(),
+    sum: "",
+    details: "",
+    category: ""
+  };
+  const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
 
   const classes = useStyles();
 
   const handleViewChange = (event, newView) => {
-    setView(newView);
+    setState({
+      ...state,
+      view: newView
+    });
+  };
+
+  const handleChange = event => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value
+    });
   };
 
   const validate = () => {
     let err = {};
     let valid = true;
-    if (isEmpty(sum)) {
+    if (state.sum.trim() === "") {
       err.sum = "Must not be empty";
       valid = false;
     }
-    if (isEmpty(details)) {
+    if (state.details.trim() === "") {
       err.details = "Must not be empty";
       valid = false;
     }
-    if (isEmpty(category)) {
+    if (state.category.trim() === "") {
       err.category = "Must not be empty";
       valid = false;
     }
@@ -58,35 +71,20 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
     return valid;
   };
 
-  const isEmpty = input => {
-    if (input.trim() === "") {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const handleFormSubmit = event => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      const obj = {
-        view,
-        date: selectedDate,
-        sum,
-        details,
-        category
-      };
-      saveData(obj);
+      saveData(state);
       clearForm();
     }
   };
 
-  const saveData = obj => {
+  const saveData = state => {
     axios
-      .post(`/${view}`, obj)
+      .post(`/${state.view}`, state)
       .then(res => {
-        handleSubmit(view);
+        handleSubmit(state.view);
       })
       .catch(err => {
         console.error(err);
@@ -94,15 +92,9 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
   };
 
   const clearForm = () => {
-    setSum("");
-    setDetails("");
-    setCategory("");
+    setState(INITIAL_STATE);
     setErrors({});
     handleClose();
-  };
-
-  const handleDialogClose = () => {
-    clearForm();
   };
 
   return (
@@ -119,7 +111,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
           <DialogContent>
             <div className={classes.toggleContainer}>
               <ToggleButtonGroup
-                value={view}
+                value={state.view}
                 exclusive
                 onChange={handleViewChange}
                 aria-label="chose type"
@@ -152,8 +144,8 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                   label="Date"
                   minDate={new Date("2020-01-01")}
                   maxDate={new Date()}
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={state.selectedDate}
+                  onChange={handleChange}
                 />
               </MuiPickersUtilsProvider>
               <TextField
@@ -161,13 +153,13 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 margin="normal"
                 name="sum"
                 label="Sum"
-                value={sum}
+                value={state.sum}
                 type="number"
                 required={true}
                 size="small"
                 helperText={errors.sum}
                 error={errors.sum ? true : false}
-                onChange={e => setSum(e.target.value)}
+                onChange={handleChange}
                 className={classes.sumField}
               />
             </Box>
@@ -182,11 +174,11 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 name="details"
                 label="Exp / Inc"
                 type="text"
-                value={details}
+                value={state.details}
                 required={true}
                 helperText={errors.details}
                 error={errors.details ? true : false}
-                onChange={e => setDetails(e.target.value)}
+                onChange={handleChange}
                 className={classes.detailsField}
               />
 
@@ -194,12 +186,12 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
                 <InputLabel>Category</InputLabel>
                 <Select
                   name="category"
-                  value={category}
+                  value={state.category}
                   error={errors.category ? true : false}
-                  onChange={e => setCategory(e.target.value)}
+                  onChange={handleChange}
                   className={classes.selectEmpty}
                 >
-                  {view === "expenses"
+                  {state.view === "expenses"
                     ? CATEGORIES.expenses.map((cat, id) => (
                         <MenuItem value={cat} key={id}>
                           {cat}
@@ -216,7 +208,7 @@ const DialogForm = ({ open, handleClose, handleSubmit }) => {
           </DialogContent>
           <DialogActions className={classes.buttons}>
             <Button
-              onClick={handleDialogClose}
+              onClick={clearForm}
               color="secondary"
               variant="contained"
               className={classes.button}
