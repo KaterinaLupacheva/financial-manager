@@ -7,17 +7,20 @@ import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
 import { createDataForTable } from "../utils/formatData";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
+import SimpleBackdrop from "../components/simple-backdrop";
 
 const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(false);
 
   const changeDate = newMonth => {
     setMonth(newMonth);
   };
 
   const fetchExpenses = () => {
+    setIsLoading(true);
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
     axios.defaults.headers.common[
@@ -27,6 +30,7 @@ const MonthPage = () => {
       .get(`/expenses/${startDate}/${endDate}`)
       .then(res => {
         setExpensesData(createDataForTable(res.data));
+        setIsLoading(false);
       })
       .catch(err => {
         console.log(err);
@@ -60,6 +64,7 @@ const MonthPage = () => {
         )}
         <FloatingAddButton />
       </MonthExpensesContext.Provider>
+      <SimpleBackdrop open={isLoading} />
     </div>
   );
 };
