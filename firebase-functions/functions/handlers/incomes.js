@@ -7,7 +7,8 @@ exports.addIncome = (req, res) => {
     date: new Date().toISOString(),
     sum: req.body.sum,
     details: req.body.details,
-    category: req.body.category
+    category: req.body.category,
+    email: req.user.email
   };
 
   db.collection("incomes")

@@ -8,11 +8,13 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { expansionTableStyles } from "../styles/expansionTable.styles";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
+import MonthIncomeContext from "../contexts/monthIncome.context";
 
 const useStyles = makeStyles(expansionTableStyles);
 
 const ExpansionTable = ({ isExpenses }) => {
   const { expensesData } = useContext(MonthExpensesContext);
+  const { incomeData } = useContext(MonthIncomeContext);
   const name = isExpenses ? "Expenses" : "Income";
 
   const classes = useStyles();
@@ -28,7 +30,9 @@ const ExpansionTable = ({ isExpenses }) => {
             isExpenses ? "" : `${classes.green}`
           }`}
         >{`${name} ${
-          isExpenses ? expensesData.totalMonthSum.toFixed(2) : ""
+          isExpenses
+            ? expensesData.totalMonthSum.toFixed(2)
+            : incomeData.totalMonthSum.toFixed(2)
         }`}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>

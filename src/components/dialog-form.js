@@ -23,11 +23,13 @@ import {
 import { CATEGORIES } from "../utils/categories";
 import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
+import MonthIncomeContext from "../contexts/monthIncome.context";
 
 const useStyles = makeStyles(dialogStyles);
 
 const DialogForm = ({ open, handleClose }) => {
   const { fetchExpenses } = useContext(MonthExpensesContext);
+  const { fetchIncome } = useContext(MonthIncomeContext);
   const INITIAL_STATE = {
     view: "expenses",
     date: new Date(),
@@ -95,6 +97,8 @@ const DialogForm = ({ open, handleClose }) => {
       .then(res => {
         if (state.view === "expenses") {
           fetchExpenses();
+        } else {
+          fetchIncome();
         }
       })
       .catch(err => {
@@ -135,8 +139,8 @@ const DialogForm = ({ open, handleClose }) => {
                   <IndeterminateCheckBoxIcon />
                 </ToggleButton>
                 <ToggleButton
-                  value="income"
-                  aria-label="income"
+                  value="incomes"
+                  aria-label="incomes"
                   className={classes.toggleButton}
                 >
                   <AddBoxIcon />

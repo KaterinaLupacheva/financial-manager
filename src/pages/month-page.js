@@ -7,7 +7,7 @@ import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import axios from "axios";
 import { createDataForTable } from "../utils/formatData";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
-import MonthIncomeContext from '../contexts/monthIncome.context';
+import MonthIncomeContext from "../contexts/monthIncome.context";
 import SimpleBackdrop from "../components/simple-backdrop";
 
 const MonthPage = () => {
@@ -25,7 +25,11 @@ const MonthPage = () => {
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
     axios
-      .get(`/expenses/${startDate}/${endDate}`, { headers: {"Authorization" : `Bearer ${localStorage.getItem("FBIdToken")}`}})
+      .get(`/expenses/${startDate}/${endDate}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+        }
+      })
       .then(res => {
         setExpensesData(createDataForTable(res.data));
         setIsLoading(false);
@@ -36,11 +40,27 @@ const MonthPage = () => {
   };
 
   const fetchIncome = () => {
-    
-  }
+    setIsLoading(true);
+    const startDate = getFirstDayOfMonth(month);
+    const endDate = getLastDayOfMonth(month);
+    axios
+      .get(`/incomes/${startDate}/${endDate}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+        }
+      })
+      .then(res => {
+        setIncomeData(createDataForTable(res.data));
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     fetchExpenses();
+    fetchIncome();
   }, [month]);
 
   return (
@@ -60,11 +80,16 @@ const MonthPage = () => {
           fetchExpenses
         }}
       >
-        {expensesData && <ExpansionTable isExpenses={true} />}
-        {incomeData && (
-          <ExpansionTable monthData={incomeData} isExpenses={false} />
-        )}
-        <FloatingAddButton />
+        <MonthIncomeContext.Provider
+          value={{
+            incomeData,
+            fetchIncome
+          }}
+        >
+          {expensesData && <ExpansionTable isExpenses={true} />}
+          {incomeData && <ExpansionTable isExpenses={false} />}
+          <FloatingAddButton />
+        </MonthIncomeContext.Provider>
       </MonthExpensesContext.Provider>
       <SimpleBackdrop open={isLoading} />
     </div>

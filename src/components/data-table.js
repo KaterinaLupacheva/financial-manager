@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import MaterialTable from "material-table";
 import { TableContainer, Paper } from "@material-ui/core";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
+import MonthIncomeContext from "../contexts/monthIncome.context";
 import axios from "axios";
 import SnackBar from "./snackbar";
 import ConfirmDialog from "./confirmDialog";
@@ -9,6 +10,7 @@ import EditForm from "./edit-form";
 
 const Table = ({ isExpenses }) => {
   const { expensesData, fetchExpenses } = useContext(MonthExpensesContext);
+  const { incomeData, fetchIncome } = useContext(MonthIncomeContext);
   const [message, setMessage] = useState("");
   const [snackbarIsOpened, openSnackbar] = useState(false);
   const [confirmDialogIsOpened, openConfirmDialog] = useState(false);
@@ -68,7 +70,9 @@ const Table = ({ isExpenses }) => {
               field: "category"
             }
           ]}
-          data={isExpenses ? expensesData.combinedArrays : ""}
+          data={
+            isExpenses ? expensesData.combinedArrays : incomeData.combinedArrays
+          }
           parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
           options={{
             toolbar: false,
