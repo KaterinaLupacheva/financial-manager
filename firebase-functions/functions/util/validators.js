@@ -21,17 +21,13 @@ exports.validateSignupData = data => {
     errors.email = "Must be a valid email address";
   }
 
-  if (isEmpty(data.password)) {
-    errors.password = "Must not be empty";
+  if (isEmpty(data.password) || data.password.trim().length < 6) {
+    errors.password = "Must be at least 6 characters";
   }
 
   if (data.password !== data.confirmPassword) {
     errors.confirmPassword = "Passwords must match";
   }
-
-  // if (isEmpty(data.username)) {
-  //   errors.username = "Must not be empty";
-  // }
 
   return {
     errors,
