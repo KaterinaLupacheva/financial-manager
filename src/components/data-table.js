@@ -3,10 +3,10 @@ import MaterialTable from "material-table";
 import { TableContainer, Paper } from "@material-ui/core";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import axios from "axios";
-import Snackbar from "./snackbar";
+import SnackBar from "./snackbar";
 
 const Table = ({ isExpenses }) => {
-  const { expensesData } = useContext(MonthExpensesContext);
+  const { expensesData, fetchExpenses } = useContext(MonthExpensesContext);
   const [message, setMessage] = useState("");
   const [snackbarIsOpened, openSnackbar] = useState(false);
   const name = isExpenses ? "Expenses" : "Income";
@@ -30,8 +30,9 @@ const Table = ({ isExpenses }) => {
                     axios
                       .delete(`/expenses/${oldData.expenseId}`)
                       .then(res => {
-                        openSnackbar(true);
+                        fetchExpenses();
                         setMessage(res.data.message);
+                        openSnackbar(true);
                       })
                       .catch(err => {
                         console.error(err);
@@ -53,7 +54,7 @@ const Table = ({ isExpenses }) => {
           style={{ borderBottom: "1px solid black" }}
         />
       </TableContainer>
-      <Snackbar
+      <SnackBar
         isOpened={snackbarIsOpened}
         message={message}
         handleSnackBarClose={() => openSnackbar(false)}
