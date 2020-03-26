@@ -20,11 +20,21 @@ const Table = ({ isExpenses }) => {
 
   const handleResponse = res => {
     openConfirmDialog(false);
+    let route;
+    let id;
+    if (isExpenses) {
+      route = "expenses";
+      id = rowData.expenseId;
+    } else {
+      route = "incomes";
+      id = rowData.incomeId;
+    }
+
     if (res === "yes") {
       axios
-        .delete(`/expenses/${rowData.expenseId}`)
+        .delete(`/${route}/${id}`)
         .then(res => {
-          fetchExpenses();
+          isExpenses ? fetchExpenses() : fetchIncome();
           setMessage(res.data.message);
           openSnackbar(true);
         })
@@ -91,7 +101,7 @@ const Table = ({ isExpenses }) => {
                 openConfirmDialog(true);
                 setRowData(rowData);
               },
-              hidden: !rowData.expenseId
+              hidden: !rowData.expenseId && !rowData.incomeId
             }),
             rowData => ({
               icon: "create",
@@ -99,7 +109,7 @@ const Table = ({ isExpenses }) => {
                 setRowData(rowData);
                 openEditForm(true);
               },
-              hidden: !rowData.expenseId
+              hidden: !rowData.expenseId && !rowData.incomeId
             })
           ]}
           style={{ borderBottom: "1px solid black" }}

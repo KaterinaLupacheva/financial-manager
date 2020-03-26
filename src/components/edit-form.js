@@ -23,14 +23,16 @@ import {
 import { CATEGORIES } from "../utils/categories";
 import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
+import MonthIncomeContext from "../contexts/monthIncome.context";
 import { formatFromDDMMYYYY } from "../utils/date.utils";
 
 const useStyles = makeStyles(dialogStyles);
 
 const EditForm = ({ open, handleClose, rowData }) => {
   const { fetchExpenses } = useContext(MonthExpensesContext);
+  const { fetchIncome } = useContext(MonthIncomeContext);
   const INITIAL_STATE = {
-    view: "expenses",
+    view: rowData.expenseId ? "expenses" : "incomes",
     date: formatFromDDMMYYYY(rowData.date),
     sum: rowData.sum,
     details: rowData.details,
@@ -91,11 +93,14 @@ const EditForm = ({ open, handleClose, rowData }) => {
   };
 
   const saveData = state => {
+    const id = state.view === "expenses" ? rowData.expenseId : rowData.incomeId;
     axios
-      .put(`/${state.view}/${rowData.expenseId}`, state)
+      .put(`/${state.view}/${id}`, state)
       .then(res => {
         if (state.view === "expenses") {
           fetchExpenses();
+        } else {
+          fetchIncome();
         }
       })
       .catch(err => {
@@ -134,8 +139,8 @@ const EditForm = ({ open, handleClose, rowData }) => {
                   <IndeterminateCheckBoxIcon />
                 </ToggleButton>
                 <ToggleButton
-                  value="income"
-                  aria-label="income"
+                  value="incomes"
+                  aria-label="incomes"
                   className={classes.toggleButton}
                 >
                   <AddBoxIcon />

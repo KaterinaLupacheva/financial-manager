@@ -4,7 +4,7 @@ const { reduceEntry } = require("../util/validators");
 
 exports.addIncome = (req, res) => {
   const newIncome = {
-    date: new Date().toISOString(),
+    date: req.body.date,
     sum: req.body.sum,
     details: req.body.details,
     category: req.body.category,

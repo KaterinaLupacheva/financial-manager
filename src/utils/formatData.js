@@ -39,7 +39,7 @@ const combineArrays = (sumPerDay, monthData) => {
         result.push({
           id: id,
           ...dayObj,
-          date: "",
+          date: dateFromDB,
           parentId: parentId
         });
         id++;
