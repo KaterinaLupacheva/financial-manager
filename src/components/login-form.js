@@ -4,6 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import UserContext from "../contexts/user.context";
+import SimpleBackdrop from "./simple-backdrop";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
@@ -15,6 +16,7 @@ const LoginForm = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -22,10 +24,11 @@ const LoginForm = props => {
       email,
       password
     };
-
+    setIsLoading(true);
     axios
       .post("/login", userData)
       .then(res => {
+        setIsLoading(false);
         setUser(res.data.token);
       })
       .catch(err => {
@@ -80,6 +83,7 @@ const LoginForm = props => {
         </form>
       </Grid>
       <Grid item sm />
+      <SimpleBackdrop open={isLoading} />
     </Grid>
   );
 };

@@ -12,7 +12,7 @@ import { dataToFirestore } from "../utils/dataToFirestore";
 const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
-  const [month, setMonth] = useState(format(new Date(), "MMMM"));
+  const [month, setMonth] = useState(format(new Date("2020-01-10"), "MMMM"));
 
   const getExpensesData = () => {
     window.gapi.client.sheets.spreadsheets.values
@@ -43,6 +43,7 @@ const MonthPage = () => {
         response => {
           const range = response.result.values;
           const data = createDataObject(range);
+          dataToFirestore(data.combinedArrays);
           setIncomeData(data);
         },
         function(response) {

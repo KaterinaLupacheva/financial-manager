@@ -75,9 +75,10 @@ const MonthPage = () => {
   const calculateResult = () => {
     let result = 0;
     if (incomeData && expensesData) {
-      result =
+      result = (
         incomeData.totalMonthSum.toFixed(2) -
-        expensesData.totalMonthSum.toFixed(2);
+        expensesData.totalMonthSum.toFixed(2)
+      ).toFixed(2);
     } else if (incomeData) {
       result = incomeData.totalMonthSum.toFixed(2);
     } else if (expensesData) {

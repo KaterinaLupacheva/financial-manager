@@ -13,7 +13,8 @@ export const dataToFirestore = data => {
         date: new Date(year, month, day, 8),
         sum: d.sum,
         details: d.expenses,
-        category: d.category
+        category: d.category,
+        email: "kat@tut.by"
       };
 
       // setTimeout(() =>
@@ -29,5 +30,5 @@ export const dataToFirestore = data => {
     }
   });
 
-  // console.log(JSON.stringify(tempData, null, 2));
+  console.log(JSON.stringify(tempData, null, 2));
 };
