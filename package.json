@@ -1,6 +1,7 @@
 {
   "name": "financial-manager",
   "version": "0.1.0",
+  "homepage": "https://fm.ramonak.io",
   "private": true,
   "proxy": "https://europe-west2-financial-manager-271220.cloudfunctions.net/api",
   "dependencies": {
