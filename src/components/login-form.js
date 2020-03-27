@@ -36,6 +36,7 @@ const LoginForm = props => {
       })
       .catch(err => {
         setErrors(err.response.data);
+        setIsLoading(false);
       });
   };
 

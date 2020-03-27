@@ -44,6 +44,7 @@ const MonthPage = () => {
       })
       .catch(err => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
@@ -70,6 +71,7 @@ const MonthPage = () => {
       })
       .catch(err => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
