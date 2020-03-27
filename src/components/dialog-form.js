@@ -118,6 +118,7 @@ const DialogForm = ({ open, handleClose }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
+        maxWidth="xl"
       >
         <DialogTitle id="form-dialog-title">
           Add expenses (-) or income (+)
@@ -150,7 +151,6 @@ const DialogForm = ({ open, handleClose }) => {
             <Box
               display="flex"
               alignItems="baseline"
-              width="40vw"
               justifyContent="space-between"
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -181,7 +181,6 @@ const DialogForm = ({ open, handleClose }) => {
             <Box
               display="flex"
               alignItems="baseline"
-              width="40vw"
               justifyContent="space-between"
             >
               <TextField
