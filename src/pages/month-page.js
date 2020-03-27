@@ -26,11 +26,14 @@ const MonthPage = () => {
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
     axios
-      .get(`/expenses/${startDate}/${endDate}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+      .get(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/${startDate}/${endDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+          }
         }
-      })
+      )
       .then(res => {
         if (res.data.length > 0) {
           setExpensesData(createDataForTable(res.data));
@@ -49,11 +52,14 @@ const MonthPage = () => {
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
     axios
-      .get(`/incomes/${startDate}/${endDate}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+      .get(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/${startDate}/${endDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+          }
         }
-      })
+      )
       .then(res => {
         if (res.data.length > 0) {
           setIncomeData(createDataForTable(res.data));

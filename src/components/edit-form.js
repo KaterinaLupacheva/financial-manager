@@ -95,7 +95,10 @@ const EditForm = ({ open, handleClose, rowData }) => {
   const saveData = state => {
     const id = state.view === "expenses" ? rowData.expenseId : rowData.incomeId;
     axios
-      .put(`/${state.view}/${id}`, state)
+      .put(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}/${id}`,
+        state
+      )
       .then(res => {
         if (state.view === "expenses") {
           fetchExpenses();

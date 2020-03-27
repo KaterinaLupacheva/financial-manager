@@ -32,7 +32,9 @@ const Table = ({ isExpenses }) => {
 
     if (res === "yes") {
       axios
-        .delete(`/${route}/${id}`)
+        .delete(
+          `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${route}/${id}`
+        )
         .then(res => {
           isExpenses ? fetchExpenses() : fetchIncome();
           setMessage(res.data.message);

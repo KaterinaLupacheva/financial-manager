@@ -93,7 +93,10 @@ const DialogForm = ({ open, handleClose }) => {
 
   const saveData = state => {
     axios
-      .post(`/${state.view}`, state)
+      .post(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}`,
+        state
+      )
       .then(res => {
         if (state.view === "expenses") {
           fetchExpenses();
