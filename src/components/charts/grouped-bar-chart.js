@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 
 const GroupedBarChart = ({ dataForChart }) => {
-  console.log("Chart " + JSON.stringify(dataForChart, null, 2));
+  //   console.log("Chart " + JSON.stringify(dataForChart, null, 2));
   const data = {
     labels: dataForChart.labels,
     datasets: [

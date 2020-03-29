@@ -15,6 +15,7 @@ const ChartsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const sumPerMonth = data => {
+    //   console.log(JSON.stringify(data, null, 2))
     const mapDayToMonth = data.reverse().map(entry => ({
       ...entry,
       month: format(new Date(entry.date), "MMMM")
@@ -25,8 +26,11 @@ const ChartsPage = () => {
         parseFloat(cur.sum.replace(/,/g, ""));
       return acc;
     }, {});
-
-    return sumPerMonth;
+    let result = {};
+    for (let [key, value] of Object.entries(sumPerMonth)) {
+      result = { ...result, [key]: parseFloat(value).toFixed(2) };
+    }
+    return result;
   };
 
   const fetchIncome = () => {
