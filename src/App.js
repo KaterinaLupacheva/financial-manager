@@ -20,11 +20,15 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#e1bee7",
+      complementary: "#C4E7BE",
       errorText: "#ff1744",
-      greenBg: "#00bfa5"
+      greenBg: "#00bfa5",
+      darkPurpleBg: "#D099D9"
     },
     secondary: {
       main: "#3e3e3B",
+      palePink: "#E7BED9",
+      ligthBlue: "#BED9E7",
       text: "#EBECED",
       darkBg: "#f06292",
       lightBg: "#a7ffeb"

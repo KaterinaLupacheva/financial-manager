@@ -61,7 +61,7 @@ export const sidebarStyles = theme => ({
     marginLeft: 0
   },
   selected: {
-    backgroundColor: `${theme.palette.secondary.darkBg} !important`,
+    backgroundColor: `${theme.palette.primary.darkPurpleBg} !important`,
     color: "white",
     fontWeight: 600
   }
