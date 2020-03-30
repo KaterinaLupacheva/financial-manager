@@ -11,12 +11,12 @@ const ChartsPage = () => {
     incomes: [],
     expenses: []
   });
-  const [dataIncomes, isLoadingIncomes] = useFetchData(
+  const [dataIncomes, isLoadingIncomes, isErrorIncomes] = useFetchData(
     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
       new Date()
     )}`
   );
-  const [dataExpenses, isLoadingExpenses] = useFetchData(
+  const [dataExpenses, isLoadingExpenses, isErrorExpenses] = useFetchData(
     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
       new Date()
     )}`
@@ -68,7 +68,11 @@ const ChartsPage = () => {
       <SimpleBackdrop
         open={isLoadingIncomes || isLoadingExpenses ? true : false}
       />
-      <GroupedBarChart dataForChart={dataForChart} />
+      {isErrorExpenses || isErrorIncomes ? (
+        <div>Something went wrong...</div>
+      ) : (
+        <GroupedBarChart dataForChart={dataForChart} />
+      )}
     </>
   );
 };

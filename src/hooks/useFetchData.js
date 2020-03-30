@@ -17,7 +17,6 @@ const useFetchData = initialUrl => {
             Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
           }
         });
-
         setData(result.data);
       } catch (error) {
         console.log("Error " + error);
@@ -32,7 +31,7 @@ const useFetchData = initialUrl => {
 
   console.log(data, isLoading, isError);
 
-  return [data, isLoading];
+  return [data, isLoading, isError];
 };
 
 export default useFetchData;
