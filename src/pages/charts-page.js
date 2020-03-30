@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import GroupedBarChart from "../components/charts/grouped-bar-chart";
+import CategoriesBarChart from "../components/charts/categories-bar-chart";
 import { getLastDayOfMonth } from "../utils/date.utils";
 import SimpleBackdrop from "../components/simple-backdrop";
 import useFetchData from "../hooks/useFetchData";
+import { useTheme } from "@material-ui/core/styles";
 
 const ChartsPage = () => {
+  const theme = useTheme();
   const [dataForChart, setDataForChart] = useState({
     labels: [],
     incomes: [],
     expenses: []
+  });
+  const [dataForCategoriesChart, setDataForCategoriesChart] = useState({
+    labels: [],
+    datasets: []
   });
   const [dataIncomes, isLoadingIncomes, isErrorIncomes] = useFetchData(
     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
@@ -36,7 +43,42 @@ const ChartsPage = () => {
         [key]: sumPerMonth(value)
       };
     }
-    console.log(JSON.stringify(resultObject, null, 2));
+    return resultObject;
+  };
+
+  const colorsForCharts = [
+    theme.palette.primary.light,
+    theme.palette.primary.dark,
+    theme.palette.secondary.light,
+    theme.palette.secondary.dark,
+    theme.palette.primary.main,
+    theme.palette.primary.complementary,
+    theme.palette.primary.greenBg
+  ];
+
+  const prepareDataForCategoryChart = dbData => {
+    const data = sumPerCategoryAndMonth(dbData.reverse());
+    let labels = [];
+    let dataset = [];
+    let i = 0;
+    for (let [key, value] of Object.entries(data)) {
+      dataset.push({
+        label: key,
+        data: Object.values(data[key]),
+        backgroundColor: colorsForCharts[i],
+        hoverBackgroundColor: colorsForCharts[1]
+      });
+      i++;
+      labels =
+        labels.length < Object.keys(data[key]).length
+          ? Object.keys(data[key])
+          : labels;
+    }
+    setDataForCategoriesChart({
+      ...dataForCategoriesChart,
+      labels: labels,
+      datasets: dataset
+    });
   };
 
   const sumPerMonth = data => {
@@ -73,7 +115,7 @@ const ChartsPage = () => {
   useEffect(() => {
     if (dataIncomes) {
       prepareDataForChart(dataIncomes, false);
-      sumPerCategoryAndMonth(dataIncomes);
+      prepareDataForCategoryChart(dataIncomes);
     }
     if (dataExpenses) {
       prepareDataForChart(dataExpenses, true);
@@ -89,7 +131,10 @@ const ChartsPage = () => {
       {isErrorExpenses || isErrorIncomes ? (
         <div>Something went wrong...</div>
       ) : (
-        <GroupedBarChart dataForChart={dataForChart} />
+        <>
+          <GroupedBarChart dataForChart={dataForChart} />
+          <CategoriesBarChart dataForChart={dataForCategoriesChart} />
+        </>
       )}
     </>
   );
