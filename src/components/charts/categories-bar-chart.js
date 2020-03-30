@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { HorizontalBar } from "react-chartjs-2";
 
 const CategoriesBarChart = ({ dataForChart }) => {
   const data = {
@@ -7,7 +7,7 @@ const CategoriesBarChart = ({ dataForChart }) => {
     datasets: dataForChart.datasets
   };
 
-  return <Bar data={data} />;
+  return <HorizontalBar data={data} />;
 };
 
 export default CategoriesBarChart;
