@@ -173,6 +173,7 @@ const DialogForm = ({ open, handleClose }) => {
                 label="Sum"
                 value={state.sum}
                 type="number"
+                step="0.01"
                 required={true}
                 size="small"
                 helperText={errors.sum}
