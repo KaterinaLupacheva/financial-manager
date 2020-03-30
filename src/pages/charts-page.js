@@ -22,6 +22,23 @@ const ChartsPage = () => {
     )}`
   );
 
+  const sumPerCategoryAndMonth = data => {
+    const dataByCategories = data.reduce((r, a) => {
+      r[a.category] = r[a.category] || [];
+      r[a.category].push(a);
+      return r;
+    }, Object.create(null));
+
+    let resultObject = {};
+    for (let [key, value] of Object.entries(dataByCategories)) {
+      resultObject = {
+        ...resultObject,
+        [key]: sumPerMonth(value)
+      };
+    }
+    console.log(JSON.stringify(resultObject, null, 2));
+  };
+
   const sumPerMonth = data => {
     const mapDayToMonth = data.reverse().map(entry => ({
       ...entry,
@@ -56,6 +73,7 @@ const ChartsPage = () => {
   useEffect(() => {
     if (dataIncomes) {
       prepareDataForChart(dataIncomes, false);
+      sumPerCategoryAndMonth(dataIncomes);
     }
     if (dataExpenses) {
       prepareDataForChart(dataExpenses, true);

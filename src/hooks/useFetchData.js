@@ -29,7 +29,7 @@ const useFetchData = initialUrl => {
     }
   }, []);
 
-  console.log(data, isLoading, isError);
+  // console.log(data, isLoading, isError);
 
   return [data, isLoading, isError];
 };
