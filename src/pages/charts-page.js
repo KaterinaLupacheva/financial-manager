@@ -14,7 +14,17 @@ const ChartsPage = () => {
     incomes: [],
     expenses: []
   });
-  const [dataForCategoriesChart, setDataForCategoriesChart] = useState({
+  const [
+    dataForIncomeCategoriesChart,
+    setDataForIncomeCategoriesChart
+  ] = useState({
+    labels: [],
+    datasets: []
+  });
+  const [
+    dataForExpensesCategoriesChart,
+    setDataForExpensesCategoriesChart
+  ] = useState({
     labels: [],
     datasets: []
   });
@@ -56,12 +66,12 @@ const ChartsPage = () => {
     theme.palette.primary.greenBg
   ];
 
-  const prepareDataForCategoryChart = dbData => {
+  const prepareDataForCategoryChart = (dbData, isExpenses) => {
     const data = sumPerCategoryAndMonth(dbData.reverse());
     let labels = [];
     let dataset = [];
     let i = 0;
-    for (let [key, value] of Object.entries(data)) {
+    for (let key of Object.keys(data)) {
       dataset.push({
         label: key,
         data: Object.values(data[key]),
@@ -74,11 +84,19 @@ const ChartsPage = () => {
           ? Object.keys(data[key])
           : labels;
     }
-    setDataForCategoriesChart({
-      ...dataForCategoriesChart,
-      labels: labels,
-      datasets: dataset
-    });
+    if (isExpenses) {
+      setDataForExpensesCategoriesChart({
+        ...dataForExpensesCategoriesChart,
+        labels: labels,
+        datasets: dataset
+      });
+    } else {
+      setDataForIncomeCategoriesChart({
+        ...dataForIncomeCategoriesChart,
+        labels: labels,
+        datasets: dataset
+      });
+    }
   };
 
   const sumPerMonth = data => {
@@ -115,10 +133,11 @@ const ChartsPage = () => {
   useEffect(() => {
     if (dataIncomes) {
       prepareDataForChart(dataIncomes, false);
-      prepareDataForCategoryChart(dataIncomes);
+      prepareDataForCategoryChart(dataIncomes, false);
     }
     if (dataExpenses) {
       prepareDataForChart(dataExpenses, true);
+      prepareDataForCategoryChart(dataExpenses, true);
     }
   }, [dataIncomes, dataExpenses]);
 
@@ -133,7 +152,8 @@ const ChartsPage = () => {
       ) : (
         <>
           <GroupedBarChart dataForChart={dataForChart} />
-          <CategoriesBarChart dataForChart={dataForCategoriesChart} />
+          <CategoriesBarChart dataForChart={dataForIncomeCategoriesChart} />
+          <CategoriesBarChart dataForChart={dataForExpensesCategoriesChart} />
         </>
       )}
     </>
