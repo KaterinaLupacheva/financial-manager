@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { format } from "date-fns";
 import GroupedBarChart from "../components/charts/grouped-bar-chart";
 import { getLastDayOfMonth } from "../utils/date.utils";
 import SimpleBackdrop from "../components/simple-backdrop";
+import useFetchData from "../hooks/useFetchData";
 
 const ChartsPage = () => {
   const [dataForChart, setDataForChart] = useState({
@@ -11,11 +11,18 @@ const ChartsPage = () => {
     incomes: [],
     expenses: []
   });
-  const [month, setMonth] = useState(new Date());
-  const [isLoading, setIsLoading] = useState(false);
+  const [dataIncomes, isLoadingIncomes] = useFetchData(
+    `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
+      new Date()
+    )}`
+  );
+  const [dataExpenses, isLoadingExpenses] = useFetchData(
+    `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
+      new Date()
+    )}`
+  );
 
   const sumPerMonth = data => {
-    //   console.log(JSON.stringify(data, null, 2))
     const mapDayToMonth = data.reverse().map(entry => ({
       ...entry,
       month: format(new Date(entry.date), "MMMM")
@@ -33,78 +40,35 @@ const ChartsPage = () => {
     return result;
   };
 
-  const fetchIncome = () => {
-    setIsLoading(true);
-    const startDate = "2020-01-01";
-    const endDate = getLastDayOfMonth(month);
-    axios
-      .get(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/${startDate}/${endDate}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
-          }
-        }
-      )
-      .then(res => {
-        const data = sumPerMonth(res.data);
-        setDataForChart({
-          ...dataForChart,
-          labels:
-            dataForChart.labels.length < Object.keys(data).length
-              ? Object.keys(data)
-              : dataForChart.labels,
-          incomes: Object.values(data)
-        });
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
-
-  const fetchExpenses = () => {
-    setIsLoading(true);
-    const startDate = "2020-01-01";
-    const endDate = getLastDayOfMonth(month);
-    axios
-      .get(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/${startDate}/${endDate}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
-          }
-        }
-      )
-      .then(res => {
-        const data = sumPerMonth(res.data);
-        setDataForChart({
-          ...dataForChart,
-          labels:
-            dataForChart.labels.length < Object.keys(data).length
-              ? Object.keys(data)
-              : dataForChart.labels,
-          expenses: Object.values(data)
-        });
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setIsLoading(false);
-      });
+  const prepareDataForChart = (dbData, isExpenses) => {
+    const name = isExpenses ? "expenses" : "incomes";
+    const data = sumPerMonth(dbData);
+    setDataForChart({
+      ...dataForChart,
+      labels:
+        dataForChart.labels.length < Object.keys(data).length
+          ? Object.keys(data)
+          : dataForChart.labels,
+      [name]: Object.values(data)
+    });
   };
 
   useEffect(() => {
-    fetchExpenses();
-    fetchIncome();
-  }, []);
+    if (dataIncomes) {
+      prepareDataForChart(dataIncomes, false);
+    }
+    if (dataExpenses) {
+      prepareDataForChart(dataExpenses, true);
+    }
+  }, [dataIncomes, dataExpenses]);
 
   return (
     <>
       <div>Charts page</div>
+      <SimpleBackdrop
+        open={isLoadingIncomes || isLoadingExpenses ? true : false}
+      />
       <GroupedBarChart dataForChart={dataForChart} />
-      <SimpleBackdrop open={isLoading} />
     </>
   );
 };

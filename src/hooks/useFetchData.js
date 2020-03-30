@@ -3,7 +3,7 @@ import axios from "axios";
 
 const useFetchData = initialUrl => {
   const [data, setData] = useState(null);
-  const [url, setUrl] = useState(initialUrl);
+  // const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -12,11 +12,12 @@ const useFetchData = initialUrl => {
       setIsError(false);
       setIsLoading(true);
       try {
-        const result = await axios(url, {
+        const result = await axios(initialUrl, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
           }
         });
+
         setData(result.data);
       } catch (error) {
         console.log("Error " + error);
@@ -24,12 +25,14 @@ const useFetchData = initialUrl => {
       }
       setIsLoading(false);
     };
-    fetchData();
-  }, [url]);
+    if (!data) {
+      fetchData();
+    }
+  }, []);
 
-  // console.log(data, isLoading, isError);
+  console.log(data, isLoading, isError);
 
-  return [{ data, isLoading, isError }, setUrl];
+  return [data, isLoading];
 };
 
 export default useFetchData;
