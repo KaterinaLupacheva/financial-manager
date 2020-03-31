@@ -10,6 +10,7 @@ import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
 import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TabsBar from "../components/tabs-bar";
+import ExpensesByCategories from "../components/expenses-by-categories";
 
 const ChartsPage = () => {
   const theme = useTheme();
@@ -30,7 +31,8 @@ const ChartsPage = () => {
     setDataForExpensesCategoriesChart
   ] = useState({
     labels: [],
-    datasets: []
+    datasets: [],
+    categories: []
   });
   const [dataIncomes, isLoadingIncomes, isErrorIncomes] = useFetchData(
     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
@@ -74,6 +76,7 @@ const ChartsPage = () => {
     const data = sumPerCategoryAndMonth(dbData.reverse());
     let labels = [];
     let dataset = [];
+    let categories = [];
     let i = 0;
     for (let key of Object.keys(data)) {
       dataset.push({
@@ -81,6 +84,9 @@ const ChartsPage = () => {
         data: Object.values(data[key]),
         backgroundColor: colorsForCharts[i],
         hoverBackgroundColor: colorsForCharts[1]
+      });
+      categories.push({
+        [key]: calculateAverageExpenses(Object.values(data[key]))
       });
       i++;
       labels =
@@ -92,7 +98,8 @@ const ChartsPage = () => {
       setDataForExpensesCategoriesChart({
         ...dataForExpensesCategoriesChart,
         labels: labels,
-        datasets: dataset
+        datasets: dataset,
+        categories: categories
       });
     } else {
       setDataForIncomeCategoriesChart({
@@ -101,6 +108,12 @@ const ChartsPage = () => {
         datasets: dataset
       });
     }
+  };
+
+  const calculateAverageExpenses = data => {
+    const sum = data.reduce((a, b) => Number(a) + Number(b), 0);
+    const avg = sum / data.length || 0;
+    return avg.toFixed(2);
   };
 
   const sumPerMonth = data => {
@@ -163,7 +176,7 @@ const ChartsPage = () => {
               tabIcon: MoneyOffIcon,
               tabTitle: "Expenses by Categories",
               tabContent: (
-                <CategoriesBarChart
+                <ExpensesByCategories
                   dataForChart={dataForExpensesCategoriesChart}
                 />
               )
