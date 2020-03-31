@@ -6,6 +6,10 @@ import { getLastDayOfMonth } from "../utils/date.utils";
 import SimpleBackdrop from "../components/simple-backdrop";
 import useFetchData from "../hooks/useFetchData";
 import { useTheme } from "@material-ui/core/styles";
+import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
+import MoneyOffIcon from "@material-ui/icons/MoneyOff";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import TabsBar from "../components/tabs-bar";
 
 const ChartsPage = () => {
   const theme = useTheme();
@@ -143,19 +147,40 @@ const ChartsPage = () => {
 
   return (
     <>
-      <div>Charts page</div>
-      <SimpleBackdrop
-        open={isLoadingIncomes || isLoadingExpenses ? true : false}
-      />
       {isErrorExpenses || isErrorIncomes ? (
         <div>Something went wrong...</div>
       ) : (
-        <>
-          <GroupedBarChart dataForChart={dataForChart} />
-          <CategoriesBarChart dataForChart={dataForIncomeCategoriesChart} />
-          <CategoriesBarChart dataForChart={dataForExpensesCategoriesChart} />
-        </>
+        <TabsBar
+          tabs={[
+            {
+              tabName: "Year",
+              tabIcon: DeveloperBoardIcon,
+              tabContent: <GroupedBarChart dataForChart={dataForChart} />
+            },
+            {
+              tabName: "Expenses",
+              tabIcon: MoneyOffIcon,
+              tabContent: (
+                <CategoriesBarChart
+                  dataForChart={dataForExpensesCategoriesChart}
+                />
+              )
+            },
+            {
+              tabName: "Income",
+              tabIcon: AttachMoneyIcon,
+              tabContent: (
+                <CategoriesBarChart
+                  dataForChart={dataForIncomeCategoriesChart}
+                />
+              )
+            }
+          ]}
+        />
       )}
+      <SimpleBackdrop
+        open={isLoadingIncomes || isLoadingExpenses ? true : false}
+      />
     </>
   );
 };
