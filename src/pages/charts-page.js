@@ -11,6 +11,19 @@ import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TabsBar from "../components/tabs-bar";
 import ExpensesByCategories from "../components/expenses-by-categories";
+import {
+  purple,
+  pink,
+  indigo,
+  teal,
+  lime,
+  amber,
+  deepOrange,
+  blueGrey,
+  cyan,
+  red,
+  lightBlue
+} from "@material-ui/core/colors";
 
 const ChartsPage = () => {
   const theme = useTheme();
@@ -63,13 +76,28 @@ const ChartsPage = () => {
   };
 
   const colorsForCharts = [
-    theme.palette.primary.light,
-    theme.palette.primary.dark,
-    theme.palette.secondary.light,
-    theme.palette.secondary.dark,
-    theme.palette.primary.main,
-    theme.palette.primary.complementary,
-    theme.palette.primary.greenBg
+    purple[500],
+    pink[500],
+    indigo[500],
+    teal[500],
+    lime[500],
+    amber[500],
+    deepOrange[500],
+    blueGrey[500],
+    cyan[500],
+    red[500],
+    lightBlue[500],
+    purple["A100"],
+    pink["A100"],
+    indigo["A100"],
+    teal["A100"],
+    lime["A100"],
+    amber["A100"],
+    deepOrange["A100"],
+    blueGrey["A100"],
+    cyan["A100"],
+    red["A100"],
+    lightBlue["A100"]
   ];
 
   const prepareDataForCategoryChart = (dbData, isExpenses) => {
@@ -86,7 +114,10 @@ const ChartsPage = () => {
         hoverBackgroundColor: colorsForCharts[1]
       });
       categories.push({
-        [key]: calculateAverageExpenses(Object.values(data[key]))
+        [key]: {
+          avSum: calculateAverageExpenses(Object.values(data[key])),
+          color: colorsForCharts[i]
+        }
       });
       i++;
       labels =
