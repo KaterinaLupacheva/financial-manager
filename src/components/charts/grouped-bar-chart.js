@@ -3,7 +3,6 @@ import { useTheme } from "@material-ui/core/styles";
 import { Bar } from "react-chartjs-2";
 
 const GroupedBarChart = ({ dataForChart }) => {
-  // console.log('Dataset ' + JSON.stringify(dataForChart, null, 2))
   const theme = useTheme();
   const data = {
     labels: dataForChart.labels,
