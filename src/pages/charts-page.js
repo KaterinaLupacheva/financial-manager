@@ -155,11 +155,13 @@ const ChartsPage = () => {
             {
               tabName: "Year",
               tabIcon: DeveloperBoardIcon,
+              tabTitle: "Expenses and Income by Month",
               tabContent: <GroupedBarChart dataForChart={dataForChart} />
             },
             {
               tabName: "Expenses",
               tabIcon: MoneyOffIcon,
+              tabTitle: "Expenses by Categories",
               tabContent: (
                 <CategoriesBarChart
                   dataForChart={dataForExpensesCategoriesChart}
@@ -169,6 +171,7 @@ const ChartsPage = () => {
             {
               tabName: "Income",
               tabIcon: AttachMoneyIcon,
+              tabTitle: "Income by Categories",
               tabContent: (
                 <CategoriesBarChart
                   dataForChart={dataForIncomeCategoriesChart}

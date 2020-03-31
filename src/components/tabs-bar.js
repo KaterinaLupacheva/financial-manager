@@ -3,6 +3,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 
 const TabsBar = ({ tabs }) => {
   const [value, setValue] = useState(0);
@@ -28,7 +29,12 @@ const TabsBar = ({ tabs }) => {
         <CardContent>
           {tabs.map((prop, key) => {
             if (key === value) {
-              return <div key={key}>{prop.tabContent}</div>;
+              return (
+                <div key={key}>
+                  <Typography variant="h6">{prop.tabTitle}</Typography>
+                  {prop.tabContent}
+                </div>
+              );
             }
             return null;
           })}
