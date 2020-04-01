@@ -1,19 +1,13 @@
-import { purple, green, yellow } from "@material-ui/core/colors";
-import { withStyles } from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
+import styled from "styled-components";
 
-const StyledSwitch = withStyles({
-  switchBase: {
-    color: props => props.switchcolor,
-    "&$checked": {
-      color: green[500]
-    },
-    "&$checked + $track": {
-      backgroundColor: yellow[500]
-    }
-  },
-  checked: {},
-  track: {}
-})(Switch);
+const StyledSwitch = styled(Switch)`
+  .Mui-checked {
+    color: ${props => props.switchcolor};
+  }
+  .Mui-checked + .MuiSwitch-track {
+    background-color: ${props => props.switchcolor};
+  }
+`;
 
 export default StyledSwitch;

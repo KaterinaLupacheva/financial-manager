@@ -114,10 +114,9 @@ const ChartsPage = () => {
         hoverBackgroundColor: colorsForCharts[1]
       });
       categories.push({
-        [key]: {
-          avSum: calculateAverageExpenses(Object.values(data[key])),
-          color: colorsForCharts[i]
-        }
+        name: key,
+        avSum: calculateAverageExpenses(Object.values(data[key])),
+        color: colorsForCharts[i]
       });
       i++;
       labels =
