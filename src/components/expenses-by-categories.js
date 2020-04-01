@@ -23,7 +23,7 @@ const ExpensesByCategories = ({ allData }) => {
   const prepareDatasets = data => {
     const trueCategories = findTrueCategories(data);
     let tempDatasets = [];
-    allData.datasets.map(item => {
+    allData.datasets.forEach(item => {
       if (trueCategories.includes(item.label)) {
         tempDatasets.push(item);
       }
@@ -40,7 +40,7 @@ const ExpensesByCategories = ({ allData }) => {
     allData.categories.sort(
       (a, b) => parseFloat(b.avSum) - parseFloat(a.avSum)
     );
-    allData.categories.map((item, idx) => {
+    allData.categories.forEach((item, idx) => {
       tempState = {
         ...tempState,
         [item.name]: idx < 5 ? true : false

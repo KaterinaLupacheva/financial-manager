@@ -5,7 +5,6 @@ import CategoriesBarChart from "../components/charts/categories-bar-chart";
 import { getLastDayOfMonth } from "../utils/date.utils";
 import SimpleBackdrop from "../components/simple-backdrop";
 import useFetchData from "../hooks/useFetchData";
-import { useTheme } from "@material-ui/core/styles";
 import DeveloperBoardIcon from "@material-ui/icons/DeveloperBoard";
 import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
@@ -26,7 +25,6 @@ import {
 } from "@material-ui/core/colors";
 
 const ChartsPage = () => {
-  const theme = useTheme();
   const [dataForChart, setDataForChart] = useState({
     labels: [],
     incomes: [],

@@ -13,7 +13,6 @@ const tabsBarStyle = theme => ({
   tabRootButton: {
     minHeight: "unset !important",
     minWidth: "unset !important",
-    width: "unset !important",
     height: "unset !important",
     maxWidth: "unset !important",
     maxHeight: "unset !important",
