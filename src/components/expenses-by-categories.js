@@ -7,13 +7,7 @@ const ExpensesByCategories = ({ allData }) => {
   const [dataForChart, setDataForChart] = useState({});
 
   const handleSubmit = state => {
-    let newData = {};
-    console.log(JSON.stringify(state, null, 2));
-    for (var key of Object.keys(state)) {
-      if (state[key]) {
-        //check dataset.label
-      }
-    }
+    prepareDatasets(state);
   };
 
   const findTrueCategories = data => {
@@ -26,17 +20,22 @@ const ExpensesByCategories = ({ allData }) => {
     return trueCategories;
   };
 
-  const prepareDatasets = trueCategories => {
+  const prepareDatasets = data => {
+    const trueCategories = findTrueCategories(data);
     let tempDatasets = [];
     allData.datasets.map(item => {
       if (trueCategories.includes(item.label)) {
         tempDatasets.push(item);
       }
     });
-    return tempDatasets;
+    setDataForChart({
+      ...dataForChart,
+      labels: allData.labels,
+      datasets: tempDatasets
+    });
   };
 
-  useEffect(() => {
+  const findTop5Categories = () => {
     let tempState = {};
     allData.categories.sort(
       (a, b) => parseFloat(b.avSum) - parseFloat(a.avSum)
@@ -47,15 +46,13 @@ const ExpensesByCategories = ({ allData }) => {
         [item.name]: idx < 5 ? true : false
       };
     });
-    setInitialState(tempState);
+    return tempState;
+  };
 
-    const trueCategories = findTrueCategories(tempState);
-    const datasetsForChart = prepareDatasets(trueCategories);
-    setDataForChart({
-      ...dataForChart,
-      labels: allData.labels,
-      datasets: datasetsForChart
-    });
+  useEffect(() => {
+    const tempState = findTop5Categories();
+    setInitialState(tempState);
+    prepareDatasets(tempState);
   }, []);
 
   return (
