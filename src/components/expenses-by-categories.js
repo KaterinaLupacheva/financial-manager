@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CategoriesBarChart from "./charts/categories-bar-chart";
 import CustomSwitch from "./customSwitch";
+import "../styles/expenses-by-categories.styles.css";
 
 const ExpensesByCategories = ({ allData }) => {
   const [initialState, setInitialState] = useState({});
@@ -56,7 +57,10 @@ const ExpensesByCategories = ({ allData }) => {
   }, []);
 
   return (
-    <>
+    <div className="expenses-container">
+      <div className="categories-chart-container">
+        {dataForChart && <CategoriesBarChart dataForChart={dataForChart} />}
+      </div>
       {Object.keys(initialState).length > 0 && (
         <CustomSwitch
           initialState={initialState}
@@ -64,8 +68,7 @@ const ExpensesByCategories = ({ allData }) => {
           handleSubmit={handleSubmit}
         />
       )}
-      {dataForChart && <CategoriesBarChart dataForChart={dataForChart} />}
-    </>
+    </div>
   );
 };
 

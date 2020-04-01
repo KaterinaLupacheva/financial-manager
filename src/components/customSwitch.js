@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import StyledSwitch from "../styles/switch.styles";
-import Button from "@material-ui/core/Button";
+import { StyledSwitch, StyledButton } from "../styles/switch.styles";
 
 const CustomSwitch = ({ initialState, categories, handleSubmit }) => {
   const [state, setState] = useState(initialState);
@@ -13,11 +12,11 @@ const CustomSwitch = ({ initialState, categories, handleSubmit }) => {
 
   return (
     <>
-      <Button variant="contained" onClick={() => handleSubmit(state)}>
+      <StyledButton variant="contained" onClick={() => handleSubmit(state)}>
         Re-build chart
-      </Button>
+      </StyledButton>
       {Object.keys(state).length > 0 && (
-        <FormGroup>
+        <FormGroup row={true}>
           {categories.map(item => {
             return (
               <FormControlLabel
