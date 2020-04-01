@@ -15,14 +15,15 @@ const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingExpenses, setIsLoadingExpenses] = useState(false);
+  const [isLoadingIncome, setIsLoadingIncome] = useState(false);
 
   const changeDate = newMonth => {
     setMonth(newMonth);
   };
 
   const fetchExpenses = () => {
-    setIsLoading(true);
+    setIsLoadingExpenses(true);
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
     axios
@@ -40,16 +41,16 @@ const MonthPage = () => {
         } else {
           setExpensesData(null);
         }
-        setIsLoading(false);
+        setIsLoadingExpenses(false);
       })
       .catch(err => {
         console.log(err);
-        setIsLoading(false);
+        setIsLoadingExpenses(false);
       });
   };
 
   const fetchIncome = () => {
-    setIsLoading(true);
+    setIsLoadingIncome(true);
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
     axios
@@ -67,11 +68,11 @@ const MonthPage = () => {
         } else {
           setIncomeData(null);
         }
-        setIsLoading(false);
+        setIsLoadingIncome(false);
       })
       .catch(err => {
         console.log(err);
-        setIsLoading(false);
+        setIsLoadingIncome(false);
       });
   };
 
@@ -143,7 +144,7 @@ const MonthPage = () => {
           <FloatingAddButton />
         </MonthIncomeContext.Provider>
       </MonthExpensesContext.Provider>
-      <SimpleBackdrop open={isLoading} />
+      <SimpleBackdrop open={isLoadingExpenses || isLoadingIncome ? true : false} />
     </div>
   );
 };
