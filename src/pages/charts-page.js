@@ -207,7 +207,7 @@ const ChartsPage = () => {
               tabTitle: "Expenses by Categories",
               tabContent: (
                 <ExpensesByCategories
-                  dataForChart={dataForExpensesCategoriesChart}
+                  allData={dataForExpensesCategoriesChart}
                 />
               )
             },
