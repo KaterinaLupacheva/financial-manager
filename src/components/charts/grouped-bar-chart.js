@@ -1,6 +1,9 @@
 import React from "react";
 import { useTheme } from "@material-ui/core/styles";
-import { Bar } from "react-chartjs-2";
+import {
+  StyledBarChart,
+  StyledChartContainer
+} from "../../styles/charts.styles";
 
 const GroupedBarChart = ({ dataForChart }) => {
   const theme = useTheme();
@@ -23,7 +26,11 @@ const GroupedBarChart = ({ dataForChart }) => {
     ]
   };
 
-  return <Bar data={data} />;
+  return (
+    <StyledChartContainer>
+      <StyledBarChart data={data} />
+    </StyledChartContainer>
+  );
 };
 
 export default GroupedBarChart;

@@ -58,18 +58,7 @@ const TabsBar = ({ tabs }) => {
         <CardContent>
           {tabs.map((prop, key) => {
             if (key === value) {
-              return (
-                <div key={key}>
-                  <Typography
-                    variant="h6"
-                    gutterBottom={true}
-                    color="secondary"
-                  >
-                    {prop.tabTitle}
-                  </Typography>
-                  {prop.tabContent}
-                </div>
-              );
+              return <div key={key}>{prop.tabContent}</div>;
             }
             return null;
           })}

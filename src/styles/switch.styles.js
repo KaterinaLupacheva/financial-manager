@@ -1,7 +1,6 @@
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
-import { theme } from "@material-ui/core/styles";
 
 export const StyledSwitch = styled(Switch)`
   .Mui-checked {

@@ -1,5 +1,8 @@
 import React from "react";
-import { HorizontalBar } from "react-chartjs-2";
+import {
+  StyledChartContainer,
+  StyledHorizontalBarChart
+} from "../../styles/charts.styles";
 
 const CategoriesBarChart = ({ dataForChart }) => {
   const data = {
@@ -7,7 +10,11 @@ const CategoriesBarChart = ({ dataForChart }) => {
     datasets: dataForChart.datasets
   };
 
-  return <HorizontalBar data={data} />;
+  return (
+    <StyledChartContainer>
+      <StyledHorizontalBarChart data={data} />
+    </StyledChartContainer>
+  );
 };
 
 export default CategoriesBarChart;
