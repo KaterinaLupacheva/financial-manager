@@ -6,7 +6,7 @@ export const getFirstDayOfMonth = date => {
 
 export const getLastDayOfMonth = date => {
   return format(
-    new Date(date.getFullYear(), date.getMonth() + 1, 0),
+    new Date(date.getFullYear(), date.getMonth() + 1, 1),
     "yyyy-MM-dd"
   );
 };
