@@ -114,10 +114,12 @@ const MonthPage = () => {
         marginLeft="40px"
       >
         <StyledCard variant="outlined" bgColor={theme.palette.primary.main}>
-          <CardContent>
+          <StyledCardContent>
             <TodayIcon fontSize="large" />
-            <CustomDatePicker changeDate={changeDate} />
-          </CardContent>
+            <div style={{ padding: "10px", margin: "10px auto" }}>
+              <CustomDatePicker changeDate={changeDate} />
+            </div>
+          </StyledCardContent>
         </StyledCard>
         <StyledCard
           variant="outlined"

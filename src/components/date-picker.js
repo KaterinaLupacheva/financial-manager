@@ -36,6 +36,7 @@ const CustomDatePicker = ({ changeDate }) => {
           min: 0,
           style: { textAlign: "center", cursor: "pointer" }
         }}
+        InputLabelProps={{ style: { color: "white" } }}
       />
     </MuiPickersUtilsProvider>
   );
