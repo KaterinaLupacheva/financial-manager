@@ -10,8 +10,15 @@ import { createDataForTable } from "../utils/formatData";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
 import SimpleBackdrop from "../components/simple-backdrop";
+import TodayIcon from "@material-ui/icons/Today";
+import ExposureRoundedIcon from "@material-ui/icons/ExposureRounded";
+import CardContent from "@material-ui/core/CardContent";
+import { StyledCard, StyledCardContent } from "../styles/card.styles";
+import { useTheme } from "@material-ui/core/styles";
 
 const MonthPage = () => {
+  const theme = useTheme();
+
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
@@ -102,18 +109,32 @@ const MonthPage = () => {
         display="flex"
         flexDirection="row"
         justifyContent="flex-start"
-        alignItems="baseline"
+        alignItems="center"
         marginBottom="40px"
         marginLeft="40px"
       >
-        <CustomDatePicker changeDate={changeDate} />
-        <Typography
-          variant="h5"
-          style={{ marginLeft: 50 }}
-        >{`Net month result`}</Typography>
-        <Typography variant="h5" style={{ marginLeft: 20, color: "#3e3e3B" }}>
-          {`${calculateResult()}`}
-        </Typography>
+        <StyledCard variant="outlined" bgColor={theme.palette.primary.main}>
+          <CardContent>
+            <TodayIcon fontSize="large" />
+            <CustomDatePicker changeDate={changeDate} />
+          </CardContent>
+        </StyledCard>
+        <StyledCard
+          variant="outlined"
+          bgColor={
+            calculateResult() >= 0
+              ? theme.palette.secondary.lightBg
+              : theme.palette.primary.errorText
+          }
+        >
+          <StyledCardContent>
+            <ExposureRoundedIcon fontSize="large" />
+            <div style={{ padding: "10px", margin: "0 auto" }}>
+              <Typography variant="h4">{`${calculateResult()}`}</Typography>
+              <Typography variant="subtitle1">{`Net month result`}</Typography>
+            </div>
+          </StyledCardContent>
+        </StyledCard>
       </Box>
       <MonthExpensesContext.Provider
         value={{
@@ -144,7 +165,9 @@ const MonthPage = () => {
           <FloatingAddButton />
         </MonthIncomeContext.Provider>
       </MonthExpensesContext.Provider>
-      <SimpleBackdrop open={isLoadingExpenses || isLoadingIncome ? true : false} />
+      <SimpleBackdrop
+        open={isLoadingExpenses || isLoadingIncome ? true : false}
+      />
     </div>
   );
 };
