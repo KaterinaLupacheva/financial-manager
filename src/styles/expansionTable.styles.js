@@ -5,9 +5,9 @@ export const expansionTableStyles = theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(20),
     fontWeight: theme.typography.fontWeightBold,
-    color: "red"
+    color: theme.palette.primary.errorText
   },
   green: {
-    color: "green"
+    color: theme.palette.primary.greenBg
   }
 });
