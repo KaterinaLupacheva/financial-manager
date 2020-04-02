@@ -1,5 +1,13 @@
 import React from "react";
+import PivotTable from "../components/pivot-table";
 
-const PivotTablePage = () => <div>Pivot table page</div>;
+const PivotTablePage = () => {
+  return (
+    <>
+      <div>Pivot table page</div>
+      <PivotTable />
+    </>
+  );
+};
 
 export default PivotTablePage;
