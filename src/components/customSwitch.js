@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { StyledSwitch } from "../styles/switch.styles";
+import { StyledSwitch, StyledButton } from "../styles/switch.styles";
 
 const CustomSwitch = ({ initialState, categories, handleSubmit }) => {
   const [state, setState] = useState(initialState);
@@ -12,10 +12,23 @@ const CustomSwitch = ({ initialState, categories, handleSubmit }) => {
     handleSubmit(tempState);
   };
 
+  const unselectAll = () => {
+    let tempState = {};
+    for (var key of Object.keys(state)) {
+      tempState = {
+        ...tempState,
+        [state.key]: false
+      };
+    }
+    setState(tempState);
+    handleSubmit(tempState);
+  };
+
   return (
     <>
+      <StyledButton onClick={unselectAll}>Unselect all</StyledButton>
       {Object.keys(state).length > 0 && (
-        <FormGroup row={true} style={{ padding: "20px" }}>
+        <FormGroup row={true}>
           {categories.map(item => {
             return (
               <FormControlLabel
@@ -23,7 +36,7 @@ const CustomSwitch = ({ initialState, categories, handleSubmit }) => {
                 control={
                   <StyledSwitch
                     switchcolor={item.color}
-                    checked={state[item.name]}
+                    checked={!!state[item.name]}
                     onChange={handleChange}
                     name={item.name}
                   />
