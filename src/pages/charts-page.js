@@ -45,12 +45,12 @@ const ChartsPage = () => {
     datasets: [],
     categories: []
   });
-  const [dataIncomes, isLoadingIncomes, isErrorIncomes] = useFetchData(
+  const [incomes] = useFetchData(
     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
       new Date()
     )}`
   );
-  const [dataExpenses, isLoadingExpenses, isErrorExpenses] = useFetchData(
+  const [expenses] = useFetchData(
     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
       new Date()
     )}`
@@ -176,19 +176,19 @@ const ChartsPage = () => {
   };
 
   useEffect(() => {
-    if (dataIncomes) {
-      prepareDataForChart(dataIncomes, false);
-      prepareDataForCategoryChart(dataIncomes, false);
+    if (incomes.data) {
+      prepareDataForChart(incomes.data, false);
+      prepareDataForCategoryChart(incomes.data, false);
     }
-    if (dataExpenses) {
-      prepareDataForChart(dataExpenses, true);
-      prepareDataForCategoryChart(dataExpenses, true);
+    if (expenses.data) {
+      prepareDataForChart(expenses.data, true);
+      prepareDataForCategoryChart(expenses.data, true);
     }
-  }, [dataIncomes, dataExpenses]);
+  }, [incomes.data, expenses.data]);
 
   return (
     <>
-      {isErrorExpenses || isErrorIncomes ? (
+      {expenses.isError || incomes.isError ? (
         <div>Something went wrong...</div>
       ) : (
         <TabsBar
@@ -220,7 +220,7 @@ const ChartsPage = () => {
         />
       )}
       <SimpleBackdrop
-        open={isLoadingIncomes || isLoadingExpenses ? true : false}
+        open={incomes.isLoading || expenses.isLoading ? true : false}
       />
     </>
   );

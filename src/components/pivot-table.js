@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -11,6 +11,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import ExpensesContext from "../contexts/expenses.context";
 
 const createData = (name, calories, fat, carbs, protein) => {
   return { name, calories, fat, carbs, protein };
@@ -181,6 +182,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PivotTable = () => {
+  const { expensesPeriodData } = useContext(ExpensesContext);
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -239,6 +241,7 @@ const PivotTable = () => {
 
   return (
     <div className={classes.root}>
+      {expensesPeriodData && <div>{expensesPeriodData[0].category}</div>}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>

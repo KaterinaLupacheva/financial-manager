@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import jwtDecode from "jwt-decode";
 import UserContext from "./contexts/user.context";
+import ExpensesContext from "./contexts/expenses.context";
 import axios from "axios";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -39,6 +40,7 @@ const theme = createMuiTheme({
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
+  const [expensesPeriodData, setExpensesPeriodData] = useState(null);
 
   const logoutUser = () => {
     localStorage.removeItem("FBIdToken");
@@ -85,8 +87,12 @@ const App = () => {
                 <AuthRoute path="/signup" component={SignupPage} />
                 <AuthRoute path="/login" component={LoginPage} />
                 <Route path="/month" component={MonthPage} />
-                <Route path="/table" component={PivotTablePage} />
-                <Route path="/charts" component={ChartsPage} />
+                <ExpensesContext.Provider
+                  value={{ expensesPeriodData, setExpensesPeriodData }}
+                >
+                  <Route path="/table" component={PivotTablePage} />
+                  <Route path="/charts" component={ChartsPage} />
+                </ExpensesContext.Provider>
               </Switch>
             </Sidebar>
           </UserContext.Provider>
