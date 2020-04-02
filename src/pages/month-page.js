@@ -12,7 +12,6 @@ import MonthIncomeContext from "../contexts/monthIncome.context";
 import SimpleBackdrop from "../components/simple-backdrop";
 import TodayIcon from "@material-ui/icons/Today";
 import ExposureRoundedIcon from "@material-ui/icons/ExposureRounded";
-import CardContent from "@material-ui/core/CardContent";
 import { StyledCard, StyledCardContent } from "../styles/card.styles";
 import { useTheme } from "@material-ui/core/styles";
 
@@ -29,7 +28,7 @@ const MonthPage = () => {
     setMonth(newMonth);
   };
 
-  const fetchExpenses = () => {
+  const fetchMonthExpenses = () => {
     setIsLoadingExpenses(true);
     const startDate = getFirstDayOfMonth(month);
     const endDate = getLastDayOfMonth(month);
@@ -84,7 +83,7 @@ const MonthPage = () => {
   };
 
   useEffect(() => {
-    fetchExpenses();
+    fetchMonthExpenses();
     fetchIncome();
   }, [month]);
 
@@ -142,7 +141,7 @@ const MonthPage = () => {
       <MonthExpensesContext.Provider
         value={{
           expensesData,
-          fetchExpenses
+          fetchMonthExpenses
         }}
       >
         <MonthIncomeContext.Provider

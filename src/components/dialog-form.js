@@ -28,7 +28,7 @@ import MonthIncomeContext from "../contexts/monthIncome.context";
 const useStyles = makeStyles(dialogStyles);
 
 const DialogForm = ({ open, handleClose }) => {
-  const { fetchExpenses } = useContext(MonthExpensesContext);
+  const { fetchMonthExpenses } = useContext(MonthExpensesContext);
   const { fetchIncome } = useContext(MonthIncomeContext);
   const INITIAL_STATE = {
     view: "expenses",
@@ -99,7 +99,7 @@ const DialogForm = ({ open, handleClose }) => {
       )
       .then(res => {
         if (state.view === "expenses") {
-          fetchExpenses();
+          fetchMonthExpenses();
         } else {
           fetchIncome();
         }

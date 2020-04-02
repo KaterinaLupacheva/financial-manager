@@ -29,7 +29,7 @@ import { formatFromDDMMYYYY } from "../utils/date.utils";
 const useStyles = makeStyles(dialogStyles);
 
 const EditForm = ({ open, handleClose, rowData }) => {
-  const { fetchExpenses } = useContext(MonthExpensesContext);
+  const { fetchMonthExpenses } = useContext(MonthExpensesContext);
   const { fetchIncome } = useContext(MonthIncomeContext);
   const INITIAL_STATE = {
     view: rowData.expenseId ? "expenses" : "incomes",
@@ -101,7 +101,7 @@ const EditForm = ({ open, handleClose, rowData }) => {
       )
       .then(res => {
         if (state.view === "expenses") {
-          fetchExpenses();
+          fetchMonthExpenses();
         } else {
           fetchIncome();
         }

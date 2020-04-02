@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 const MonthExpensesContext = createContext({
   expensesData: null,
-  fetchExpenses: () => {}
+  fetchMonthExpenses: () => {}
 });
 
 export default MonthExpensesContext;
