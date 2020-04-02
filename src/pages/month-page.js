@@ -116,7 +116,8 @@ const MonthPage = () => {
         <StyledCard variant="outlined" bgColor={theme.palette.primary.main}>
           <StyledCardContent>
             <TodayIcon fontSize="large" />
-            <div style={{ padding: "10px", margin: "10px auto" }}>
+            <div style={{ padding: "10px", margin: "0 auto" }}>
+              <Typography variant="subtitle1">{`Chose month`}</Typography>
               <CustomDatePicker changeDate={changeDate} />
             </div>
           </StyledCardContent>
@@ -132,8 +133,8 @@ const MonthPage = () => {
           <StyledCardContent>
             <ExposureRoundedIcon fontSize="large" />
             <div style={{ padding: "10px", margin: "0 auto" }}>
-              <Typography variant="h4">{`${calculateResult()}`}</Typography>
               <Typography variant="subtitle1">{`Net month result`}</Typography>
+              <Typography variant="h4">{`${calculateResult()}`}</Typography>
             </div>
           </StyledCardContent>
         </StyledCard>

@@ -6,7 +6,6 @@ import DateFnsUtils from "@date-io/date-fns";
 const useStyles = makeStyles(theme => ({
   input: {
     color: theme.palette.secondary.text,
-    width: 150,
     borderRadius: "10px",
     background: theme.palette.secondary.main,
     height: "7vh",
@@ -21,8 +20,6 @@ const CustomDatePicker = ({ changeDate }) => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
         autoOk={true}
-        label="Chose month"
-        minDate={new Date("2020-01-01")}
         maxDate={new Date()}
         openTo="month"
         views={["year", "month"]}
@@ -34,9 +31,8 @@ const CustomDatePicker = ({ changeDate }) => {
         InputProps={{ className: classes.input, disableUnderline: true }}
         inputProps={{
           min: 0,
-          style: { textAlign: "center", cursor: "pointer" }
+          style: { textAlign: "center", cursor: "pointer", fontSize: "1.7rem" }
         }}
-        InputLabelProps={{ style: { color: "white" } }}
       />
     </MuiPickersUtilsProvider>
   );
