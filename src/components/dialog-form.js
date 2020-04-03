@@ -40,7 +40,9 @@ const DialogForm = ({ open, handleClose }) => {
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
 
-  const classes = useStyles();
+  const props = { bgcolor: state.view };
+
+  const classes = useStyles(props);
 
   const handleViewChange = (event, newView) => {
     setState({

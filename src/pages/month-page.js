@@ -112,7 +112,7 @@ const MonthPage = () => {
         marginBottom="40px"
         marginLeft="40px"
       >
-        <StyledCard variant="outlined" bgColor={theme.palette.primary.main}>
+        <StyledCard variant="outlined" bgcolor={theme.palette.primary.main}>
           <StyledCardContent>
             <TodayIcon fontSize="large" />
             <div style={{ padding: "10px", margin: "0 auto" }}>
@@ -123,10 +123,10 @@ const MonthPage = () => {
         </StyledCard>
         <StyledCard
           variant="outlined"
-          bgColor={
+          bgcolor={
             calculateResult() >= 0
               ? theme.palette.secondary.lightBg
-              : theme.palette.primary.errorText
+              : theme.palette.secondary.palePink
           }
         >
           <StyledCardContent>

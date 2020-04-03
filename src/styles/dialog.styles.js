@@ -2,11 +2,14 @@ export const dialogStyles = theme => ({
   toggleContainer: {
     margin: theme.spacing(2, 0)
   },
-  toggleButton: {
+  toggleButton: props => ({
     "&.Mui-selected": {
-      backgroundColor: `${theme.palette.secondary.lightBg} !important`
+      backgroundColor:
+        props.bgcolor === "expenses"
+          ? `${theme.palette.secondary.palePink} !important`
+          : `${theme.palette.secondary.lightBg} !important`
     }
-  },
+  }),
   formControl: {
     minWidth: 195
   },
