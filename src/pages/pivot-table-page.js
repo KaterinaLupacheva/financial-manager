@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import PivotTable from "../components/pivot-table";
+import SimpleBackdrop from "../components/simple-backdrop";
 import ExpensesContext from "../contexts/expenses.context";
 import useFetchData from "../hooks/useFetchData";
 import { getLastDayOfMonth } from "../utils/date.utils";
@@ -44,7 +45,16 @@ const PivotTablePage = () => {
     }
   }, [expenses.data]);
 
-  return <PivotTable rows={rows} />;
+  return (
+    <>
+      {expenses.isError ? (
+        <div>Something went wrong...</div>
+      ) : (
+        <PivotTable rows={rows} />
+      )}
+      <SimpleBackdrop open={expenses.isLoading ? true : false} />
+    </>
+  );
 };
 
 export default PivotTablePage;
