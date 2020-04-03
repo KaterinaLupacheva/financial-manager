@@ -10,6 +10,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import ExpensesContext from "../contexts/expenses.context";
+import { createHeadCells } from "../utils/transform-data.utils";
 
 const createData = (name, calories, fat, carbs, protein) => {
   return { name, calories, fat, carbs, protein };
@@ -57,18 +58,6 @@ const stableSort = (array, comparator) => {
   return stabilizedThis.map(el => el[0]);
 };
 
-const headCells = [
-  {
-    id: "name",
-    numeric: false,
-    label: "Dessert (100g serving)"
-  },
-  { id: "calories", numeric: true, disablePadding: false, label: "Calories" },
-  { id: "fat", numeric: true, disablePadding: false, label: "Fat (g)" },
-  { id: "carbs", numeric: true, disablePadding: false, label: "Carbs (g)" },
-  { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" }
-];
-
 const EnhancedTableHead = props => {
   const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = property => event => {
@@ -78,11 +67,11 @@ const EnhancedTableHead = props => {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map(headCell => (
+        {createHeadCells().map(headCell => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
+            // align={headCell.numeric ? "right" : "left"}
+            // padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -128,9 +117,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PivotTable = () => {
-  const { expensesPeriodData } = useContext(ExpensesContext);
-  console.log("Data " + JSON.stringify(expensesPeriodData, null, 2));
+const PivotTable = ({ data }) => {
+  // console.log("Data " + JSON.stringify(data, null, 2));
   const classes = useStyles();
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
@@ -143,7 +131,7 @@ const PivotTable = () => {
 
   return (
     <div className={classes.root}>
-      {expensesPeriodData && <div>{expensesPeriodData[0].category}</div>}
+      {data.length > 0 && <div>{data[0].category}</div>}
       <Paper className={classes.paper}>
         <Typography
           className={classes.title}
@@ -165,7 +153,6 @@ const PivotTable = () => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy)).map(

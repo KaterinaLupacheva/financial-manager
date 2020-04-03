@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, eachMonthOfInterval } from "date-fns";
 
 export const getFirstDayOfMonth = date => {
   return format(new Date(date.getFullYear(), date.getMonth(), 1), "yyyy-MM-dd");
@@ -14,4 +14,16 @@ export const getLastDayOfMonth = date => {
 export const formatFromDDMMYYYY = date => {
   const dateParts = date.split(".");
   return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], 8);
+};
+
+export const getMonthsNames = () => {
+  const result = eachMonthOfInterval({
+    start: new Date(2020, 0, 1),
+    end: new Date()
+  });
+  let monthsNames = [];
+  result.forEach(date => {
+    monthsNames.push(format(new Date(date), "MMM"));
+  });
+  return monthsNames;
 };

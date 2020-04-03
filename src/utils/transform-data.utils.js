@@ -12,8 +12,9 @@ import {
   lightBlue
 } from "@material-ui/core/colors";
 import { format } from "date-fns";
+import { getMonthsNames } from "../utils/date.utils";
 
-const sumPerCategoryAndMonth = data => {
+export const sumPerCategoryAndMonth = data => {
   const dataByCategories = data.reduce((r, a) => {
     r[a.category] = r[a.category] || [];
     r[a.category].push(a);
@@ -130,4 +131,22 @@ export const prepareDataForChart = (dbData, isExpenses) => {
     };
   }
   return result;
+};
+
+export const createHeadCells = () => {
+  const months = getMonthsNames();
+  let headCells = [
+    {
+      id: "categories",
+      label: "Categories"
+    }
+  ];
+  months.forEach(month => {
+    let tempCell = {
+      id: month,
+      label: month
+    };
+    headCells.push(tempCell);
+  });
+  return headCells;
 };
