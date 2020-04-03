@@ -50,6 +50,7 @@ const EnhancedTableHead = props => {
         {createHeadCells().map(headCell => (
           <TableCell
             key={headCell.id}
+            align={headCell.right ? "right" : "left"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -97,8 +98,8 @@ const useStyles = makeStyles(theme => ({
 
 const PivotTable = ({ rows }) => {
   const classes = useStyles();
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("Jan");
+  const [order, setOrder] = useState("desc");
+  const [orderBy, setOrderBy] = useState("avg");
 
   const monthNames = getMonthsNames()[0];
 
@@ -138,13 +139,18 @@ const PivotTable = ({ rows }) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow>
+                    <TableRow key={row.name}>
                       <TableCell component="th" id={labelId} scope="row">
                         {row.name}
                       </TableCell>
                       {monthNames.map(month => (
-                        <TableCell>{row[month].toFixed(2)}</TableCell>
+                        <TableCell key={`${row.name}-${month}-${row[month]}`}>
+                          {row[month].toFixed(2)}
+                        </TableCell>
                       ))}
+                      <TableCell align="right" style={{ fontWeight: "bold" }}>
+                        {row.avg.toFixed(2)}
+                      </TableCell>
                     </TableRow>
                   );
                 }

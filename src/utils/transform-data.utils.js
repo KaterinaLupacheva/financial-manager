@@ -148,6 +148,11 @@ export const createHeadCells = () => {
     };
     headCells.push(tempCell);
   });
+  headCells.push({
+    id: "avg",
+    label: "Avg.",
+    right: true
+  });
   return headCells;
 };
 
@@ -156,7 +161,10 @@ export const createTableRows = data => {
   const shortMonthsNames = getMonthsNames()[0];
   const rows = [];
   for (let [key, value] of Object.entries(data)) {
-    let tempRow = { name: key };
+    let tempRow = {
+      name: key,
+      avg: parseFloat(calculateAverageExpenses(Object.values(data[key])))
+    };
     monthsNames.forEach((month, idx) => {
       tempRow = {
         ...tempRow,
