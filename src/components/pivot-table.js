@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,8 +9,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
-import ExpensesContext from "../contexts/expenses.context";
 import { createHeadCells } from "../utils/transform-data.utils";
+import { getMonthsNames } from "../utils/date.utils";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -50,8 +50,6 @@ const EnhancedTableHead = props => {
         {createHeadCells().map(headCell => (
           <TableCell
             key={headCell.id}
-            // align={headCell.numeric ? "right" : "left"}
-            // padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -100,7 +98,9 @@ const useStyles = makeStyles(theme => ({
 const PivotTable = ({ rows }) => {
   const classes = useStyles();
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("calories");
+  const [orderBy, setOrderBy] = useState("Jan");
+
+  const monthNames = getMonthsNames()[0];
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -142,8 +142,8 @@ const PivotTable = ({ rows }) => {
                       <TableCell component="th" id={labelId} scope="row">
                         {row.name}
                       </TableCell>
-                      {row.data.map(sum => (
-                        <TableCell align="right">{sum}</TableCell>
+                      {monthNames.map(month => (
+                        <TableCell>{row[month].toFixed(2)}</TableCell>
                       ))}
                     </TableRow>
                   );

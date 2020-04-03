@@ -153,20 +153,18 @@ export const createHeadCells = () => {
 
 export const createTableRows = data => {
   const monthsNames = getMonthsNames()[1];
+  const shortMonthsNames = getMonthsNames()[0];
   const rows = [];
   for (let [key, value] of Object.entries(data)) {
-    let tempData = [];
-    monthsNames.forEach(month => {
-      if (!Object.keys(value).includes(month)) {
-        tempData.push("0.00");
-      } else {
-        tempData.push(value[month]);
-      }
+    let tempRow = { name: key };
+    monthsNames.forEach((month, idx) => {
+      tempRow = {
+        ...tempRow,
+        [shortMonthsNames[idx]]: Object.keys(value).includes(month)
+          ? parseFloat(value[month])
+          : parseFloat("0.00")
+      };
     });
-    let tempRow = {
-      name: key,
-      data: tempData
-    };
     rows.push(tempRow);
   }
   return rows;
