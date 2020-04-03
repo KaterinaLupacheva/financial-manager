@@ -134,7 +134,7 @@ export const prepareDataForChart = (dbData, isExpenses) => {
 };
 
 export const createHeadCells = () => {
-  const months = getMonthsNames();
+  const months = getMonthsNames()[0];
   let headCells = [
     {
       id: "categories",
@@ -149,4 +149,25 @@ export const createHeadCells = () => {
     headCells.push(tempCell);
   });
   return headCells;
+};
+
+export const createTableRows = data => {
+  const monthsNames = getMonthsNames()[1];
+  const rows = [];
+  for (let [key, value] of Object.entries(data)) {
+    let tempData = [];
+    monthsNames.forEach(month => {
+      if (!Object.keys(value).includes(month)) {
+        tempData.push("0.00");
+      } else {
+        tempData.push(value[month]);
+      }
+    });
+    let tempRow = {
+      name: key,
+      data: tempData
+    };
+    rows.push(tempRow);
+  }
+  return rows;
 };

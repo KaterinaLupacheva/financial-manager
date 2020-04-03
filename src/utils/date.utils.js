@@ -21,9 +21,11 @@ export const getMonthsNames = () => {
     start: new Date(2020, 0, 1),
     end: new Date()
   });
-  let monthsNames = [];
+  let shortMonthsNames = [];
+  let longMonthsNames = [];
   result.forEach(date => {
-    monthsNames.push(format(new Date(date), "MMM"));
+    shortMonthsNames.push(format(new Date(date), "MMM"));
+    longMonthsNames.push(format(new Date(date), "MMMM"));
   });
-  return monthsNames;
+  return [shortMonthsNames, longMonthsNames];
 };
