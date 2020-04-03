@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import PivotTable from "../components/pivot-table";
 import ExpensesContext from "../contexts/expenses.context";
 import useFetchData from "../hooks/useFetchData";

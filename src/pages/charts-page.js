@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { format } from "date-fns";
 import GroupedBarChart from "../components/charts/grouped-bar-chart";
 import CategoriesBarChart from "../components/charts/categories-bar-chart";
@@ -10,6 +10,8 @@ import MoneyOffIcon from "@material-ui/icons/MoneyOff";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import TabsBar from "../components/tabs-bar";
 import ExpensesByCategories from "../components/expenses-by-categories";
+import ExpensesContext from "../contexts/expenses.context";
+import IncomeContext from "../contexts/income.context";
 import {
   purple,
   pink,
@@ -25,9 +27,16 @@ import {
 } from "@material-ui/core/colors";
 
 const ChartsPage = () => {
-  const [dataForChart, setDataForChart] = useState({
+  const { expensesPeriodData, setExpensesPeriodData } = useContext(
+    ExpensesContext
+  );
+  const { incomesPeriodData, setIncomesPeriodData } = useContext(IncomeContext);
+  const [incomesDataForChart, setIncomesDataForChart] = useState({
     labels: [],
-    incomes: [],
+    incomes: []
+  });
+  const [expensesDataForChart, setExpensesDataForChart] = useState({
+    labels: [],
     expenses: []
   });
   const [
@@ -45,16 +54,8 @@ const ChartsPage = () => {
     datasets: [],
     categories: []
   });
-  const [incomes] = useFetchData(
-    `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
-      new Date()
-    )}`
-  );
-  const [expenses] = useFetchData(
-    `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
-      new Date()
-    )}`
-  );
+  const [incomes, doIncomesFetch] = useFetchData("");
+  const [expenses, doExpensesFetch] = useFetchData("");
 
   const sumPerCategoryAndMonth = data => {
     const dataByCategories = data.reduce((r, a) => {
@@ -163,26 +164,67 @@ const ChartsPage = () => {
   };
 
   const prepareDataForChart = (dbData, isExpenses) => {
-    const name = isExpenses ? "expenses" : "incomes";
     const data = sumPerMonth(dbData);
-    setDataForChart({
-      ...dataForChart,
-      labels:
-        dataForChart.labels.length < Object.keys(data).length
-          ? Object.keys(data)
-          : dataForChart.labels,
-      [name]: Object.values(data)
-    });
+    if (isExpenses) {
+      setExpensesDataForChart({
+        ...expensesDataForChart,
+        labels: Object.keys(data),
+        expenses: Object.values(data)
+      });
+    } else {
+      setIncomesDataForChart({
+        ...incomesDataForChart,
+        labels: Object.keys(data),
+        incomes: Object.values(data)
+      });
+    }
   };
 
   useEffect(() => {
+    const fetchExpensesData = () => {
+      doExpensesFetch(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
+          new Date()
+        )}`
+      );
+      if (expenses.data) {
+        setExpensesPeriodData(expenses.data);
+      }
+    };
+
+    const fetchIncomesData = () => {
+      doIncomesFetch(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
+          new Date()
+        )}`
+      );
+      if (incomes.data) {
+        setIncomesPeriodData(incomes.data);
+      }
+    };
+
+    if (!expensesPeriodData) {
+      fetchExpensesData();
+    }
+
+    if (!incomesPeriodData) {
+      fetchIncomesData();
+    }
+
     if (incomes.data) {
       prepareDataForChart(incomes.data, false);
       prepareDataForCategoryChart(incomes.data, false);
+    } else if (incomesPeriodData) {
+      prepareDataForChart(incomesPeriodData, false);
+      prepareDataForCategoryChart(incomesPeriodData, false);
     }
+
     if (expenses.data) {
       prepareDataForChart(expenses.data, true);
       prepareDataForCategoryChart(expenses.data, true);
+    } else if (expensesPeriodData) {
+      prepareDataForChart(expensesPeriodData, true);
+      prepareDataForCategoryChart(expensesPeriodData, true);
     }
   }, [incomes.data, expenses.data]);
 
@@ -196,7 +238,12 @@ const ChartsPage = () => {
             {
               tabName: "Year",
               tabIcon: DeveloperBoardIcon,
-              tabContent: <GroupedBarChart dataForChart={dataForChart} />
+              tabContent: (
+                <GroupedBarChart
+                  incomesDataForChart={incomesDataForChart}
+                  expensesDataForChart={expensesDataForChart}
+                />
+              )
             },
             {
               tabName: "Expenses",

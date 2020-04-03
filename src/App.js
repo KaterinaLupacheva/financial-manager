@@ -4,6 +4,7 @@ import "./App.css";
 import jwtDecode from "jwt-decode";
 import UserContext from "./contexts/user.context";
 import ExpensesContext from "./contexts/expenses.context";
+import IncomeContext from "./contexts/income.context";
 import axios from "axios";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -41,6 +42,7 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
   const [expensesPeriodData, setExpensesPeriodData] = useState(null);
+  const [incomesPeriodData, setIncomesPeriodData] = useState(null);
 
   const logoutUser = () => {
     localStorage.removeItem("FBIdToken");
@@ -91,7 +93,11 @@ const App = () => {
                   value={{ expensesPeriodData, setExpensesPeriodData }}
                 >
                   <Route path="/table" component={PivotTablePage} />
-                  <Route path="/charts" component={ChartsPage} />
+                  <IncomeContext.Provider
+                    value={{ incomesPeriodData, setIncomesPeriodData }}
+                  >
+                    <Route path="/charts" component={ChartsPage} />
+                  </IncomeContext.Provider>
                 </ExpensesContext.Provider>
               </Switch>
             </Sidebar>

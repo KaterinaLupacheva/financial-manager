@@ -5,23 +5,26 @@ import {
   StyledChartContainer
 } from "../../styles/charts.styles";
 
-const GroupedBarChart = ({ dataForChart }) => {
+const GroupedBarChart = ({ incomesDataForChart, expensesDataForChart }) => {
   const theme = useTheme();
   const data = {
-    labels: dataForChart.labels,
+    labels:
+      expensesDataForChart.labels.length > incomesDataForChart.labels.length
+        ? expensesDataForChart.labels
+        : incomesDataForChart.labels,
     datasets: [
       {
         label: "Incomes",
         backgroundColor: theme.palette.primary.light,
         hoverBackgroundColor: theme.palette.primary.dark,
-        data: dataForChart.incomes
+        data: incomesDataForChart.incomes
       },
 
       {
         label: "Expenses",
         backgroundColor: theme.palette.secondary.light,
         hoverBackgroundColor: theme.palette.secondary.dark,
-        data: dataForChart.expenses
+        data: expensesDataForChart.expenses
       }
     ]
   };
