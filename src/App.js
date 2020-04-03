@@ -25,7 +25,7 @@ const theme = createMuiTheme({
       complementary: "#C4E7BE",
       errorText: "#ff1744",
       greenBg: "#00bfa5",
-      darkPurpleBg: "#D099D9"
+      darkPurpleBg: "#9c27b0"
     },
     secondary: {
       main: "#3e3e3B",

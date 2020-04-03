@@ -44,12 +44,7 @@ const PivotTablePage = () => {
     }
   }, [expenses.data]);
 
-  return (
-    <>
-      <div>Pivot table page</div>
-      <PivotTable rows={rows} />
-    </>
-  );
+  return <PivotTable rows={rows} />;
 };
 
 export default PivotTablePage;

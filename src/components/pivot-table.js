@@ -45,10 +45,11 @@ const EnhancedTableHead = props => {
   };
 
   return (
-    <TableHead>
+    <TableHead className={classes.headStyle}>
       <TableRow>
         {createHeadCells().map(headCell => (
           <TableCell
+            className={classes.headCellStyle}
             key={headCell.id}
             align={headCell.right ? "right" : "left"}
             sortDirection={orderBy === headCell.id ? order : false}
@@ -83,6 +84,16 @@ const useStyles = makeStyles(theme => ({
   table: {
     minWidth: 750
   },
+  headStyle: {
+    backgroundColor: theme.palette.primary.darkPurpleBg
+  },
+  headCellStyle: {
+    color: "#FFF",
+    fontWeight: "bold"
+  },
+  title: {
+    padding: "30px"
+  },
   visuallyHidden: {
     border: 0,
     clip: "rect(0 0 0 0)",
@@ -114,7 +125,7 @@ const PivotTable = ({ rows }) => {
       <Paper className={classes.paper}>
         <Typography
           className={classes.title}
-          variant="h6"
+          variant="h5"
           id="tableTitle"
           component="div"
         >
