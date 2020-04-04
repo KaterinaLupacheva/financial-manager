@@ -17,6 +17,7 @@ import PivotTablePage from "./pages/pivot-table-page";
 import ChartsPage from "./pages/charts-page";
 import AuthRoute from "./utils/authroute";
 import StartPage from "./pages/start-page";
+import BudgetPage from "./pages/budget-page";
 
 const theme = createMuiTheme({
   palette: {
@@ -98,6 +99,7 @@ const App = () => {
                   >
                     <Route path="/charts" component={ChartsPage} />
                   </IncomeContext.Provider>
+                  <Route path="/budget" component={BudgetPage} />
                 </ExpensesContext.Provider>
               </Switch>
             </Sidebar>
