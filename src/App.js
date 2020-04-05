@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import UserContext from "./contexts/user.context";
 import ExpensesContext from "./contexts/expenses.context";
 import IncomeContext from "./contexts/income.context";
+import { ExpensesCategoriesContextProvider } from "./contexts/expensesCategories.context";
 import axios from "axios";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -89,18 +90,20 @@ const App = () => {
                 <Route exact path="/" component={StartPage} />
                 <AuthRoute path="/signup" component={SignupPage} />
                 <AuthRoute path="/login" component={LoginPage} />
-                <Route path="/month" component={MonthPage} />
-                <ExpensesContext.Provider
-                  value={{ expensesPeriodData, setExpensesPeriodData }}
-                >
-                  <Route path="/table" component={PivotTablePage} />
-                  <IncomeContext.Provider
-                    value={{ incomesPeriodData, setIncomesPeriodData }}
+                <ExpensesCategoriesContextProvider>
+                  <Route path="/month" component={MonthPage} />
+                  <ExpensesContext.Provider
+                    value={{ expensesPeriodData, setExpensesPeriodData }}
                   >
-                    <Route path="/charts" component={ChartsPage} />
-                  </IncomeContext.Provider>
-                  <Route path="/budget" component={BudgetPage} />
-                </ExpensesContext.Provider>
+                    <Route path="/table" component={PivotTablePage} />
+                    <IncomeContext.Provider
+                      value={{ incomesPeriodData, setIncomesPeriodData }}
+                    >
+                      <Route path="/charts" component={ChartsPage} />
+                    </IncomeContext.Provider>
+                    <Route path="/budget" component={BudgetPage} />
+                  </ExpensesContext.Provider>
+                </ExpensesCategoriesContextProvider>
               </Switch>
             </Sidebar>
           </UserContext.Provider>
