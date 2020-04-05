@@ -3,27 +3,9 @@ import { makeStyles, lighten } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { budgetBarStyles } from "../styles/budgetBar.styles";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    height: "20px",
-    borderRadius: "10px",
-    margin: "10px 0 20px 0"
-  },
-  bar: props => ({
-    background: `${props.bgcolor}`
-  }),
-  dataContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: "40px 0 0 20px"
-  },
-  rightContainer: {
-    display: "flex",
-    flexDirection: "column"
-  }
-}));
+const useStyles = makeStyles(budgetBarStyles);
 
 const BudgetBar = ({ data }) => {
   const props = { bgcolor: data.barColor };
