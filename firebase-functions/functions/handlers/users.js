@@ -91,7 +91,17 @@ exports.login = (req, res) => {
     });
 };
 
-exports.addUserDetails = (req, res) => {};
+exports.addUserDetails = (req, res) => {
+  db.doc(`/users/${req.user.email}`)
+    .update(req.body)
+    .then(() => {
+      return res.json({ message: "Details added successfully" });
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
 
 exports.getUserDetails = (req, res) => {
   db.doc(`/users/${req.user.email}`)
