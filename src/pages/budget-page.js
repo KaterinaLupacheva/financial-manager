@@ -9,7 +9,7 @@ import {
 } from "../utils/transform-data.utils";
 import { CATEGORIES } from "../utils/categories";
 import BudgetBar from "../components/budget-bar";
-import Button from "@material-ui/core/Button";
+import BudgetDialog from "../components/budget-dialog";
 import { Typography } from "@material-ui/core";
 import { StyledButton } from "../styles/button.styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -24,8 +24,15 @@ const BudgetPage = () => {
   const [fetchedCategories, doFetchCategories] = useFetchData("");
   const [fetchedCurMonthExpenses, doFetchCurMonthExpenses] = useFetchData("");
   const [budgetData, setBudgetData] = useState(null);
+  const [open, setOpen] = useState(false);
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchCategories = () => {
@@ -97,6 +104,7 @@ const BudgetPage = () => {
           >
             <Typography>{"Add new budget"}</Typography>
           </StyledButton>
+          <BudgetDialog open={open} handleClose={handleClose} />
           {budgetData &&
             budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
         </>
