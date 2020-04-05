@@ -41,7 +41,7 @@ export const sumPerCatogyForCurMonth = monthData => {
   return sumPerCategory;
 };
 
-const colorsForCharts = [
+export const colorsForCharts = [
   purple[500],
   pink[500],
   indigo[500],

@@ -3,7 +3,10 @@ import { ExpensesCategoriesContext } from "../contexts/expensesCategories.contex
 import { CurrentMonthExpensesContext } from "../contexts/curMonthExpenses.context";
 import useFetchData from "../hooks/useFetchData";
 import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
-import { sumPerCatogyForCurMonth } from "../utils/transform-data.utils";
+import {
+  sumPerCatogyForCurMonth,
+  colorsForCharts
+} from "../utils/transform-data.utils";
 import { CATEGORIES } from "../utils/categories";
 import BudgetBar from "../components/budget-bar";
 
@@ -54,12 +57,13 @@ const BudgetPage = () => {
 
       //create data for budget
       let tempData = [];
-      categoriesNames.forEach(category => {
+      categoriesNames.forEach((category, idx) => {
         if (categories[category]) {
           tempData.push({
             category,
             spent: sumPerCategory[category] ? sumPerCategory[category] : 0,
-            budget: categories[category]
+            budget: categories[category],
+            barColor: colorsForCharts[idx]
           });
         }
       });
@@ -75,7 +79,8 @@ const BudgetPage = () => {
   return (
     <>
       <div>Budget page</div>
-      {budgetData && budgetData.map(item => <BudgetBar data={item} />)}
+      {budgetData &&
+        budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
     </>
   );
 };

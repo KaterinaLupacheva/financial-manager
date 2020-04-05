@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, lighten } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -7,9 +7,13 @@ import Divider from "@material-ui/core/Divider";
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
-    height: "10px",
+    height: "20px",
+    borderRadius: "10px",
     margin: "10px 0 20px 0"
   },
+  bar: props => ({
+    background: `${props.bgcolor}`
+  }),
   dataContainer: {
     display: "flex",
     justifyContent: "space-between",
@@ -22,7 +26,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const BudgetBar = ({ data }) => {
-  const classes = useStyles();
+  const props = { bgcolor: data.barColor };
+  const classes = useStyles(props);
   const [completed, setCompleted] = useState(0);
   const [remaining, setRemaining] = useState(0);
 
@@ -45,9 +50,10 @@ const BudgetBar = ({ data }) => {
         </div>
       </div>
       <LinearProgress
-        className={classes.root}
+        className={`${classes.root} ${classes.bar}`}
         variant="determinate"
         value={completed}
+        color="secondary"
       />
       <Divider />
     </div>
