@@ -90,3 +90,19 @@ exports.login = (req, res) => {
       }
     });
 };
+
+exports.addUserDetails = (req, res) => {};
+
+exports.getUserDetails = (req, res) => {
+  db.doc(`/users/${req.user.email}`)
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        return res.json(doc.data());
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};

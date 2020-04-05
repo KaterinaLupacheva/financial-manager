@@ -22,7 +22,12 @@ const {
   deleteIncomeEntry
 } = require("./handlers/incomes");
 
-const { signup, login } = require("./handlers/users");
+const {
+  signup,
+  login,
+  addUserDetails,
+  getUserDetails
+} = require("./handlers/users");
 
 app.post("/expenses", FBAuth, addExpense);
 app.get("/expenses", FBAuth, getAllExpensesByUser);
@@ -39,5 +44,8 @@ app.delete("/incomes/:incomeId", FBAuth, deleteIncomeEntry);
 //signup route
 app.post("/signup", signup);
 app.post("/login", login);
+
+app.post("/user", FBAuth, addUserDetails);
+app.get("/user", FBAuth, getUserDetails);
 
 exports.api = functions.region("europe-west2").https.onRequest(app);
