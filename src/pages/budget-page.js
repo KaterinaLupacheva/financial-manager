@@ -9,6 +9,8 @@ import {
 } from "../utils/transform-data.utils";
 import { CATEGORIES } from "../utils/categories";
 import BudgetBar from "../components/budget-bar";
+import Button from "@material-ui/core/Button";
+import { Typography } from "@material-ui/core";
 
 const BudgetPage = () => {
   const { categories, setCategories } = useContext(ExpensesCategoriesContext);
@@ -79,6 +81,9 @@ const BudgetPage = () => {
   return (
     <>
       <div>Budget page</div>
+      <Button variant="contained">
+        <Typography>{"Add new budget"}</Typography>
+      </Button>
       {budgetData &&
         budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
     </>

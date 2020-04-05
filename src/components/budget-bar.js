@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, lighten } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { budgetBarStyles } from "../styles/budgetBar.styles";
+import CreateIcon from "@material-ui/icons/Create";
+import ClearIcon from "@material-ui/icons/Clear";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(budgetBarStyles);
 
@@ -31,12 +35,24 @@ const BudgetBar = ({ data }) => {
           <Typography>{`${remaining} / ${data.budget}`}</Typography>
         </div>
       </div>
-      <LinearProgress
-        className={`${classes.root} ${classes.bar}`}
-        variant="determinate"
-        value={completed}
-        color="secondary"
-      />
+      <div className={classes.barWithIcons}>
+        <LinearProgress
+          className={`${classes.root} ${classes.bar}`}
+          variant="determinate"
+          value={completed}
+          color="secondary"
+        />
+        <Tooltip title="Edit">
+          <IconButton aria-label="edit">
+            <CreateIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton aria-label="delete">
+            <ClearIcon />
+          </IconButton>
+        </Tooltip>
+      </div>
       <Divider />
     </div>
   );
