@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import { Typography } from "@material-ui/core";
 import { StyledButton } from "../styles/button.styles";
 import { useTheme } from "@material-ui/core/styles";
+import SimpleBackdrop from "../components/simple-backdrop";
 
 const BudgetPage = () => {
   const theme = useTheme();
@@ -85,15 +86,28 @@ const BudgetPage = () => {
 
   return (
     <>
-      <StyledButton
-        variant="contained"
-        bgcolor={theme.palette.secondary.lightBg}
-        onClick={handleClick}
-      >
-        <Typography>{"Add new budget"}</Typography>
-      </StyledButton>
-      {budgetData &&
-        budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
+      {fetchedCategories.isError || fetchedCurMonthExpenses.isError ? (
+        <div>Something went wrong...</div>
+      ) : (
+        <>
+          <StyledButton
+            variant="contained"
+            bgcolor={theme.palette.secondary.lightBg}
+            onClick={handleClick}
+          >
+            <Typography>{"Add new budget"}</Typography>
+          </StyledButton>
+          {budgetData &&
+            budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
+        </>
+      )}
+      <SimpleBackdrop
+        open={
+          fetchedCategories.isLoading || fetchedCurMonthExpenses.isLoading
+            ? true
+            : false
+        }
+      />
     </>
   );
 };
