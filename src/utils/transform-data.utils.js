@@ -31,6 +31,16 @@ export const sumPerCategoryAndMonth = data => {
   return resultObject;
 };
 
+export const sumPerCatogyForCurMonth = monthData => {
+  const sumPerCategory = monthData.reduce((acc, cur) => {
+    acc[cur.category] =
+      acc[cur.category] + parseFloat(cur.sum.replace(/,/g, "")) ||
+      parseFloat(cur.sum.replace(/,/g, ""));
+    return acc;
+  }, {});
+  return sumPerCategory;
+};
+
 const colorsForCharts = [
   purple[500],
   pink[500],
