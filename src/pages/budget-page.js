@@ -11,8 +11,11 @@ import { CATEGORIES } from "../utils/categories";
 import BudgetBar from "../components/budget-bar";
 import Button from "@material-ui/core/Button";
 import { Typography } from "@material-ui/core";
+import { StyledButton } from "../styles/button.styles";
+import { useTheme } from "@material-ui/core/styles";
 
 const BudgetPage = () => {
+  const theme = useTheme();
   const { categories, setCategories } = useContext(ExpensesCategoriesContext);
   const { currentMonthExpenses, setCurrentMonthExpenses } = useContext(
     CurrentMonthExpensesContext
@@ -20,6 +23,8 @@ const BudgetPage = () => {
   const [fetchedCategories, doFetchCategories] = useFetchData("");
   const [fetchedCurMonthExpenses, doFetchCurMonthExpenses] = useFetchData("");
   const [budgetData, setBudgetData] = useState(null);
+
+  const handleClick = () => {};
 
   useEffect(() => {
     const fetchCategories = () => {
@@ -80,10 +85,13 @@ const BudgetPage = () => {
 
   return (
     <>
-      <div>Budget page</div>
-      <Button variant="contained">
+      <StyledButton
+        variant="contained"
+        bgcolor={theme.palette.secondary.lightBg}
+        onClick={handleClick}
+      >
         <Typography>{"Add new budget"}</Typography>
-      </Button>
+      </StyledButton>
       {budgetData &&
         budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
     </>

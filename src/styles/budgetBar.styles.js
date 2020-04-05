@@ -1,4 +1,4 @@
-export const budgetBarStyles = {
+export const budgetBarStyles = theme => ({
   root: {
     width: "100%",
     height: "20px",
@@ -24,4 +24,4 @@ export const budgetBarStyles = {
       padding: "0 0 0 10px"
     }
   }
-};
+});

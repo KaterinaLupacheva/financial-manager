@@ -10,8 +10,3 @@ export const StyledSwitch = styled(Switch)`
     background-color: ${props => props.switchcolor};
   }
 `;
-
-export const StyledButton = styled(Button)`
-  background-color: #a7ffeb;
-  margin: 30px;
-`;
