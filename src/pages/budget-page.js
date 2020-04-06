@@ -112,7 +112,7 @@ const BudgetPage = () => {
           <BudgetDialog
             open={open}
             handleClose={handleClose}
-            categories={emptyCategories}
+            emptyCategories={emptyCategories}
           />
           {budgetData &&
             budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}

@@ -15,16 +15,18 @@ import {
   Box
 } from "@material-ui/core";
 import axios from "axios";
+import { ExpensesCategoriesContext } from "../contexts/expensesCategories.context";
 
 const useStyles = makeStyles(dialogStyles);
 
-const BudgetDialog = ({ open, handleClose, categories }) => {
+const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
   const INITIAL_STATE = {
     sum: "",
     category: ""
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
+  const { categories, setCategories } = useContext(ExpensesCategoriesContext);
 
   const classes = useStyles();
 
@@ -54,27 +56,33 @@ const BudgetDialog = ({ open, handleClose, categories }) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      saveData(state);
+      saveData();
       clearForm();
     }
   };
 
-  const saveData = state => {
-    // axios
-    //   .post(
-    //     `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}`,
-    //     state
-    //   )
-    //   .then(res => {
-    //     if (state.view === "expenses") {
-    //       fetchMonthExpenses();
-    //     } else {
-    //       fetchIncome();
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //   });
+  const saveData = () => {
+    const tempObject = {
+      ...categories,
+      [state.category]: state.sum
+    };
+    const reqBody = {
+      expensesCategories: tempObject
+    };
+    axios
+      .post(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`,
+        reqBody
+      )
+      .then(res => {
+        setCategories({
+          ...categories,
+          [state.category]: state.sum
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   const clearForm = () => {
@@ -96,7 +104,6 @@ const BudgetDialog = ({ open, handleClose, categories }) => {
           <DialogContent>
             <Box
               display="flex"
-              alignItems="center"
               alignItems="baseline"
               justifyContent="space-between"
               flexWrap="wrap"
@@ -110,7 +117,6 @@ const BudgetDialog = ({ open, handleClose, categories }) => {
                 type="number"
                 step="0.01"
                 required={true}
-                // size="small"
                 helperText={errors.sum}
                 error={errors.sum ? true : false}
                 onChange={handleChange}
@@ -125,8 +131,8 @@ const BudgetDialog = ({ open, handleClose, categories }) => {
                   onChange={handleChange}
                   className={classes.selectEmpty}
                 >
-                  {categories &&
-                    categories.map((cat, id) => (
+                  {emptyCategories &&
+                    emptyCategories.map((cat, id) => (
                       <MenuItem value={cat} key={id}>
                         {cat}
                       </MenuItem>
