@@ -11,7 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(budgetBarStyles);
 
-const BudgetBar = ({ data, editBudget }) => {
+const BudgetBar = ({ data, editBudget, deleteBudget }) => {
   const props = { bgcolor: data.barColor };
   const classes = useStyles(props);
   const [completed, setCompleted] = useState(0);
@@ -48,7 +48,7 @@ const BudgetBar = ({ data, editBudget }) => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={() => deleteBudget(data)}>
             <ClearIcon />
           </IconButton>
         </Tooltip>

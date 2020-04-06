@@ -14,6 +14,7 @@ import { Typography } from "@material-ui/core";
 import { StyledButton } from "../styles/button.styles";
 import { useTheme } from "@material-ui/core/styles";
 import SimpleBackdrop from "../components/simple-backdrop";
+import axios from "axios";
 
 const BudgetPage = () => {
   const theme = useTheme();
@@ -43,6 +44,27 @@ const BudgetPage = () => {
       sum: item.budget
     });
     setOpen(true);
+  };
+
+  const deleteBudget = item => {
+    const tempObject = {
+      ...categories,
+      [item.category]: ""
+    };
+    const reqBody = {
+      expensesCategories: tempObject
+    };
+    axios
+      .post(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`,
+        reqBody
+      )
+      .then(res => {
+        handleSubmit();
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   const handleSubmit = () => {
@@ -133,7 +155,12 @@ const BudgetPage = () => {
           />
           {budgetData &&
             budgetData.map((item, id) => (
-              <BudgetBar key={id} data={item} editBudget={editBudget} />
+              <BudgetBar
+                key={id}
+                data={item}
+                editBudget={editBudget}
+                deleteBudget={deleteBudget}
+              />
             ))}
         </>
       )}
