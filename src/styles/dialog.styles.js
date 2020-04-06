@@ -24,5 +24,8 @@ export const dialogStyles = theme => ({
   },
   button: {
     minWidth: "20%"
+  },
+  budgetField: {
+    margin: 8
   }
 });

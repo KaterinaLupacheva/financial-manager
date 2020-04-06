@@ -24,6 +24,7 @@ const BudgetPage = () => {
   const [fetchedCategories, doFetchCategories] = useFetchData("");
   const [fetchedCurMonthExpenses, doFetchCurMonthExpenses] = useFetchData("");
   const [budgetData, setBudgetData] = useState(null);
+  const [emptyCategories, setEmptyCategories] = useState(null);
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
@@ -72,6 +73,7 @@ const BudgetPage = () => {
 
       //create data for budget
       let tempData = [];
+      let tempEmptyCategories = [];
       categoriesNames.forEach((category, idx) => {
         if (categories[category]) {
           tempData.push({
@@ -80,9 +82,12 @@ const BudgetPage = () => {
             budget: categories[category],
             barColor: colorsForCharts[idx]
           });
+        } else {
+          tempEmptyCategories.push(category);
         }
       });
       setBudgetData(tempData);
+      setEmptyCategories(tempEmptyCategories);
     }
   }, [
     fetchedCurMonthExpenses.data,
@@ -104,7 +109,11 @@ const BudgetPage = () => {
           >
             <Typography>{"Add new budget"}</Typography>
           </StyledButton>
-          <BudgetDialog open={open} handleClose={handleClose} />
+          <BudgetDialog
+            open={open}
+            handleClose={handleClose}
+            categories={emptyCategories}
+          />
           {budgetData &&
             budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
         </>

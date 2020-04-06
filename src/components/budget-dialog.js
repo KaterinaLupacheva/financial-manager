@@ -14,39 +14,19 @@ import {
   MenuItem,
   Box
 } from "@material-ui/core";
-import { CATEGORIES } from "../utils/categories";
 import axios from "axios";
 
 const useStyles = makeStyles(dialogStyles);
 
-const BudgetDialog = ({ open, handleClose }) => {
+const BudgetDialog = ({ open, handleClose, categories }) => {
   const INITIAL_STATE = {
-    view: "expenses",
-    date: new Date(),
     sum: "",
-    details: "",
     category: ""
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
 
-  const props = { bgcolor: state.view };
-
-  const classes = useStyles(props);
-
-  const handleViewChange = (event, newView) => {
-    setState({
-      ...state,
-      view: newView
-    });
-  };
-
-  const handleDateChange = event => {
-    setState({
-      ...state,
-      date: event
-    });
-  };
+  const classes = useStyles();
 
   const handleChange = event => {
     setState({
@@ -60,10 +40,6 @@ const BudgetDialog = ({ open, handleClose }) => {
     let valid = true;
     if (state.sum.trim() === "") {
       err.sum = "Must not be empty";
-      valid = false;
-    }
-    if (state.details.trim() === "") {
-      err.details = "Must not be empty";
       valid = false;
     }
     if (state.category.trim() === "") {
@@ -120,24 +96,25 @@ const BudgetDialog = ({ open, handleClose }) => {
           <DialogContent>
             <Box
               display="flex"
-              flexDirection="column"
-              // alignItems="center"
-              // justifyContent="space-between"
+              alignItems="center"
+              alignItems="baseline"
+              justifyContent="space-between"
+              flexWrap="wrap"
             >
               <TextField
                 autoFocus
                 margin="normal"
-                name="budget"
+                name="sum"
                 label="Budget"
                 value={state.sum}
                 type="number"
                 step="0.01"
                 required={true}
-                size="small"
+                // size="small"
                 helperText={errors.sum}
                 error={errors.sum ? true : false}
                 onChange={handleChange}
-                className={classes.sumField}
+                className={classes.budgetField}
               />
               <FormControl required className={classes.formControl}>
                 <InputLabel>Category</InputLabel>
@@ -148,17 +125,12 @@ const BudgetDialog = ({ open, handleClose }) => {
                   onChange={handleChange}
                   className={classes.selectEmpty}
                 >
-                  {state.view === "expenses"
-                    ? CATEGORIES.expenses.map((cat, id) => (
-                        <MenuItem value={cat} key={id}>
-                          {cat}
-                        </MenuItem>
-                      ))
-                    : CATEGORIES.income.map((cat, id) => (
-                        <MenuItem value={cat} key={id}>
-                          {cat}
-                        </MenuItem>
-                      ))}
+                  {categories &&
+                    categories.map((cat, id) => (
+                      <MenuItem value={cat} key={id}>
+                        {cat}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Box>
