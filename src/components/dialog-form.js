@@ -59,6 +59,7 @@ const DialogForm = ({ open, handleClose }) => {
   };
 
   const handleChange = event => {
+    console.log(event.target.value);
     setState({
       ...state,
       [event.target.name]: event.target.value
@@ -211,6 +212,7 @@ const DialogForm = ({ open, handleClose }) => {
                   onChange={handleChange}
                   className={classes.selectEmpty}
                 >
+                  <MenuItem value={"custom"}></MenuItem>
                   {state.view === "expenses"
                     ? CATEGORIES.expenses.map((cat, id) => (
                         <MenuItem value={cat} key={id}>

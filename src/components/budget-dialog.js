@@ -32,7 +32,7 @@ const BudgetDialog = ({
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
-  const { categories, setCategories } = useContext(ExpensesCategoriesContext);
+  const { categories } = useContext(ExpensesCategoriesContext);
 
   const classes = useStyles();
 

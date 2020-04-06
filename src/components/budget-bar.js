@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { budgetBarStyles } from "../styles/budgetBar.styles";
@@ -8,6 +7,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import CustomProgressBar from "../components/custom-progress-bar";
 
 const useStyles = makeStyles(budgetBarStyles);
 
@@ -36,12 +36,7 @@ const BudgetBar = ({ data, editBudget, deleteBudget }) => {
         </div>
       </div>
       <div className={classes.barWithIcons}>
-        <LinearProgress
-          className={`${classes.root} ${classes.bar}`}
-          variant="determinate"
-          value={completed}
-          color="secondary"
-        />
+        <CustomProgressBar bgcolor={data.barColor} percentage={completed} />
         <Tooltip title="Edit">
           <IconButton aria-label="edit" onClick={() => editBudget(data)}>
             <CreateIcon />
