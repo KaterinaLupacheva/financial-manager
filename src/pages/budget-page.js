@@ -138,7 +138,13 @@ const BudgetPage = () => {
       {fetchedCategories.isError || fetchedCurMonthExpenses.isError ? (
         <div>Something went wrong...</div>
       ) : (
-        <>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
           <StyledButton
             variant="contained"
             bgcolor={theme.palette.secondary.lightBg}
@@ -162,7 +168,7 @@ const BudgetPage = () => {
                 deleteBudget={deleteBudget}
               />
             ))}
-        </>
+        </div>
       )}
       <SimpleBackdrop
         open={
