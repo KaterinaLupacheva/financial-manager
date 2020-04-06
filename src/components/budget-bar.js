@@ -36,7 +36,10 @@ const BudgetBar = ({ data, editBudget, deleteBudget }) => {
         </div>
       </div>
       <div className={classes.barWithIcons}>
-        <CustomProgressBar bgcolor={data.barColor} percentage={completed} />
+        <CustomProgressBar
+          bgcolor={data.barColor}
+          percentage={completed.toFixed(0)}
+        />
         <Tooltip title="Edit">
           <IconButton aria-label="edit" onClick={() => editBudget(data)}>
             <CreateIcon />
