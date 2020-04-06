@@ -11,7 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(budgetBarStyles);
 
-const BudgetBar = ({ data }) => {
+const BudgetBar = ({ data, editBudget }) => {
   const props = { bgcolor: data.barColor };
   const classes = useStyles(props);
   const [completed, setCompleted] = useState(0);
@@ -43,7 +43,7 @@ const BudgetBar = ({ data }) => {
           color="secondary"
         />
         <Tooltip title="Edit">
-          <IconButton aria-label="edit">
+          <IconButton aria-label="edit" onClick={() => editBudget(data)}>
             <CreateIcon />
           </IconButton>
         </Tooltip>

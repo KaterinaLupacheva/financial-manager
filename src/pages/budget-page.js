@@ -26,6 +26,7 @@ const BudgetPage = () => {
   const [budgetData, setBudgetData] = useState(null);
   const [emptyCategories, setEmptyCategories] = useState(null);
   const [open, setOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
 
   const handleClick = () => {
     setOpen(true);
@@ -33,6 +34,19 @@ const BudgetPage = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const editBudget = item => {
+    setEditData({
+      ...editData,
+      category: item.category,
+      sum: item.budget
+    });
+    setOpen(true);
+  };
+
+  const handleSubmit = () => {
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -55,6 +69,7 @@ const BudgetPage = () => {
         setCurrentMonthExpenses(fetchedCurMonthExpenses.data);
       }
     };
+
     if (!categories) {
       fetchCategories();
     }
@@ -113,9 +128,13 @@ const BudgetPage = () => {
             open={open}
             handleClose={handleClose}
             emptyCategories={emptyCategories}
+            editData={editData}
+            handleSubmit={handleSubmit}
           />
           {budgetData &&
-            budgetData.map((item, id) => <BudgetBar key={id} data={item} />)}
+            budgetData.map((item, id) => (
+              <BudgetBar key={id} data={item} editBudget={editBudget} />
+            ))}
         </>
       )}
       <SimpleBackdrop

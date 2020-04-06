@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -19,7 +19,13 @@ import { ExpensesCategoriesContext } from "../contexts/expensesCategories.contex
 
 const useStyles = makeStyles(dialogStyles);
 
-const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
+const BudgetDialog = ({
+  open,
+  handleClose,
+  emptyCategories,
+  editData,
+  handleSubmit
+}) => {
   const INITIAL_STATE = {
     sum: "",
     category: ""
@@ -62,10 +68,19 @@ const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
   };
 
   const saveData = () => {
-    const tempObject = {
-      ...categories,
-      [state.category]: state.sum
-    };
+    let tempObject = {};
+    if (editData) {
+      tempObject = {
+        ...categories,
+        [editData.category]: "",
+        [state.category]: state.sum
+      };
+    } else {
+      tempObject = {
+        ...categories,
+        [state.category]: state.sum
+      };
+    }
     const reqBody = {
       expensesCategories: tempObject
     };
@@ -75,10 +90,7 @@ const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
         reqBody
       )
       .then(res => {
-        setCategories({
-          ...categories,
-          [state.category]: state.sum
-        });
+        handleSubmit();
       })
       .catch(err => {
         console.error(err);
@@ -91,6 +103,16 @@ const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
     handleClose();
   };
 
+  useEffect(() => {
+    if (editData) {
+      setState({
+        ...state,
+        sum: editData.sum,
+        category: editData.category
+      });
+    }
+  }, [editData]);
+
   return (
     <div>
       <Dialog
@@ -99,7 +121,9 @@ const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
         aria-labelledby="form-dialog-title"
         maxWidth="xl"
       >
-        <DialogTitle id="form-dialog-title">Add budget</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          {editData ? "Edit budget" : "Add budget"}
+        </DialogTitle>
         <form noValidate onSubmit={handleFormSubmit}>
           <DialogContent>
             <Box
@@ -131,6 +155,11 @@ const BudgetDialog = ({ open, handleClose, emptyCategories }) => {
                   onChange={handleChange}
                   className={classes.selectEmpty}
                 >
+                  {editData && (
+                    <MenuItem value={editData.category}>
+                      {editData.category}
+                    </MenuItem>
+                  )}
                   {emptyCategories &&
                     emptyCategories.map((cat, id) => (
                       <MenuItem value={cat} key={id}>
