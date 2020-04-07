@@ -25,7 +25,6 @@ import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
 import SelectWithAddOption from "../components/select-with-add-option";
-import FreeSoloCreateOptionDialog from "../components/autocomplete";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -204,8 +203,9 @@ const DialogForm = ({ open, handleClose }) => {
                 onChange={handleChange}
                 className={classes.detailsField}
               />
-              {/* <SelectWithAddOption /> */}
-              <FreeSoloCreateOptionDialog />
+              <SelectWithAddOption
+                isExpenses={state.view === "expenses" ? true : false}
+              />
 
               {/* <FormControl required className={classes.formControl}>
                 <InputLabel>Category</InputLabel>
