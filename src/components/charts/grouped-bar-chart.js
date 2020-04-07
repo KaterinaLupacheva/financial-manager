@@ -15,14 +15,14 @@ const GroupedBarChart = ({ incomesDataForChart, expensesDataForChart }) => {
     datasets: [
       {
         label: "Incomes",
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.secondary.lightBg,
         hoverBackgroundColor: theme.palette.primary.dark,
         data: incomesDataForChart.incomes
       },
 
       {
         label: "Expenses",
-        backgroundColor: theme.palette.secondary.light,
+        backgroundColor: theme.palette.secondary.palePink,
         hoverBackgroundColor: theme.palette.secondary.dark,
         data: expensesDataForChart.expenses
       }
