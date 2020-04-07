@@ -25,6 +25,7 @@ import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
 import { formatFromDDMMYYYY } from "../utils/date.utils";
+import SelectWithAddOption from "../components/select-with-add-option";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -183,12 +184,10 @@ const EditForm = ({ open, handleClose, rowData }) => {
             </Box>
             <Box
               display="flex"
-              alignItems="baseline"
-              width="40vw"
+              alignItems="center"
               justifyContent="space-between"
             >
               <TextField
-                margin="normal"
                 name="details"
                 label="Exp / Inc"
                 type="text"
@@ -199,29 +198,9 @@ const EditForm = ({ open, handleClose, rowData }) => {
                 onChange={handleChange}
                 className={classes.detailsField}
               />
-
-              <FormControl required className={classes.formControl}>
-                <InputLabel>Category</InputLabel>
-                <Select
-                  name="category"
-                  value={state.category}
-                  error={errors.category ? true : false}
-                  onChange={handleChange}
-                  className={classes.selectEmpty}
-                >
-                  {state.view === "expenses"
-                    ? CATEGORIES.expenses.map((cat, id) => (
-                        <MenuItem value={cat} key={id}>
-                          {cat}
-                        </MenuItem>
-                      ))
-                    : CATEGORIES.income.map((cat, id) => (
-                        <MenuItem value={cat} key={id}>
-                          {cat}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl>
+              <SelectWithAddOption
+                isExpenses={state.view === "expenses" ? true : false}
+              />
             </Box>
           </DialogContent>
           <DialogActions className={classes.buttons}>
