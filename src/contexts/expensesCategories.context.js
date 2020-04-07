@@ -3,13 +3,13 @@ import React, { useState, createContext } from "react";
 export const ExpensesCategoriesContext = createContext({});
 
 export const ExpensesCategoriesContextProvider = ({ children }) => {
-  const [categories, setCategories] = useState(null);
+  const [expensesCategories, setExpensesCategories] = useState(null);
 
   return (
     <ExpensesCategoriesContext.Provider
       value={{
-        categories,
-        setCategories
+        expensesCategories,
+        setExpensesCategories
       }}
     >
       {children}

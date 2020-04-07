@@ -18,7 +18,9 @@ import axios from "axios";
 
 const BudgetPage = () => {
   const theme = useTheme();
-  const { categories, setCategories } = useContext(ExpensesCategoriesContext);
+  const { expensesCategories, setExpensesCategories } = useContext(
+    ExpensesCategoriesContext
+  );
   const { currentMonthExpenses, setCurrentMonthExpenses } = useContext(
     CurrentMonthExpensesContext
   );
@@ -48,7 +50,7 @@ const BudgetPage = () => {
 
   const deleteBudget = item => {
     const tempObject = {
-      ...categories,
+      ...expensesCategories,
       [item.category]: ""
     };
     const reqBody = {
@@ -72,12 +74,12 @@ const BudgetPage = () => {
   };
 
   useEffect(() => {
-    const fetchCategories = () => {
+    const fetchExpensesCategories = () => {
       doFetchCategories(
         `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`
       );
       if (fetchedCategories.data) {
-        setCategories(fetchedCategories.data.expensesCategories);
+        setExpensesCategories(fetchedCategories.data.expensesCategories);
       }
     };
 
@@ -92,19 +94,20 @@ const BudgetPage = () => {
       }
     };
 
-    if (!categories) {
-      fetchCategories();
+    if (!expensesCategories) {
+      fetchExpensesCategories();
     }
     if (!currentMonthExpenses) {
       fetchCurrentMonthExpenses();
     }
 
-    if (categories && currentMonthExpenses) {
-      //get all categories names
-      // const categoriesNames = Object.keys(fetchedCategories.data.expensesCategories);
+    if (expensesCategories && currentMonthExpenses) {
+      const categoriesNames = Object.keys(
+        fetchedCategories.data.expensesCategories
+      );
 
       //DELETE
-      const categoriesNames = CATEGORIES.expenses;
+      // const categoriesNames = CATEGORIES.expenses;
 
       const sumPerCategory = sumPerCatogyForCurMonth(currentMonthExpenses);
 
@@ -112,11 +115,11 @@ const BudgetPage = () => {
       let tempData = [];
       let tempEmptyCategories = [];
       categoriesNames.forEach((category, idx) => {
-        if (categories[category]) {
+        if (expensesCategories[category]) {
           tempData.push({
             category,
             spent: sumPerCategory[category] ? sumPerCategory[category] : 0,
-            budget: categories[category],
+            budget: expensesCategories[category],
             barColor: colorsForCharts[idx]
           });
         } else {
@@ -129,7 +132,7 @@ const BudgetPage = () => {
   }, [
     fetchedCurMonthExpenses.data,
     fetchedCategories.data,
-    categories,
+    expensesCategories,
     currentMonthExpenses
   ]);
 
