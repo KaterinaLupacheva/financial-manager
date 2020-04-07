@@ -24,6 +24,8 @@ import { CATEGORIES } from "../utils/categories";
 import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
+import SelectWithAddOption from "../components/select-with-add-option";
+import FreeSoloCreateOptionDialog from "../components/autocomplete";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -202,8 +204,10 @@ const DialogForm = ({ open, handleClose }) => {
                 onChange={handleChange}
                 className={classes.detailsField}
               />
+              {/* <SelectWithAddOption /> */}
+              <FreeSoloCreateOptionDialog />
 
-              <FormControl required className={classes.formControl}>
+              {/* <FormControl required className={classes.formControl}>
                 <InputLabel>Category</InputLabel>
                 <Select
                   name="category"
@@ -225,7 +229,7 @@ const DialogForm = ({ open, handleClose }) => {
                         </MenuItem>
                       ))}
                 </Select>
-              </FormControl>
+              </FormControl> */}
             </Box>
           </DialogContent>
           <DialogActions className={classes.buttons}>

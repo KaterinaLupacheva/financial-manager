@@ -121,22 +121,26 @@ const MonthPage = () => {
             </div>
           </StyledCardContent>
         </StyledCard>
-        <StyledCard
-          variant="outlined"
-          bgcolor={
-            calculateResult() >= 0
-              ? theme.palette.secondary.lightBg
-              : theme.palette.secondary.palePink
-          }
-        >
-          <StyledCardContent>
-            <ExposureRoundedIcon fontSize="large" />
-            <div style={{ padding: "10px", margin: "0 auto" }}>
-              <Typography variant="subtitle1">{`Net month result`}</Typography>
-              <Typography variant="h4">{`${calculateResult()}`}</Typography>
-            </div>
-          </StyledCardContent>
-        </StyledCard>
+        {isLoadingExpenses || isLoadingIncome ? (
+          ""
+        ) : (
+          <StyledCard
+            variant="outlined"
+            bgcolor={
+              calculateResult() >= 0
+                ? theme.palette.secondary.lightBg
+                : theme.palette.secondary.palePink
+            }
+          >
+            <StyledCardContent>
+              <ExposureRoundedIcon fontSize="large" />
+              <div style={{ padding: "10px", margin: "0 auto" }}>
+                <Typography variant="subtitle1">{`Net month result`}</Typography>
+                <Typography variant="h4">{`${calculateResult()}`}</Typography>
+              </div>
+            </StyledCardContent>
+          </StyledCard>
+        )}
       </Box>
       <MonthExpensesContext.Provider
         value={{
