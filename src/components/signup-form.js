@@ -26,7 +26,10 @@ const SignupForm = props => {
     };
 
     axios
-      .post("/signup", newUserData)
+      .post(
+        "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/signup",
+        newUserData
+      )
       .then(res => {
         setUser(res.data.token);
       })
