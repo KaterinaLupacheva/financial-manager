@@ -7,7 +7,6 @@ import {
   sumPerCatogyForCurMonth,
   colorsForCharts
 } from "../utils/transform-data.utils";
-import { CATEGORIES } from "../utils/categories";
 import BudgetBar from "../components/budget-bar";
 import BudgetDialog from "../components/budget-dialog";
 import { Typography } from "@material-ui/core";
@@ -102,12 +101,7 @@ const BudgetPage = () => {
     }
 
     if (expensesCategories && currentMonthExpenses) {
-      const categoriesNames = Object.keys(
-        fetchedCategories.data.expensesCategories
-      );
-
-      //DELETE
-      // const categoriesNames = CATEGORIES.expenses;
+      const categoriesNames = Object.keys(expensesCategories);
 
       const sumPerCategory = sumPerCatogyForCurMonth(currentMonthExpenses);
 

@@ -13,14 +13,7 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { dialogStyles } from "../styles/dialog.styles";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box
-} from "@material-ui/core";
-import { CATEGORIES } from "../utils/categories";
+import { Box } from "@material-ui/core";
 import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
@@ -188,11 +181,10 @@ const DialogForm = ({ open, handleClose }) => {
             </Box>
             <Box
               display="flex"
-              alignItems="baseline"
+              alignItems="center"
               justifyContent="space-between"
             >
               <TextField
-                margin="normal"
                 name="details"
                 label="Exp / Inc"
                 type="text"
@@ -206,30 +198,6 @@ const DialogForm = ({ open, handleClose }) => {
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}
               />
-
-              {/* <FormControl required className={classes.formControl}>
-                <InputLabel>Category</InputLabel>
-                <Select
-                  name="category"
-                  value={state.category}
-                  error={errors.category ? true : false}
-                  onChange={handleChange}
-                  className={classes.selectEmpty}
-                >
-                  <MenuItem value={"custom"}></MenuItem>
-                  {state.view === "expenses"
-                    ? CATEGORIES.expenses.map((cat, id) => (
-                        <MenuItem value={cat} key={id}>
-                          {cat}
-                        </MenuItem>
-                      ))
-                    : CATEGORIES.income.map((cat, id) => (
-                        <MenuItem value={cat} key={id}>
-                          {cat}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl> */}
             </Box>
           </DialogContent>
           <DialogActions className={classes.buttons}>

@@ -9,9 +9,16 @@ import Button from "@material-ui/core/Button";
 import Autocomplete, {
   createFilterOptions
 } from "@material-ui/lab/Autocomplete";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box
+} from "@material-ui/core";
 import axios from "axios";
 import { ExpensesCategoriesContext } from "../contexts/expensesCategories.context";
+import useFetchData from "../hooks/useFetchData";
 
 const filter = createFilterOptions();
 
@@ -19,9 +26,12 @@ const SelectWithAddOption = ({ isExpenses }) => {
   const [value, setValue] = useState(null);
   const [open, toggleOpen] = useState(false);
   const [errors, setErrors] = useState({});
+  const [fetchedCategories, doFetchCategories] = useFetchData("");
   const [expensesOptions, setExpensesOptions] = useState([]);
   const [incomesOptions, setIncomesOptions] = useState([]);
-  const { expensesCategories } = useContext(ExpensesCategoriesContext);
+  const { expensesCategories, setExpensesCategories } = useContext(
+    ExpensesCategoriesContext
+  );
 
   const handleClose = () => {
     setDialogValue({
@@ -95,9 +105,18 @@ const SelectWithAddOption = ({ isExpenses }) => {
   };
 
   useEffect(() => {
+    const fetchCategories = () => {
+      doFetchCategories(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`
+      );
+      if (fetchedCategories.data) {
+        setExpensesCategories(fetchedCategories.data.expensesCategories);
+      }
+    };
+
     const getExpensesOptions = () => {
       let result = [];
-      for (let key of Object.keys(expensesCategories)) {
+      for (let key of Object.keys(fetchedCategories.data.expensesCategories)) {
         result.push({
           category: key,
           type: "expenses"
@@ -107,11 +126,22 @@ const SelectWithAddOption = ({ isExpenses }) => {
     };
 
     const getIncomesOptions = () => {
-      //TODO implementation
+      let result = [];
+      for (let key of Object.keys(fetchedCategories.data.incomesCategories)) {
+        result.push({
+          category: key,
+          type: "incomes"
+        });
+      }
+      setIncomesOptions(result);
     };
 
-    getExpensesOptions();
-  }, []);
+    fetchCategories();
+    if (fetchedCategories.data) {
+      getExpensesOptions();
+      getIncomesOptions();
+    }
+  }, [fetchedCategories.data]);
 
   return (
     <>
@@ -157,7 +187,6 @@ const SelectWithAddOption = ({ isExpenses }) => {
           return filtered;
         }}
         id="free-solo"
-        // options={CATEGORIES.expenses}
         options={isExpenses ? expensesOptions : incomesOptions}
         getOptionLabel={option => {
           // e.g value selected with enter, right from the input
@@ -170,7 +199,7 @@ const SelectWithAddOption = ({ isExpenses }) => {
           return option.category;
         }}
         renderOption={option => option.category}
-        style={{ width: 300 }}
+        style={{ width: 195, margin: "5px 0 0 20px" }}
         freeSolo
         renderInput={params => <TextField {...params} label="Category" />}
       />
@@ -185,43 +214,48 @@ const SelectWithAddOption = ({ isExpenses }) => {
             <DialogContentText>
               Did you miss any category in our list? Please, add it!
             </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              value={dialogValue.category}
-              helperText={errors.category}
-              error={errors.category ? true : false}
-              onChange={event =>
-                setDialogValue({ ...dialogValue, category: event.target.value })
-              }
-              label="Category"
-              type="text"
-            />
-            <FormControl
-              required
-              // className={classes.formControl}
+            <Box
+              display="flex"
+              alignItems="baseline"
+              justifyContent="space-between"
             >
-              <InputLabel>Type</InputLabel>
-              <Select
-                name="type"
-                label="Type"
-                value={dialogValue.type}
-                helperText={errors.type}
-                error={errors.type ? true : false}
+              <TextField
+                autoFocus
+                required={true}
+                id="name"
+                value={dialogValue.category}
+                helperText={errors.category}
+                error={errors.category ? true : false}
                 onChange={event =>
-                  setDialogValue({ ...dialogValue, type: event.target.value })
+                  setDialogValue({
+                    ...dialogValue,
+                    category: event.target.value
+                  })
                 }
-                //   className={classes.selectEmpty}
-              >
-                <MenuItem value="expenses" key="1">
-                  {"Expenses"}
-                </MenuItem>
-                <MenuItem value="Income" key="2">
-                  {"Income"}
-                </MenuItem>
-              </Select>
-            </FormControl>
+                label="Category"
+                type="text"
+              />
+              <FormControl required style={{ minWidth: 180 }}>
+                <InputLabel>Type</InputLabel>
+                <Select
+                  name="type"
+                  label="Type"
+                  value={dialogValue.type}
+                  error={errors.type ? true : false}
+                  onChange={event =>
+                    setDialogValue({ ...dialogValue, type: event.target.value })
+                  }
+                  //   className={classes.selectEmpty}
+                >
+                  <MenuItem value="expenses" key="1">
+                    {"Expenses"}
+                  </MenuItem>
+                  <MenuItem value="Income" key="2">
+                    {"Income"}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
