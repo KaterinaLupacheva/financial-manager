@@ -32,7 +32,7 @@ const BudgetDialog = ({
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
-  const { categories } = useContext(ExpensesCategoriesContext);
+  const { expensesCategories } = useContext(ExpensesCategoriesContext);
 
   const classes = useStyles();
 
@@ -71,13 +71,13 @@ const BudgetDialog = ({
     let tempObject = {};
     if (editData) {
       tempObject = {
-        ...categories,
+        ...expensesCategories,
         [editData.category]: "",
         [state.category]: state.sum
       };
     } else {
       tempObject = {
-        ...categories,
+        ...expensesCategories,
         [state.category]: state.sum
       };
     }

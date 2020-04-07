@@ -21,7 +21,7 @@ const SelectWithAddOption = ({ isExpenses }) => {
   const [errors, setErrors] = useState({});
   const [expensesOptions, setExpensesOptions] = useState([]);
   const [incomesOptions, setIncomesOptions] = useState([]);
-  const { categories } = useContext(ExpensesCategoriesContext);
+  const { expensesCategories } = useContext(ExpensesCategoriesContext);
 
   const handleClose = () => {
     setDialogValue({
@@ -68,7 +68,7 @@ const SelectWithAddOption = ({ isExpenses }) => {
   const saveData = () => {
     let tempObject = {};
     tempObject = {
-      ...categories,
+      ...expensesCategories,
       [dialogValue.category]: ""
     };
     let reqBody = {};
@@ -97,7 +97,7 @@ const SelectWithAddOption = ({ isExpenses }) => {
   useEffect(() => {
     const getExpensesOptions = () => {
       let result = [];
-      for (let key of Object.keys(categories)) {
+      for (let key of Object.keys(expensesCategories)) {
         result.push({
           category: key,
           type: "expenses"
