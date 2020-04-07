@@ -77,16 +77,20 @@ const SelectWithAddOption = ({ isExpenses }) => {
 
   const saveData = () => {
     let tempObject = {};
-    tempObject = {
-      ...expensesCategories,
-      [dialogValue.category]: ""
-    };
     let reqBody = {};
     if (dialogValue.type === "expenses") {
+      tempObject = {
+        ...expensesCategories,
+        [dialogValue.category]: ""
+      };
       reqBody = {
         expensesCategories: tempObject
       };
     } else {
+      tempObject = {
+        ...fetchedCategories.data.incomesCategories,
+        [dialogValue.category]: ""
+      };
       reqBody = {
         incomesCategories: tempObject
       };

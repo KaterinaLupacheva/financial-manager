@@ -13,14 +13,7 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
 import { dialogStyles } from "../styles/dialog.styles";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box
-} from "@material-ui/core";
-import { CATEGORIES } from "../utils/categories";
+import { Box } from "@material-ui/core";
 import axios from "axios";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
