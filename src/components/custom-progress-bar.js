@@ -9,7 +9,7 @@ const CustomProgressBar = ({ bgcolor, percentage }) => {
       percentage={percentage}
     >
       <div className="filler">
-        <span>{`${percentage}%`}</span>
+        <span>{percentage}</span>
       </div>
     </ProgressBarContainer>
   );

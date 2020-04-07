@@ -14,7 +14,7 @@ export const ProgressBarContainer = styled.div`
     height: 100%;
     border-radius: inherit;
     transition: width 0.5s ease-in;
-    width: ${props => (props.percentage ? `${props.percentage}%` : `0%`)};
+    width: ${props => (props.percentage ? `${props.percentage}` : `0%`)};
     text-align: right;
 
     span {
