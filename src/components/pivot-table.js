@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { createHeadCells } from "../utils/transform-data.utils";
 import { getMonthsNames } from "../utils/date.utils";
+import {pivotTableStyles} from '../styles/pivot-table.styles';
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
@@ -73,39 +74,7 @@ const EnhancedTableHead = props => {
   );
 };
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%"
-  },
-  paper: {
-    width: "100%",
-    marginBottom: theme.spacing(2)
-  },
-  table: {
-    minWidth: 750
-  },
-  headStyle: {
-    backgroundColor: theme.palette.primary.darkPurpleBg
-  },
-  headCellStyle: {
-    color: "#FFF",
-    fontWeight: "bold"
-  },
-  title: {
-    padding: "30px"
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1
-  }
-}));
+const useStyles = makeStyles(pivotTableStyles);
 
 const PivotTable = ({ rows }) => {
   const classes = useStyles();
