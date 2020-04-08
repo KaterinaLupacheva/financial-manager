@@ -25,6 +25,8 @@ const MonthPage = () => {
   const [isLoadingIncome, setIsLoadingIncome] = useState(false);
 
   const changeDate = newMonth => {
+    setExpensesData(null);
+    setIncomeData(null);
     setMonth(newMonth);
   };
 
@@ -154,20 +156,21 @@ const MonthPage = () => {
             fetchIncome
           }}
         >
-          {expensesData ? (
+          {expensesData && incomeData && (!isLoadingExpenses || !isLoadingIncome) && (
+            <>
             <ExpansionTable isExpenses={true} />
-          ) : (
+            <ExpansionTable isExpenses={false} />
+            </>
+          )} 
+          {!expensesData && (!isLoadingExpenses && !isLoadingIncome) && (
             <Typography color="error" gutterBottom={true} variant="h4">
               {"No expenses data"}
-            </Typography>
-          )}
-          {incomeData ? (
-            <ExpansionTable isExpenses={false} />
-          ) : (
-            <Typography color="error" variant="h4">
+            </Typography>)
+            }
+            {!incomeData && (!isLoadingExpenses && !isLoadingIncome) &&
+             (<Typography color="error" variant="h4">
               {"No income data"}
-            </Typography>
-          )}
+            </Typography>)}
           <FloatingAddButton />
         </MonthIncomeContext.Provider>
       </MonthExpensesContext.Provider>
