@@ -12,7 +12,7 @@ import MonthIncomeContext from "../contexts/monthIncome.context";
 import SimpleBackdrop from "../components/simple-backdrop";
 import TodayIcon from "@material-ui/icons/Today";
 import ExposureRoundedIcon from "@material-ui/icons/ExposureRounded";
-import { StyledCard, StyledCardContent } from "../styles/card.styles";
+import { TopBarContainer, StyledCard, StyledCardContent, CardInside } from "../styles/card.styles";
 import { useTheme } from "@material-ui/core/styles";
 
 const MonthPage = () => {
@@ -106,21 +106,14 @@ const MonthPage = () => {
 
   return (
     <div>
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-start"
-        alignItems="center"
-        marginBottom="40px"
-        marginLeft="40px"
-      >
+      <TopBarContainer>
         <StyledCard variant="outlined" bgcolor={theme.palette.primary.main}>
           <StyledCardContent>
             <TodayIcon fontSize="large" />
-            <div style={{ padding: "10px", margin: "0 auto" }}>
+            <CardInside>
               <Typography variant="subtitle1">{`Chose month`}</Typography>
               <CustomDatePicker changeDate={changeDate} />
-            </div>
+            </CardInside>
           </StyledCardContent>
         </StyledCard>
         {isLoadingExpenses || isLoadingIncome ? (
@@ -136,14 +129,14 @@ const MonthPage = () => {
           >
             <StyledCardContent>
               <ExposureRoundedIcon fontSize="large" />
-              <div style={{ padding: "10px", margin: "0 auto" }}>
+              <CardInside>
                 <Typography variant="subtitle1">{`Net month result`}</Typography>
                 <Typography variant="h4">{`${calculateResult()}`}</Typography>
-              </div>
+              </CardInside>
             </StyledCardContent>
           </StyledCard>
         )}
-      </Box>
+      </TopBarContainer>
       <MonthExpensesContext.Provider
         value={{
           expensesData,
