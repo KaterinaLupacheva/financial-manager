@@ -32,3 +32,36 @@ exports.addExpenses = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
+
+exports.addIncomes = (req, res) => {
+  const data = {
+    date: req.body.date,
+    newIncome: {
+      id: req.body.id,
+      date: req.body.incomeDate,
+      sum: req.body.sum,
+      details: req.body.details,
+      category: req.body.category,
+    },
+  };
+
+  let docPath = `${req.user.email}_${data.date}`;
+
+  db.collection("data")
+    .doc(docPath)
+    .set(
+      {
+        date: data.date,
+        email: req.user.email,
+        incomes: admin.firestore.FieldValue.arrayUnion(data.newIncome),
+      },
+      { merge: true }
+    )
+    .then(() => {
+      return res.json({ message: "Income added successfully" });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
