@@ -2,6 +2,7 @@ const { admin, db } = require("../util/admin");
 
 exports.addExpenses = (req, res) => {
   const data = {
+    docId: req.body.docId,
     date: req.body.date,
     newExpense: {
       id: req.body.id,
@@ -12,7 +13,7 @@ exports.addExpenses = (req, res) => {
     },
   };
 
-  let docPath = `${req.user.email}_${data.date}`;
+  let docPath = `${req.user.email}_${data.docId}`;
 
   db.collection("data")
     .doc(docPath)
@@ -35,6 +36,7 @@ exports.addExpenses = (req, res) => {
 
 exports.addIncomes = (req, res) => {
   const data = {
+    docId: req.body.docId,
     date: req.body.date,
     newIncome: {
       id: req.body.id,
@@ -45,7 +47,7 @@ exports.addIncomes = (req, res) => {
     },
   };
 
-  let docPath = `${req.user.email}_${data.date}`;
+  let docPath = `${req.user.email}_${data.docId}`;
 
   db.collection("data")
     .doc(docPath)
