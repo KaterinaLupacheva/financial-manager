@@ -86,3 +86,16 @@ exports.getMonthData = (req, res) => {
       res.status(500).json({ error: err.code });
     });
 };
+
+exports.updateMonthData = (req, res) => {
+  let docPath = `${req.user.email}_${req.params.month}`;
+  db.doc(`/data/${docPath}`)
+    .update(req.body)
+    .then(() => {
+      return res.json({ message: "Month data updated successfully" });
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
