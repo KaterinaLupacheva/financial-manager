@@ -17,13 +17,13 @@ import {
   Box
 } from "@material-ui/core";
 import axios from "axios";
+import SnackBar from "./snackbar";
 import { ExpensesCategoriesContext } from "../contexts/expensesCategories.context";
 import useFetchData from "../hooks/useFetchData";
 
 const filter = createFilterOptions();
 
 const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
-  const [value, setValue] = useState(initialValue);
   const [open, toggleOpen] = useState(false);
   const [errors, setErrors] = useState({});
   const [fetchedCategories, doFetchCategories] = useFetchData("");
@@ -32,6 +32,8 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
   const { expensesCategories, setExpensesCategories } = useContext(
     ExpensesCategoriesContext
   );
+  const [snackbarIsOpened, openSnackbar] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleClose = () => {
     setDialogValue({
@@ -66,10 +68,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      setValue({
-        category: dialogValue.category,
-        type: dialogValue.type
-      });
+      updatedValue(dialogValue.category);
       saveData();
       handleClose();
     }
@@ -101,7 +100,8 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
         reqBody
       )
       .then(res => {
-        console.log("Success");
+        setMessage(`Category ${dialogValue.category} added`);
+        openSnackbar(true);
       })
       .catch(err => {
         console.error(err);
@@ -139,7 +139,6 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
       }
       setIncomesOptions(result);
     };
-
     fetchCategories();
     if (fetchedCategories.data) {
       getExpensesOptions();
@@ -150,7 +149,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
   return (
     <>
       <Autocomplete
-        value={value}
+        value={initialValue}
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             // timeout to avoid instant validation of the dialog's form.
@@ -176,7 +175,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
             return;
           }
 
-          setValue(newValue);
+          // setValue(newValue);
           if (newValue) {
             updatedValue(newValue.category);
           }
@@ -215,65 +214,76 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <form onSubmit={handleSubmit}>
-          <DialogTitle id="form-dialog-title">Add a new category</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Did you miss any category in our list? Please, add it!
-            </DialogContentText>
-            <Box
-              display="flex"
-              alignItems="baseline"
-              justifyContent="space-between"
-            >
-              <TextField
-                autoFocus
-                required={true}
-                id="name"
-                value={dialogValue.category}
-                helperText={errors.category}
-                error={errors.category ? true : false}
+        {/* <form 
+        onSubmit={handleSubmit}
+        > */}
+        <DialogTitle id="form-dialog-title">Add a new category</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Did you miss any category in our list? Please, add it!
+          </DialogContentText>
+          <Box
+            display="flex"
+            alignItems="baseline"
+            justifyContent="space-between"
+          >
+            <TextField
+              autoFocus
+              required={true}
+              id="name"
+              value={dialogValue.category}
+              helperText={errors.category}
+              error={errors.category ? true : false}
+              onChange={event =>
+                setDialogValue({
+                  ...dialogValue,
+                  category: event.target.value
+                })
+              }
+              label="Category"
+              type="text"
+            />
+            <FormControl required style={{ minWidth: 180 }}>
+              <InputLabel>Type</InputLabel>
+              <Select
+                name="type"
+                label="Type"
+                value={dialogValue.type}
+                error={errors.type ? true : false}
                 onChange={event =>
-                  setDialogValue({
-                    ...dialogValue,
-                    category: event.target.value
-                  })
+                  setDialogValue({ ...dialogValue, type: event.target.value })
                 }
-                label="Category"
-                type="text"
-              />
-              <FormControl required style={{ minWidth: 180 }}>
-                <InputLabel>Type</InputLabel>
-                <Select
-                  name="type"
-                  label="Type"
-                  value={dialogValue.type}
-                  error={errors.type ? true : false}
-                  onChange={event =>
-                    setDialogValue({ ...dialogValue, type: event.target.value })
-                  }
-                  //   className={classes.selectEmpty}
-                >
-                  <MenuItem value="expenses" key="1">
-                    {"Expenses"}
-                  </MenuItem>
-                  <MenuItem value="Income" key="2">
-                    {"Income"}
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button type="submit" color="primary">
-              Add
-            </Button>
-          </DialogActions>
-        </form>
+                //   className={classes.selectEmpty}
+              >
+                <MenuItem value="expenses" key="1">
+                  {"Expenses"}
+                </MenuItem>
+                <MenuItem value="Income" key="2">
+                  {"Income"}
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            // type="submit"
+            onClick={handleSubmit}
+            color="primary"
+          >
+            Add
+          </Button>
+        </DialogActions>
+        {/* </form> */}
       </Dialog>
+      <SnackBar
+        isOpened={snackbarIsOpened}
+        message={message}
+        handleSnackBarClose={() => openSnackbar(false)}
+      />
     </>
   );
 };

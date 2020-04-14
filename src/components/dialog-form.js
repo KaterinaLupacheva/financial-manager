@@ -32,7 +32,6 @@ const DialogForm = ({ open, handleClose }) => {
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
-  const { monthData, setMonthData } = useContext(MonthDataContext);
 
   const props = { bgcolor: state.view };
 
