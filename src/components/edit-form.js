@@ -22,15 +22,15 @@ import SelectWithAddOption from "../components/select-with-add-option";
 
 const useStyles = makeStyles(dialogStyles);
 
-const EditForm = ({ open, handleClose, rowData }) => {
+const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
   const { fetchMonthExpenses } = useContext(MonthExpensesContext);
   const { fetchIncome } = useContext(MonthIncomeContext);
   const INITIAL_STATE = {
-    view: rowData.expenseId ? "expenses" : "incomes",
+    view: isExpenses ? "expenses" : "incomes",
     date: formatFromDDMMYYYY(rowData.date),
     sum: rowData.sum,
     details: rowData.details,
-    category: rowData.category
+    category: rowData.category,
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
@@ -40,21 +40,21 @@ const EditForm = ({ open, handleClose, rowData }) => {
   const handleViewChange = (event, newView) => {
     setState({
       ...state,
-      view: newView
+      view: newView,
     });
   };
 
-  const handleDateChange = event => {
+  const handleDateChange = (event) => {
     setState({
       ...state,
-      date: event
+      date: event,
     });
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setState({
       ...state,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -77,7 +77,7 @@ const EditForm = ({ open, handleClose, rowData }) => {
     return valid;
   };
 
-  const handleFormSubmit = event => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
@@ -86,21 +86,21 @@ const EditForm = ({ open, handleClose, rowData }) => {
     }
   };
 
-  const saveData = state => {
+  const saveData = (state) => {
     const id = state.view === "expenses" ? rowData.expenseId : rowData.incomeId;
     axios
       .put(
         `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}/${id}`,
         state
       )
-      .then(res => {
+      .then((res) => {
         if (state.view === "expenses") {
           fetchMonthExpenses();
         } else {
           fetchIncome();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   };
@@ -157,7 +157,7 @@ const EditForm = ({ open, handleClose, rowData }) => {
                   minDate={new Date("2020-01-01")}
                   maxDate={new Date()}
                   value={state.date}
-                  onChange={e => handleDateChange(e)}
+                  onChange={(e) => handleDateChange(e)}
                 />
               </MuiPickersUtilsProvider>
               <TextField
@@ -193,6 +193,7 @@ const EditForm = ({ open, handleClose, rowData }) => {
               />
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}
+                initialValue={state.category}
               />
             </Box>
           </DialogContent>

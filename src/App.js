@@ -28,7 +28,7 @@ const theme = createMuiTheme({
       complementary: "#C4E7BE",
       errorText: "#ff1744",
       greenBg: "#00bfa5",
-      darkPurpleBg: "#9c27b0"
+      darkPurpleBg: "#9c27b0",
     },
     secondary: {
       main: "#3e3e3B",
@@ -36,9 +36,9 @@ const theme = createMuiTheme({
       ligthBlue: "#BED9E7",
       text: "#EBECED",
       darkBg: "#f06292",
-      lightBg: "#a7ffeb"
-    }
-  }
+      lightBg: "#a7ffeb",
+    },
+  },
 });
 
 const App = () => {
@@ -55,7 +55,7 @@ const App = () => {
     window.location.href = "/";
   };
 
-  const setUser = token => {
+  const setUser = (token) => {
     if (token) {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < Date.now()) {
@@ -83,7 +83,7 @@ const App = () => {
               authenticated,
               email,
               setUser,
-              logoutUser
+              logoutUser,
             }}
           >
             <Sidebar>

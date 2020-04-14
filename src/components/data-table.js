@@ -18,7 +18,7 @@ const Table = ({ isExpenses }) => {
   const [editFormIsOpened, openEditForm] = useState(false);
   const name = isExpenses ? "Expenses" : "Income";
 
-  const handleResponse = res => {
+  const handleResponse = (res) => {
     openConfirmDialog(false);
     let route;
     let id;
@@ -35,12 +35,12 @@ const Table = ({ isExpenses }) => {
         .delete(
           `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${route}/${id}`
         )
-        .then(res => {
+        .then((res) => {
           isExpenses ? fetchExpenses() : fetchIncome();
           setMessage(res.data.message);
           openSnackbar(true);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     }
@@ -54,65 +54,67 @@ const Table = ({ isExpenses }) => {
             {
               title: "Date",
               field: "date",
-              render: rowData => {
+              render: (rowData) => {
                 return rowData.details === "" ? (
                   <span style={{ fontWeight: "bold" }}>{rowData.date}</span>
                 ) : (
                   <span>{rowData.date}</span>
                 );
-              }
+              },
             },
             {
               title: "Sum",
               field: "sum",
-              render: rowData => {
+              render: (rowData) => {
                 return rowData.details === "" ? (
                   <span style={{ fontWeight: "bold" }}>{rowData.sum}</span>
                 ) : (
                   <span>{rowData.sum}</span>
                 );
-              }
+              },
             },
             {
               title: `${name}`,
-              field: "details"
+              field: "details",
             },
             {
               title: "Category",
-              field: "category"
-            }
+              field: "category",
+            },
           ]}
           data={
             isExpenses ? expensesData.combinedArrays : incomeData.combinedArrays
           }
-          parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
+          parentChildData={(row, rows) =>
+            rows.find((a) => a.id === row.parentId)
+          }
           options={{
             toolbar: false,
             paging: false,
             headerStyle: {
               backgroundColor: "#9c27b0",
               color: "#FFF",
-              fontWeight: "bold"
+              fontWeight: "bold",
             },
-            actionsColumnIndex: -1
+            actionsColumnIndex: -1,
           }}
           actions={[
-            rowData => ({
+            (rowData) => ({
               icon: "delete",
               onClick: (event, rowData) => {
                 openConfirmDialog(true);
                 setRowData(rowData);
               },
-              hidden: !rowData.expenseId && !rowData.incomeId
+              hidden: !rowData.parentId,
             }),
-            rowData => ({
+            (rowData) => ({
               icon: "create",
               onClick: (event, rowData) => {
                 setRowData(rowData);
                 openEditForm(true);
               },
-              hidden: !rowData.expenseId && !rowData.incomeId
-            })
+              hidden: !rowData.parentId,
+            }),
           ]}
           style={{ borderBottom: "1px solid black" }}
         />
@@ -131,6 +133,7 @@ const Table = ({ isExpenses }) => {
           open={editFormIsOpened}
           handleClose={() => openEditForm(false)}
           rowData={rowData}
+          isExpenses={isExpenses}
         />
       )}
     </>
