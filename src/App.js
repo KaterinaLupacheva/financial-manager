@@ -7,6 +7,7 @@ import ExpensesContext from "./contexts/expenses.context";
 import IncomeContext from "./contexts/income.context";
 import { ExpensesCategoriesContextProvider } from "./contexts/expensesCategories.context";
 import { CurrentMonthExpensesContextProvider } from "./contexts/curMonthExpenses.context";
+import { MonthDataContextProvider } from "./contexts/monthData.context";
 import axios from "axios";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -93,7 +94,9 @@ const App = () => {
                 <AuthRoute path="/login" component={LoginPage} />
                 <ExpensesCategoriesContextProvider>
                   <CurrentMonthExpensesContextProvider>
-                    <Route path="/month" component={MonthPage} />
+                    <MonthDataContextProvider>
+                      <Route path="/month" component={MonthPage} />
+                    </MonthDataContextProvider>
                     <ExpensesContext.Provider
                       value={{ expensesPeriodData, setExpensesPeriodData }}
                     >

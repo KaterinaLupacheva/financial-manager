@@ -52,7 +52,7 @@ app.delete("/incomes/:incomeId", FBAuth, deleteIncomeEntry);
 app.post("/expenses", FBAuth, addExpenses);
 app.post("/incomes", FBAuth, addIncomes);
 app.get("/month/:month", FBAuth, getMonthData);
-app.put("/expenses/:month", FBAuth, updateMonthData);
+app.put("/month/:month", FBAuth, updateMonthData);
 
 //signup route
 app.post("/signup", signup);

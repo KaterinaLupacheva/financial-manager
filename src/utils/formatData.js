@@ -1,14 +1,14 @@
 import { format } from "date-fns";
 
-export const createDataForTable = dbData => {
+export const createDataForTable = (dbData) => {
   const sumPerDay = countDaySum(dbData);
   const totalMonthSum = Object.values(sumPerDay).reduce((a, b) => a + b);
   const combinedArrays = combineArrays(sumPerDay, dbData);
   return { combinedArrays, totalMonthSum };
 };
 
-const countDaySum = monthData => {
-  const sumPerDay = monthData.reverse().reduce((acc, cur) => {
+const countDaySum = (monthData) => {
+  const sumPerDay = monthData.reduce((acc, cur) => {
     const curDate = format(new Date(cur.date), "dd.MM.yyyy");
     acc[curDate] =
       acc[curDate] + parseFloat(cur.sum.replace(/,/g, "")) ||
@@ -19,6 +19,9 @@ const countDaySum = monthData => {
 };
 
 const combineArrays = (sumPerDay, monthData) => {
+  monthData.sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
   const result = [];
   let id = 1;
   let parentId = 0;
@@ -28,19 +31,19 @@ const combineArrays = (sumPerDay, monthData) => {
       date: key,
       sum: value.toFixed(2),
       details: "",
-      category: ""
+      category: "",
     });
     parentId = id;
     id++;
 
-    monthData.forEach(dayObj => {
+    monthData.forEach((dayObj) => {
       const dateFromDB = format(new Date(dayObj.date), "dd.MM.yyyy");
       if (key === dateFromDB) {
         result.push({
           id: id,
           ...dayObj,
           date: dateFromDB,
-          parentId: parentId
+          parentId: parentId,
         });
         id++;
       }

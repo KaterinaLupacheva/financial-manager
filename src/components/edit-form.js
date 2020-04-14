@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -15,24 +15,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import { dialogStyles } from "../styles/dialog.styles";
 import { Box } from "@material-ui/core";
 import axios from "axios";
-import MonthExpensesContext from "../contexts/monthExpenses.context";
-import MonthIncomeContext from "../contexts/monthIncome.context";
 import { formatFromDDMMYYYY } from "../utils/date.utils";
 import SelectWithAddOption from "../components/select-with-add-option";
+import { MonthDataContext } from "../contexts/monthData.context";
+import { format } from "date-fns";
 
 const useStyles = makeStyles(dialogStyles);
 
 const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
-  const { fetchMonthExpenses } = useContext(MonthExpensesContext);
-  const { fetchIncome } = useContext(MonthIncomeContext);
-  const INITIAL_STATE = {
-    view: isExpenses ? "expenses" : "incomes",
-    date: formatFromDDMMYYYY(rowData.date),
-    sum: rowData.sum,
-    details: rowData.details,
-    category: rowData.category,
-  };
-  const [state, setState] = useState(INITIAL_STATE);
+  const { monthData, setMonthData } = useContext(MonthDataContext);
+  const [state, setState] = useState({});
   const [errors, setErrors] = useState({});
 
   const classes = useStyles();
@@ -81,23 +73,52 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      saveData(state);
+      updateData();
       clearForm();
     }
   };
 
-  const saveData = (state) => {
-    const id = state.view === "expenses" ? rowData.expenseId : rowData.incomeId;
+  const updateArray = (array) => {
+    const idx = array.findIndex((obj) => obj.id === rowData.id);
+    array[idx] = {
+      ...array[idx],
+      date: state.date,
+      details: state.details,
+      category: state.category,
+      sum: state.sum,
+    };
+    return array;
+  };
+
+  const updateData = () => {
+    let requestBody = {};
+    if (state.view === "expenses") {
+      requestBody = {
+        expenses: updateArray(monthData.expenses),
+      };
+    } else {
+      requestBody = {
+        incomes: updateArray(monthData.incomes),
+      };
+    }
+
+    const monthYear = format(new Date(state.date), "MMM-yyyy");
     axios
       .put(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}/${id}`,
-        state
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
+        requestBody
       )
-      .then((res) => {
+      .then(() => {
         if (state.view === "expenses") {
-          fetchMonthExpenses();
+          setMonthData({
+            ...monthData,
+            expenses: requestBody.expenses,
+          });
         } else {
-          fetchIncome();
+          setMonthData({
+            ...monthData,
+            incomes: requestBody.incomes,
+          });
         }
       })
       .catch((err) => {
@@ -106,10 +127,19 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
   };
 
   const clearForm = () => {
-    setState(INITIAL_STATE);
     setErrors({});
     handleClose();
   };
+
+  useEffect(() => {
+    setState({
+      view: isExpenses ? "expenses" : "incomes",
+      date: formatFromDDMMYYYY(rowData.date),
+      sum: rowData.sum,
+      details: rowData.details,
+      category: rowData.category,
+    });
+  }, [rowData]);
 
   return (
     <div>

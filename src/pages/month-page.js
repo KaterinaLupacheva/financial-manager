@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import CustomDatePicker from "../components/date-picker";
 import FloatingAddButton from "../components/floating-add-button";
@@ -7,6 +7,7 @@ import { Typography } from "@material-ui/core";
 import { createDataForTable } from "../utils/formatData";
 import MonthExpensesContext from "../contexts/monthExpenses.context";
 import MonthIncomeContext from "../contexts/monthIncome.context";
+import { MonthDataContext } from "../contexts/monthData.context";
 import SimpleBackdrop from "../components/simple-backdrop";
 import TodayIcon from "@material-ui/icons/Today";
 import ExposureRoundedIcon from "@material-ui/icons/ExposureRounded";
@@ -27,6 +28,7 @@ const MonthPage = () => {
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
+  const { monthData, setMonthData } = useContext(MonthDataContext);
 
   const changeDate = (newMonth) => {
     setExpensesData(null);
@@ -40,6 +42,7 @@ const MonthPage = () => {
       `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
     );
     if (fetchedMonthData.data) {
+      setMonthData(fetchedMonthData.data);
       setExpensesData(createDataForTable(fetchedMonthData.data.expenses));
       setIncomeData(createDataForTable(fetchedMonthData.data.incomes));
     }
@@ -47,7 +50,7 @@ const MonthPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [month, fetchedMonthData.data]);
+  }, [month, fetchedMonthData.data, monthData]);
 
   const calculateResult = () => {
     let result = 0;
