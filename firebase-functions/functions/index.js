@@ -11,7 +11,7 @@ const {
   getAllExpensesByUser,
   getAllExpensesForPeriod,
   updateExpenseEntry,
-  deleteExpenseEntry
+  deleteExpenseEntry,
 } = require("./handlers/expenses");
 
 const {
@@ -19,21 +19,22 @@ const {
   getAllIncomesByUser,
   getAllIncomesForPeriod,
   updateIncomeEntry,
-  deleteIncomeEntry
+  deleteIncomeEntry,
 } = require("./handlers/incomes");
 
 const {
   signup,
   login,
   addUserDetails,
-  getUserDetails
+  getUserDetails,
 } = require("./handlers/users");
 
 const {
   addExpenses,
   addIncomes,
   getMonthData,
-  updateMonthData
+  updateMonthData,
+  getPeriodData,
 } = require("./handlers/data");
 
 // app.post("/expenses", FBAuth, addExpense);
@@ -53,6 +54,7 @@ app.post("/expenses", FBAuth, addExpenses);
 app.post("/incomes", FBAuth, addIncomes);
 app.get("/month/:month", FBAuth, getMonthData);
 app.put("/month/:month", FBAuth, updateMonthData);
+app.get("/:startMonth/:endMonth", FBAuth, getPeriodData);
 
 //signup route
 app.post("/signup", signup);

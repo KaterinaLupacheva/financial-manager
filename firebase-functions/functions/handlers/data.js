@@ -9,8 +9,8 @@ exports.addExpenses = (req, res) => {
       date: req.body.expenseDate,
       sum: req.body.sum,
       details: req.body.details,
-      category: req.body.category
-    }
+      category: req.body.category,
+    },
   };
 
   let docPath = `${req.user.email}_${data.docId}`;
@@ -21,14 +21,14 @@ exports.addExpenses = (req, res) => {
       {
         date: data.date,
         email: req.user.email,
-        expenses: admin.firestore.FieldValue.arrayUnion(data.newExpense)
+        expenses: admin.firestore.FieldValue.arrayUnion(data.newExpense),
       },
       { merge: true }
     )
     .then(() => {
       return res.json({ message: "Expenses added successfully" });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
@@ -43,8 +43,8 @@ exports.addIncomes = (req, res) => {
       date: req.body.incomeDate,
       sum: req.body.sum,
       details: req.body.details,
-      category: req.body.category
-    }
+      category: req.body.category,
+    },
   };
 
   let docPath = `${req.user.email}_${data.docId}`;
@@ -55,14 +55,14 @@ exports.addIncomes = (req, res) => {
       {
         date: data.date,
         email: req.user.email,
-        incomes: admin.firestore.FieldValue.arrayUnion(data.newIncome)
+        incomes: admin.firestore.FieldValue.arrayUnion(data.newIncome),
       },
       { merge: true }
     )
     .then(() => {
       return res.json({ message: "Income added successfully" });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
@@ -73,7 +73,7 @@ exports.getMonthData = (req, res) => {
   let docPath = `${req.user.email}_${req.params.month}`;
   db.doc(`/data/${docPath}`)
     .get()
-    .then(doc => {
+    .then((doc) => {
       if (!doc.exists) {
         return res.status(404).json({ error: "Data not found" });
       }
@@ -81,7 +81,7 @@ exports.getMonthData = (req, res) => {
       monthData.docId = doc.id;
       return res.json(monthData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).json({ error: err.code });
     });
@@ -94,7 +94,32 @@ exports.updateMonthData = (req, res) => {
     .then(() => {
       return res.json({ message: "Month data updated successfully" });
     })
-    .catch(err => {
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
+
+exports.getPeriodData = (req, res) => {
+  db.collection("data")
+    .where("email", "==", req.user.email)
+    .where("date", ">=", req.params.startMonth)
+    .where("date", "<=", req.params.endMonth)
+    .get()
+    .then((data) => {
+      let expensesData = [];
+      let incomesData = [];
+      data.forEach((doc) => {
+        expensesData.push(doc.data().expenses);
+        incomesData.push(doc.data().incomes);
+      });
+      const result = {
+        expenses: expensesData.flat(),
+        incomes: incomesData.flat(),
+      };
+      return res.json(result);
+    })
+    .catch((err) => {
       console.error(err);
       return res.status(500).json({ error: err.code });
     });
