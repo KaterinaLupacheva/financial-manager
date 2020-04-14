@@ -29,7 +29,7 @@ const {
   getUserDetails,
 } = require("./handlers/users");
 
-const { addExpenses, addIncomes } = require("./handlers/data");
+const { addExpenses, addIncomes, getMonthData } = require("./handlers/data");
 
 // app.post("/expenses", FBAuth, addExpense);
 app.get("/expenses", FBAuth, getAllExpensesByUser);
@@ -43,8 +43,10 @@ app.get("/incomes/:startDate/:endDate", FBAuth, getAllIncomesForPeriod);
 app.put("/incomes/:incomeId", FBAuth, updateIncomeEntry);
 app.delete("/incomes/:incomeId", FBAuth, deleteIncomeEntry);
 
+//new routes
 app.post("/expenses", FBAuth, addExpenses);
 app.post("/incomes", FBAuth, addIncomes);
+app.get("/month/:month", FBAuth, getMonthData);
 
 //signup route
 app.post("/signup", signup);

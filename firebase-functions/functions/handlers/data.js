@@ -67,3 +67,22 @@ exports.addIncomes = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
+
+exports.getMonthData = (req, res) => {
+  let monthData = {};
+  let docPath = `${req.user.email}_${req.params.month}`;
+  db.doc(`/data/${docPath}`)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        return res.status(404).json({ error: "Data not found" });
+      }
+      monthData = doc.data();
+      monthData.docId = doc.id;
+      return res.json(monthData);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+};
