@@ -8,7 +8,7 @@ export const createDataForTable = dbData => {
 };
 
 const countDaySum = monthData => {
-  const sumPerDay = monthData.reduce((acc, cur) => {
+  const sumPerDay = monthData.reverse().reduce((acc, cur) => {
     const curDate = format(new Date(cur.date), "dd.MM.yyyy");
     acc[curDate] =
       acc[curDate] + parseFloat(cur.sum.replace(/,/g, "")) ||
