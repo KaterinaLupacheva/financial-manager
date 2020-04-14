@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { createHeadCells } from "../utils/transform-data.utils";
 import { getMonthsNames } from "../utils/date.utils";
-import {pivotTableStyles} from '../styles/pivot-table.styles';
+import { pivotTableStyles } from "../styles/pivot-table.styles";
 
 const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {

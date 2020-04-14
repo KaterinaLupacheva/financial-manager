@@ -11,7 +11,7 @@ const {
   getAllExpensesByUser,
   getAllExpensesForPeriod,
   updateExpenseEntry,
-  deleteExpenseEntry,
+  deleteExpenseEntry
 } = require("./handlers/expenses");
 
 const {
@@ -19,21 +19,21 @@ const {
   getAllIncomesByUser,
   getAllIncomesForPeriod,
   updateIncomeEntry,
-  deleteIncomeEntry,
+  deleteIncomeEntry
 } = require("./handlers/incomes");
 
 const {
   signup,
   login,
   addUserDetails,
-  getUserDetails,
+  getUserDetails
 } = require("./handlers/users");
 
 const {
   addExpenses,
   addIncomes,
   getMonthData,
-  updateMonthData,
+  updateMonthData
 } = require("./handlers/data");
 
 // app.post("/expenses", FBAuth, addExpense);

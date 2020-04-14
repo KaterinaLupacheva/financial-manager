@@ -5,8 +5,6 @@ import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
 import { Typography } from "@material-ui/core";
 import { createDataForTable } from "../utils/formatData";
-import MonthExpensesContext from "../contexts/monthExpenses.context";
-import MonthIncomeContext from "../contexts/monthIncome.context";
 import { MonthDataContext } from "../contexts/monthData.context";
 import SimpleBackdrop from "../components/simple-backdrop";
 import TodayIcon from "@material-ui/icons/Today";
@@ -15,7 +13,7 @@ import {
   TopBarContainer,
   StyledCard,
   StyledCardContent,
-  CardInside,
+  CardInside
 } from "../styles/card.styles";
 import { useTheme } from "@material-ui/core/styles";
 import useFetchData from "../hooks/useFetchData";
@@ -30,7 +28,7 @@ const MonthPage = () => {
   const [month, setMonth] = useState(new Date());
   const { monthData, setMonthData } = useContext(MonthDataContext);
 
-  const changeDate = (newMonth) => {
+  const changeDate = newMonth => {
     setExpensesData(null);
     setIncomeData(null);
     setMonth(newMonth);
@@ -41,7 +39,10 @@ const MonthPage = () => {
     doFetchMonthData(
       `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
     );
-    if (fetchedMonthData.data) {
+    if (monthData) {
+      setExpensesData(createDataForTable(monthData.expenses));
+      setIncomeData(createDataForTable(monthData.incomes));
+    } else if (fetchedMonthData.data) {
       setMonthData(fetchedMonthData.data);
       setExpensesData(createDataForTable(fetchedMonthData.data.expenses));
       setIncomeData(createDataForTable(fetchedMonthData.data.incomes));
@@ -100,37 +101,23 @@ const MonthPage = () => {
           </StyledCard>
         )}
       </TopBarContainer>
-      <MonthExpensesContext.Provider
-        value={{
-          expensesData,
-          fetchData,
-        }}
-      >
-        <MonthIncomeContext.Provider
-          value={{
-            incomeData,
-            fetchData,
-          }}
-        >
-          {expensesData && incomeData && !fetchedMonthData.isLoading && (
-            <>
-              <ExpansionTable isExpenses={true} />
-              <ExpansionTable isExpenses={false} />
-            </>
-          )}
-          {!expensesData && !fetchedMonthData.isLoading && (
-            <Typography color="error" gutterBottom={true} variant="h4">
-              {"No expenses data"}
-            </Typography>
-          )}
-          {!incomeData && !fetchedMonthData.isLoading && (
-            <Typography color="error" variant="h4">
-              {"No income data"}
-            </Typography>
-          )}
-          <FloatingAddButton />
-        </MonthIncomeContext.Provider>
-      </MonthExpensesContext.Provider>
+      {expensesData && incomeData && !fetchedMonthData.isLoading && (
+        <>
+          <ExpansionTable isExpenses={true} tableData={expensesData} />
+          <ExpansionTable isExpenses={false} tableData={incomeData} />
+        </>
+      )}
+      {!expensesData && !fetchedMonthData.isLoading && (
+        <Typography color="error" gutterBottom={true} variant="h4">
+          {"No expenses data"}
+        </Typography>
+      )}
+      {!incomeData && !fetchedMonthData.isLoading && (
+        <Typography color="error" variant="h4">
+          {"No income data"}
+        </Typography>
+      )}
+      <FloatingAddButton />
       <SimpleBackdrop open={fetchedMonthData.isLoading ? true : false} />
     </div>
   );

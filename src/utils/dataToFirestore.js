@@ -1,9 +1,9 @@
 import axios from "axios";
 import { format } from "date-fns";
 
-export const dataToFirestore = (data) => {
+export const dataToFirestore = data => {
   let tempData = [];
-  data.forEach((d) => {
+  data.forEach(d => {
     if (d.category !== "") {
       const tempDate = d.date.split("-");
       const year = tempDate[0];
@@ -15,7 +15,7 @@ export const dataToFirestore = (data) => {
         sum: d.sum,
         details: d.expenses,
         category: d.category,
-        email: "kat@tut.by",
+        email: "kat@tut.by"
       };
 
       // setTimeout(() =>
@@ -34,37 +34,37 @@ export const dataToFirestore = (data) => {
   console.log(JSON.stringify(tempData, null, 2));
 };
 
-const saveExpense = (expense) => {
+const saveExpense = expense => {
   axios
     .post(
       "http://localhost:5000/financial-manager-271220/us-central1/api/expenses/",
       expense
     )
-    .then((res) => {
+    .then(res => {
       console.log("Saved");
     })
-    .catch((err) => {
+    .catch(err => {
       console.log("Error " + err);
     });
 };
 
-const saveIncome = (income) => {
+const saveIncome = income => {
   axios
     .post(
       "http://localhost:5000/financial-manager-271220/us-central1/api/incomes/",
       income
     )
-    .then((res) => {
+    .then(res => {
       console.log("Saved");
     })
-    .catch((err) => {
+    .catch(err => {
       console.log("Error " + err);
     });
 };
 
-export const newExpensesDataToFirestore = (data) => {
+export const newExpensesDataToFirestore = data => {
   let result = [];
-  data.reverse().forEach((d) => {
+  data.reverse().forEach(d => {
     const tempDate = d.date.split("-");
     const year = tempDate[0];
     const month = tempDate[1] - 1;
@@ -76,7 +76,7 @@ export const newExpensesDataToFirestore = (data) => {
       expenseDate: d.date,
       sum: d.sum,
       details: d.details,
-      category: d.category,
+      category: d.category
     });
   });
 
@@ -93,9 +93,9 @@ export const newExpensesDataToFirestore = (data) => {
   }
 };
 
-export const newIncomeDataToFirestore = (data) => {
+export const newIncomeDataToFirestore = data => {
   let result = [];
-  data.reverse().forEach((d) => {
+  data.reverse().forEach(d => {
     const tempDate = d.date.split("-");
     const year = tempDate[0];
     const month = tempDate[1] - 1;
@@ -107,7 +107,7 @@ export const newIncomeDataToFirestore = (data) => {
       incomeDate: d.date,
       sum: d.sum,
       details: d.details,
-      category: d.category,
+      category: d.category
     });
   });
 

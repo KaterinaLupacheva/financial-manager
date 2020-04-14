@@ -15,15 +15,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import { dialogStyles } from "../styles/dialog.styles";
 import { Box } from "@material-ui/core";
 import axios from "axios";
-import MonthExpensesContext from "../contexts/monthExpenses.context";
-import MonthIncomeContext from "../contexts/monthIncome.context";
 import SelectWithAddOption from "../components/select-with-add-option";
+import { format } from "date-fns";
+import { generateId } from "../utils/transform-data.utils";
+import { MonthDataContext } from "../contexts/monthData.context";
 
 const useStyles = makeStyles(dialogStyles);
 
 const DialogForm = ({ open, handleClose }) => {
-  const { fetchMonthExpenses } = useContext(MonthExpensesContext);
-  const { fetchIncome } = useContext(MonthIncomeContext);
   const INITIAL_STATE = {
     view: "expenses",
     date: new Date(),
@@ -33,6 +32,7 @@ const DialogForm = ({ open, handleClose }) => {
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
+  const { monthData, setMonthData } = useContext(MonthDataContext);
 
   const props = { bgcolor: state.view };
 
@@ -53,7 +53,6 @@ const DialogForm = ({ open, handleClose }) => {
   };
 
   const handleChange = event => {
-    console.log(event.target.value);
     setState({
       ...state,
       [event.target.name]: event.target.value
@@ -83,27 +82,47 @@ const DialogForm = ({ open, handleClose }) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      saveData(state);
+      saveData();
       clearForm();
     }
   };
 
-  const saveData = state => {
+  const saveData = () => {
+    let requestBody = {
+      docId: format(new Date(state.date), "MMM-yyyy"),
+      date: new Date(state.date.getFullYear(), state.date.getMonth(), 1, 8),
+      id: generateId(),
+      sum: state.sum,
+      details: state.details,
+      category: state.category
+    };
+    if (state.view === "expenses") {
+      requestBody = {
+        ...requestBody,
+        expenseDate: state.date
+      };
+    } else {
+      requestBody = {
+        ...requestBody,
+        incomeDate: state.date
+      };
+    }
+
     axios
       .post(
         `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}`,
-        state
+        requestBody
       )
-      .then(res => {
-        if (state.view === "expenses") {
-          fetchMonthExpenses();
-        } else {
-          fetchIncome();
-        }
+      .then(() => {
+        handleSubmit();
       })
       .catch(err => {
         console.error(err);
       });
+
+    const handleSubmit = () => {
+      window.location.reload();
+    };
   };
 
   const clearForm = () => {
@@ -197,6 +216,12 @@ const DialogForm = ({ open, handleClose }) => {
               />
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}
+                updatedValue={value =>
+                  setState({
+                    ...state,
+                    category: value
+                  })
+                }
               />
             </Box>
           </DialogContent>
