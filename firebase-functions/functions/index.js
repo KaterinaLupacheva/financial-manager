@@ -7,22 +7,6 @@ const cors = require("cors");
 app.use(cors());
 
 const {
-  addExpense,
-  getAllExpensesByUser,
-  getAllExpensesForPeriod,
-  updateExpenseEntry,
-  deleteExpenseEntry
-} = require("./handlers/expenses");
-
-const {
-  addIncome,
-  getAllIncomesByUser,
-  getAllIncomesForPeriod,
-  updateIncomeEntry,
-  deleteIncomeEntry
-} = require("./handlers/incomes");
-
-const {
   signup,
   login,
   addUserDetails,
