@@ -126,18 +126,18 @@ const Table = ({ isExpenses, tableData }) => {
           }}
           actions={[
             (rowData) => ({
-              icon: "delete",
-              onClick: (event, rowData) => {
-                openConfirmDialog(true);
-                setRowData(rowData);
-              },
-              hidden: !rowData.parentId,
-            }),
-            (rowData) => ({
               icon: "create",
               onClick: (event, rowData) => {
                 setRowData(rowData);
                 openEditForm(true);
+              },
+              hidden: !rowData.parentId,
+            }),
+            (rowData) => ({
+              icon: "delete",
+              onClick: (event, rowData) => {
+                openConfirmDialog(true);
+                setRowData(rowData);
               },
               hidden: !rowData.parentId,
             }),
