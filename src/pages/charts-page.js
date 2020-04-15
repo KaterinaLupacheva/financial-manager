@@ -13,7 +13,7 @@ import ExpensesContext from "../contexts/expenses.context";
 import IncomeContext from "../contexts/income.context";
 import {
   prepareDataForChart,
-  prepareDataForCategoryChart
+  prepareDataForCategoryChart,
 } from "../utils/transform-data.utils";
 
 const ChartsPage = () => {
@@ -23,89 +23,65 @@ const ChartsPage = () => {
   const { incomesPeriodData, setIncomesPeriodData } = useContext(IncomeContext);
   const [incomesDataForChart, setIncomesDataForChart] = useState({
     labels: [],
-    incomes: []
+    incomes: [],
   });
   const [expensesDataForChart, setExpensesDataForChart] = useState({
     labels: [],
-    expenses: []
+    expenses: [],
   });
   const [
     dataForIncomeCategoriesChart,
-    setDataForIncomeCategoriesChart
-  ] = useState({
-    labels: [],
-    datasets: []
-  });
-  const [
-    dataForExpensesCategoriesChart,
-    setDataForExpensesCategoriesChart
+    setDataForIncomeCategoriesChart,
   ] = useState({
     labels: [],
     datasets: [],
-    categories: []
   });
-  const [incomes, doIncomesFetch] = useFetchData("");
-  const [expenses, doExpensesFetch] = useFetchData("");
+  const [
+    dataForExpensesCategoriesChart,
+    setDataForExpensesCategoriesChart,
+  ] = useState({
+    labels: [],
+    datasets: [],
+    categories: [],
+  });
+
+  const [periodData, doFetchData] = useFetchData("");
 
   useEffect(() => {
-    const fetchExpensesData = () => {
-      doExpensesFetch(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
+    const fetchData = () => {
+      doFetchData(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/2020-01-01/${getLastDayOfMonth(
           new Date()
         )}`
       );
-      if (expenses.data) {
-        setExpensesPeriodData(expenses.data);
+      if (periodData.data) {
+        setExpensesPeriodData(periodData.data.expenses);
+        setIncomesPeriodData(periodData.data.incomes);
       }
     };
 
-    const fetchIncomesData = () => {
-      doIncomesFetch(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/incomes/2020-01-01/${getLastDayOfMonth(
-          new Date()
-        )}`
-      );
-      if (incomes.data) {
-        setIncomesPeriodData(incomes.data);
-      }
-    };
-
-    if (!expensesPeriodData) {
-      fetchExpensesData();
+    if (!expensesPeriodData || !incomesPeriodData) {
+      fetchData();
     }
 
-    if (!incomesPeriodData) {
-      fetchIncomesData();
-    }
-
-    if (incomes.data) {
-      setIncomesDataForChart(prepareDataForChart(incomes.data, false));
-      setDataForIncomeCategoriesChart(
-        prepareDataForCategoryChart(incomes.data, false)
-      );
-    } else if (incomesPeriodData) {
+    if (incomesPeriodData) {
       setIncomesDataForChart(prepareDataForChart(incomesPeriodData, false));
       setDataForIncomeCategoriesChart(
         prepareDataForCategoryChart(incomesPeriodData, false)
       );
     }
 
-    if (expenses.data) {
-      setExpensesDataForChart(prepareDataForChart(expenses.data, true));
-      setDataForExpensesCategoriesChart(
-        prepareDataForCategoryChart(expenses.data, true)
-      );
-    } else if (expensesPeriodData) {
+    if (expensesPeriodData) {
       setExpensesDataForChart(prepareDataForChart(expensesPeriodData, true));
       setDataForExpensesCategoriesChart(
         prepareDataForCategoryChart(expensesPeriodData, true)
       );
     }
-  }, [incomes.data, expenses.data]);
+  }, [periodData.data, expensesPeriodData, incomesPeriodData]);
 
   return (
     <>
-      {expenses.isError || incomes.isError ? (
+      {periodData.isError ? (
         <div>Something went wrong...</div>
       ) : (
         <TabsBar
@@ -118,7 +94,7 @@ const ChartsPage = () => {
                   incomesDataForChart={incomesDataForChart}
                   expensesDataForChart={expensesDataForChart}
                 />
-              )
+              ),
             },
             {
               tabName: "Expenses",
@@ -127,7 +103,7 @@ const ChartsPage = () => {
                 <ExpensesByCategories
                   allData={dataForExpensesCategoriesChart}
                 />
-              )
+              ),
             },
             {
               tabName: "Income",
@@ -136,14 +112,12 @@ const ChartsPage = () => {
                 <CategoriesBarChart
                   dataForChart={dataForIncomeCategoriesChart}
                 />
-              )
-            }
+              ),
+            },
           ]}
         />
       )}
-      <SimpleBackdrop
-        open={incomes.isLoading || expenses.isLoading ? true : false}
-      />
+      <SimpleBackdrop open={periodData.isLoading ? true : false} />
     </>
   );
 };

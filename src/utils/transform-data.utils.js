@@ -125,7 +125,7 @@ const sumPerMonth = data => {
 };
 
 export const prepareDataForChart = (dbData, isExpenses) => {
-  const data = sumPerMonth(dbData);
+  const data = sumPerMonth(dbData.reverse());
   let result = {};
   if (isExpenses) {
     result = {
