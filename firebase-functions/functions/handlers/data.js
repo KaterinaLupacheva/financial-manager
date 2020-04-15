@@ -114,8 +114,8 @@ exports.getPeriodData = (req, res) => {
         incomesData.push(doc.data().incomes);
       });
       const result = {
-        expenses: expensesData.flat(),
-        incomes: incomesData.flat(),
+        expenses: [].concat.apply([], expensesData),
+        incomes: [].concat.apply([], incomesData),
       };
       return res.json(result);
     })
