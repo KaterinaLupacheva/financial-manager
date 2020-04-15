@@ -1,14 +1,13 @@
-const tabsBarStyle = theme => ({
+const tabsBarStyle = (theme) => ({
   displayNone: {
-    display: "none !important"
+    display: "none !important",
   },
   tabsRoot: {
     minHeight: "unset !important",
     overflowX: "visible",
     "& $tabRootButton": {
-      fontSize: "0.875rem"
+      fontSize: "0.875rem",
     },
-    marginLeft: 20
   },
   tabRootButton: {
     minHeight: "unset !important",
@@ -22,12 +21,12 @@ const tabsBarStyle = theme => ({
     border: "0 !important",
     backgroundColor: theme.palette.primary.main,
     marginLeft: "4px",
-    width: "25vw"
+    width: "25vw",
   },
   tabSelected: {
     backgroundColor: theme.palette.primary.darkPurpleBg,
     color: "#FFF !important",
-    transition: "0.2s background-color 0.1s"
+    transition: "0.2s background-color 0.1s",
   },
   tabWrapper: {
     display: "inline-block",
@@ -42,12 +41,12 @@ const tabsBarStyle = theme => ({
     marginTop: "1px",
     "& > svg,& > .material-icons": {
       verticalAlign: "middle",
-      margin: "-1px 5px 0 0 !important"
-    }
+      margin: "-1px 5px 0 0 !important",
+    },
   },
   cardStyles: {
-    margin: 20
-  }
+    margin: 20,
+  },
 });
 
 export default tabsBarStyle;

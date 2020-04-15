@@ -3,7 +3,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import tabsBarStyles from "../styles/tabs-bar.styles";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -25,14 +24,15 @@ const TabsBar = ({ tabs }) => {
         classes={{
           root: classes.tabsRoot,
           indicator: classes.displayNone,
-          scrollButtons: classes.displayNone
+          scrollButtons: classes.displayNone,
         }}
+        centered
       >
         {tabs.map((prop, key) => {
           var icon = {};
           if (prop.tabIcon) {
             icon = {
-              icon: <prop.tabIcon />
+              icon: <prop.tabIcon />,
             };
           }
           return (
@@ -43,7 +43,7 @@ const TabsBar = ({ tabs }) => {
               classes={{
                 root: classes.tabRootButton,
                 selected: classes.tabSelected,
-                wrapper: classes.tabWrapper
+                wrapper: classes.tabWrapper,
               }}
             />
           );
@@ -52,7 +52,7 @@ const TabsBar = ({ tabs }) => {
       <Card
         raised={true}
         classes={{
-          root: classes.cardStyles
+          root: classes.cardStyles,
         }}
       >
         <CardContent>
