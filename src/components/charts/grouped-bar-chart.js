@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "@material-ui/core/styles";
 import {
   StyledBarChart,
-  StyledChartContainer
+  StyledChartContainer,
 } from "../../styles/charts.styles";
 
 const GroupedBarChart = ({ incomesDataForChart, expensesDataForChart }) => {
@@ -17,21 +17,27 @@ const GroupedBarChart = ({ incomesDataForChart, expensesDataForChart }) => {
         label: "Incomes",
         backgroundColor: theme.palette.secondary.lightBg,
         hoverBackgroundColor: theme.palette.primary.dark,
-        data: incomesDataForChart.incomes
+        data: incomesDataForChart.incomes,
       },
 
       {
         label: "Expenses",
         backgroundColor: theme.palette.secondary.palePink,
         hoverBackgroundColor: theme.palette.secondary.dark,
-        data: expensesDataForChart.expenses
-      }
-    ]
+        data: expensesDataForChart.expenses,
+      },
+    ],
+  };
+
+  const options = {
+    options: {
+      maintainAspectRatio: false,
+    },
   };
 
   return (
     <StyledChartContainer>
-      <StyledBarChart data={data} />
+      <StyledBarChart data={data} options={options} />
     </StyledChartContainer>
   );
 };

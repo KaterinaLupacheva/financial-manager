@@ -13,7 +13,6 @@ export const TopBarContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "100vw",
     marginLeft: "0px",
-    // flexDirection: "column",
   },
 }));
 
