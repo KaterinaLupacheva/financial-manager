@@ -22,6 +22,10 @@ const tabsBarStyle = (theme) => ({
     backgroundColor: theme.palette.primary.main,
     marginLeft: "4px",
     width: "25vw",
+    [theme.breakpoints.down("md")]: {
+      width: "30vw",
+      marginLeft: "10px",
+    },
   },
   tabSelected: {
     backgroundColor: theme.palette.primary.darkPurpleBg,
@@ -42,6 +46,10 @@ const tabsBarStyle = (theme) => ({
     "& > svg,& > .material-icons": {
       verticalAlign: "middle",
       margin: "-1px 5px 0 0 !important",
+    },
+    [theme.breakpoints.down("md")]: {
+      display: "flex",
+      flexDirection: "column",
     },
   },
   cardStyles: {
