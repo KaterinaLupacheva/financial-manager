@@ -14,24 +14,24 @@ const PivotTablePage = () => {
     ExpensesContext
   );
   const [rows, setRows] = useState([]);
-  const [expenses, doFetch] = useFetchData("");
+  const [periodData, doFetch] = useFetchData("");
 
   useEffect(() => {
     const fetchData = () => {
       doFetch(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/2020-01-01/${getLastDayOfMonth(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/2020-01-01/${getLastDayOfMonth(
           new Date()
         )}`
       );
-      if (expenses.data) {
-        setExpensesPeriodData(expenses.data);
+      if (periodData.data) {
+        setExpensesPeriodData(periodData.data.expenses);
       }
     };
 
     const createRowsData = () => {
       let sums = {};
-      if (expenses.data) {
-        sums = sumPerCategoryAndMonth(expenses.data);
+      if (periodData.data) {
+        sums = sumPerCategoryAndMonth(periodData.data.expenses);
       } else if (expensesPeriodData) {
         sums = sumPerCategoryAndMonth(expensesPeriodData);
       }
@@ -43,16 +43,16 @@ const PivotTablePage = () => {
       fetchData();
       createRowsData();
     }
-  }, [expenses.data]);
+  }, [periodData.data]);
 
   return (
     <>
-      {expenses.isError ? (
+      {periodData.isError ? (
         <div>Something went wrong...</div>
       ) : (
         <PivotTable rows={rows} />
       )}
-      <SimpleBackdrop open={expenses.isLoading ? true : false} />
+      <SimpleBackdrop open={periodData.isLoading ? true : false} />
     </>
   );
 };
