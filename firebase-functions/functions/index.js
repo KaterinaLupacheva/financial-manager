@@ -54,7 +54,7 @@ app.post("/expenses", FBAuth, addExpenses);
 app.post("/incomes", FBAuth, addIncomes);
 app.get("/month/:month", FBAuth, getMonthData);
 app.put("/month/:month", FBAuth, updateMonthData);
-app.get("/:startMonth/:endMonth", FBAuth, getPeriodData);
+app.get("/data/:startMonth/:endMonth", FBAuth, getPeriodData);
 
 //signup route
 app.post("/signup", signup);
