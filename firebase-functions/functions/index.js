@@ -38,16 +38,16 @@ const {
 } = require("./handlers/data");
 
 // app.post("/expenses", FBAuth, addExpense);
-app.get("/expenses", FBAuth, getAllExpensesByUser);
-app.get("/expenses/:startDate/:endDate", FBAuth, getAllExpensesForPeriod);
+// app.get("/expenses", FBAuth, getAllExpensesByUser);
+// app.get("/expenses/:startDate/:endDate", FBAuth, getAllExpensesForPeriod);
 // app.put("/expenses/:expenseId", FBAuth, updateExpenseEntry);
-app.delete("/expenses/:expenseId", FBAuth, deleteExpenseEntry);
+// app.delete("/expenses/:expenseId", FBAuth, deleteExpenseEntry);
 
 // app.post("/incomes", FBAuth, addIncome);
-app.get("/incomes", FBAuth, getAllIncomesByUser);
-app.get("/incomes/:startDate/:endDate", FBAuth, getAllIncomesForPeriod);
+// app.get("/incomes", FBAuth, getAllIncomesByUser);
+// app.get("/incomes/:startDate/:endDate", FBAuth, getAllIncomesForPeriod);
 // app.put("/incomes/:incomeId", FBAuth, updateIncomeEntry);
-app.delete("/incomes/:incomeId", FBAuth, deleteIncomeEntry);
+// app.delete("/incomes/:incomeId", FBAuth, deleteIncomeEntry);
 
 //new routes
 app.post("/expenses", FBAuth, addExpenses);

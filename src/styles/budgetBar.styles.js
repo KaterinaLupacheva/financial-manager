@@ -1,13 +1,4 @@
 export const budgetBarStyles = theme => ({
-  root: {
-    width: "100%",
-    height: "20px",
-    borderRadius: "10px"
-    // margin: "10px 0 20px 0"
-  },
-  bar: props => ({
-    background: `${props.bgcolor}`
-  }),
   dataContainer: {
     display: "flex",
     justifyContent: "space-between",
@@ -20,6 +11,7 @@ export const budgetBarStyles = theme => ({
   barWithIcons: {
     display: "flex",
     margin: "10px 0 20px 0",
+    height: '20px',
     "& button": {
       padding: "0 0 0 10px"
     }

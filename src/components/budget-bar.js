@@ -7,7 +7,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import ClearIcon from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import CustomProgressBar from "../components/custom-progress-bar";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 const useStyles = makeStyles(budgetBarStyles);
 
@@ -36,9 +36,9 @@ const BudgetBar = ({ data, editBudget, deleteBudget }) => {
         </div>
       </div>
       <div className={classes.barWithIcons}>
-        <CustomProgressBar
+        <ProgressBar
+          completed={completed > 100 ? "exceeded" : `${completed.toFixed(0)}`}
           bgcolor={completed > 100 ? "red" : data.barColor}
-          percentage={completed > 100 ? "exceeded" : `${completed.toFixed(0)}%`}
         />
         <Tooltip title="Edit">
           <IconButton aria-label="edit" onClick={() => editBudget(data)}>
