@@ -56,7 +56,7 @@ export const sidebarStyles = (theme) => ({
     }),
     marginLeft: -drawerWidth,
     [theme.breakpoints.down("md")]: {
-      padding: 0,
+      padding: "5px",
     },
   },
   contentShift: {

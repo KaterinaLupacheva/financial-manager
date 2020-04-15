@@ -75,7 +75,7 @@ const MonthPage = () => {
           variant="outlined"
           bgcolor={theme.palette.secondary.ligthBlue}
         >
-          <StyledCardContent>
+          <StyledCardContent style={{ paddingBottom: 0 }}>
             <TodayIcon fontSize="large" />
             <CardInside>
               <Typography variant="subtitle1">{`Chose month`}</Typography>
@@ -94,7 +94,7 @@ const MonthPage = () => {
                 : theme.palette.secondary.palePink
             }
           >
-            <StyledCardContent>
+            <StyledCardContent style={{ paddingBottom: 0 }}>
               <ExposureRoundedIcon fontSize="large" />
               <CardInside>
                 <Typography variant="subtitle1">{`Net month result`}</Typography>

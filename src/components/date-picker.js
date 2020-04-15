@@ -3,14 +3,14 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   input: {
     color: theme.palette.secondary.text,
     borderRadius: "10px",
     background: theme.palette.secondary.main,
     height: "7vh",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
 
 const CustomDatePicker = ({ changeDate }) => {
@@ -24,14 +24,14 @@ const CustomDatePicker = ({ changeDate }) => {
         openTo="month"
         views={["year", "month"]}
         value={selectedDate}
-        onChange={e => {
+        onChange={(e) => {
           changeDate(e);
           handleDateChange(e);
         }}
         InputProps={{ className: classes.input, disableUnderline: true }}
         inputProps={{
           min: 0,
-          style: { textAlign: "center", cursor: "pointer", fontSize: "1.7rem" }
+          style: { textAlign: "center", cursor: "pointer", fontSize: "1rem" },
         }}
       />
     </MuiPickersUtilsProvider>
