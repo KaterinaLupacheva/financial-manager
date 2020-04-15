@@ -172,8 +172,9 @@ const DialogForm = ({ open, handleClose }) => {
             </div>
             <Box
               display="flex"
+              flexDirection="column"
               alignItems="center"
-              justifyContent="space-evenly"
+              justifyContent="center"
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
@@ -183,6 +184,7 @@ const DialogForm = ({ open, handleClose }) => {
                   maxDate={new Date()}
                   value={state.date}
                   onChange={(e) => handleDateChange(e)}
+                  margin="normal"
                 />
               </MuiPickersUtilsProvider>
               <TextField
@@ -198,14 +200,7 @@ const DialogForm = ({ open, handleClose }) => {
                 helperText={errors.sum}
                 error={errors.sum ? true : false}
                 onChange={handleChange}
-                className={classes.sumField}
               />
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-evenly"
-            >
               <TextField
                 name="details"
                 label="Exp / Inc"
@@ -215,7 +210,7 @@ const DialogForm = ({ open, handleClose }) => {
                 helperText={errors.details}
                 error={errors.details ? true : false}
                 onChange={handleChange}
-                className={classes.detailsField}
+                margin="normal"
               />
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}

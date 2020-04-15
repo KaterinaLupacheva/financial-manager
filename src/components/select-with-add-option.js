@@ -205,7 +205,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
           return option.category;
         }}
         renderOption={(option) => option.category}
-        style={{ width: 195, margin: "5px 0 0 20px" }}
+        style={{ width: 195, marginTop: "5px" }}
         freeSolo
         renderInput={(params) => <TextField {...params} label="Category" />}
       />

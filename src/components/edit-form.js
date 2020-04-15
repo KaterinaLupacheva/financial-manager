@@ -152,6 +152,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         fullScreen={fullScreen}
+        maxWidth="xl"
       >
         <DialogTitle id="form-dialog-title">Edit data</DialogTitle>
         <form noValidate onSubmit={handleFormSubmit}>
@@ -181,9 +182,9 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
             </div>
             <Box
               display="flex"
-              alignItems="baseline"
-              // width="40vw"
-              justifyContent="space-evenly"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
@@ -208,14 +209,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
                 helperText={errors.sum}
                 error={errors.sum ? true : false}
                 onChange={handleChange}
-                className={classes.sumField}
               />
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-evenly"
-            >
               <TextField
                 name="details"
                 label="Exp / Inc"
@@ -225,7 +219,6 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
                 helperText={errors.details}
                 error={errors.details ? true : false}
                 onChange={handleChange}
-                className={classes.detailsField}
               />
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}

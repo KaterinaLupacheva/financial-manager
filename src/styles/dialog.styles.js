@@ -22,12 +22,6 @@ export const dialogStyles = (theme) => ({
   formControl: {
     minWidth: 195,
   },
-  sumField: {
-    marginLeft: 20,
-  },
-  detailsField: {
-    marginRight: 20,
-  },
   buttons: {
     marginTop: 20,
   },
