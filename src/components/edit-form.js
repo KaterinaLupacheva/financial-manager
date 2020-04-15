@@ -19,6 +19,8 @@ import { formatFromDDMMYYYY } from "../utils/date.utils";
 import SelectWithAddOption from "../components/select-with-add-option";
 import { MonthDataContext } from "../contexts/monthData.context";
 import { format } from "date-fns";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -28,25 +30,27 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
   const [errors, setErrors] = useState({});
 
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleViewChange = (event, newView) => {
     setState({
       ...state,
-      view: newView
+      view: newView,
     });
   };
 
-  const handleDateChange = event => {
+  const handleDateChange = (event) => {
     setState({
       ...state,
-      date: event
+      date: event,
     });
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setState({
       ...state,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -69,7 +73,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
     return valid;
   };
 
-  const handleFormSubmit = event => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
@@ -78,14 +82,14 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
     }
   };
 
-  const updateArray = array => {
-    const idx = array.findIndex(obj => obj.id === rowData.id);
+  const updateArray = (array) => {
+    const idx = array.findIndex((obj) => obj.id === rowData.id);
     array[idx] = {
       ...array[idx],
       date: state.date,
       details: state.details,
       category: state.category,
-      sum: state.sum
+      sum: state.sum,
     };
     return array;
   };
@@ -94,11 +98,11 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
     let requestBody = {};
     if (state.view === "expenses") {
       requestBody = {
-        expenses: updateArray(monthData.expenses)
+        expenses: updateArray(monthData.expenses),
       };
     } else {
       requestBody = {
-        incomes: updateArray(monthData.incomes)
+        incomes: updateArray(monthData.incomes),
       };
     }
 
@@ -112,16 +116,16 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
         if (state.view === "expenses") {
           setMonthData({
             ...monthData,
-            expenses: requestBody.expenses
+            expenses: requestBody.expenses,
           });
         } else {
           setMonthData({
             ...monthData,
-            incomes: requestBody.incomes
+            incomes: requestBody.incomes,
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   };
@@ -137,7 +141,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
       date: formatFromDDMMYYYY(rowData.date),
       sum: rowData.sum,
       details: rowData.details,
-      category: rowData.category
+      category: rowData.category,
     });
   }, [rowData, isExpenses]);
 
@@ -147,6 +151,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
+        fullScreen={fullScreen}
       >
         <DialogTitle id="form-dialog-title">Edit data</DialogTitle>
         <form noValidate onSubmit={handleFormSubmit}>
@@ -177,8 +182,8 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
             <Box
               display="flex"
               alignItems="baseline"
-              width="40vw"
-              justifyContent="space-between"
+              // width="40vw"
+              justifyContent="space-evenly"
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
@@ -187,7 +192,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
                   minDate={new Date("2020-01-01")}
                   maxDate={new Date()}
                   value={state.date}
-                  onChange={e => handleDateChange(e)}
+                  onChange={(e) => handleDateChange(e)}
                 />
               </MuiPickersUtilsProvider>
               <TextField
@@ -197,6 +202,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
                 label="Sum"
                 value={state.sum}
                 type="number"
+                step="0.01"
                 required={true}
                 size="small"
                 helperText={errors.sum}
@@ -208,7 +214,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
             <Box
               display="flex"
               alignItems="center"
-              justifyContent="space-between"
+              justifyContent="space-evenly"
             >
               <TextField
                 name="details"
@@ -224,10 +230,10 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}
                 initialValue={state.category}
-                updatedValue={value =>
+                updatedValue={(value) =>
                   setState({
                     ...state,
-                    category: value
+                    category: value,
                   })
                 }
               />
