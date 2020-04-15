@@ -27,7 +27,7 @@ const BudgetBar = ({ data, editBudget, deleteBudget }) => {
   }, []);
 
   return (
-    <div style={{ width: "50vw" }}>
+    <div className={classes.rootContainer}>
       <div className={classes.dataContainer}>
         <Typography variant="h6">{data.category}</Typography>
         <div className={classes.rightContainer}>
