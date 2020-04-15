@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ExpensesCategoriesContext } from "../contexts/expensesCategories.context";
-import { CurrentMonthExpensesContext } from "../contexts/curMonthExpenses.context";
 import useFetchData from "../hooks/useFetchData";
-import { getFirstDayOfMonth, getLastDayOfMonth } from "../utils/date.utils";
 import {
   sumPerCatogyForCurMonth,
   colorsForCharts
@@ -14,14 +12,12 @@ import { StyledButton } from "../styles/button.styles";
 import { useTheme } from "@material-ui/core/styles";
 import SimpleBackdrop from "../components/simple-backdrop";
 import axios from "axios";
+import { format } from "date-fns";
 
 const BudgetPage = () => {
   const theme = useTheme();
   const { expensesCategories, setExpensesCategories } = useContext(
     ExpensesCategoriesContext
-  );
-  const { currentMonthExpenses, setCurrentMonthExpenses } = useContext(
-    CurrentMonthExpensesContext
   );
   const [fetchedCategories, doFetchCategories] = useFetchData("");
   const [fetchedCurMonthExpenses, doFetchCurMonthExpenses] = useFetchData("");
@@ -83,27 +79,24 @@ const BudgetPage = () => {
     };
 
     const fetchCurrentMonthExpenses = () => {
+      const monthYear = format(new Date(), "MMM-yyyy");
       doFetchCurMonthExpenses(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/expenses/${getFirstDayOfMonth(
-          new Date()
-        )}/${getLastDayOfMonth(new Date())}`
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
       );
-      if (fetchedCurMonthExpenses.data) {
-        setCurrentMonthExpenses(fetchedCurMonthExpenses.data);
-      }
     };
+
+    fetchCurrentMonthExpenses();
 
     if (!expensesCategories) {
       fetchExpensesCategories();
     }
-    if (!currentMonthExpenses) {
-      fetchCurrentMonthExpenses();
-    }
 
-    if (expensesCategories && currentMonthExpenses) {
+    if (expensesCategories && fetchedCurMonthExpenses.data) {
       const categoriesNames = Object.keys(expensesCategories);
 
-      const sumPerCategory = sumPerCatogyForCurMonth(currentMonthExpenses);
+      const sumPerCategory = sumPerCatogyForCurMonth(
+        fetchedCurMonthExpenses.data.expenses
+      );
 
       //create data for budget
       let tempData = [];
@@ -126,8 +119,7 @@ const BudgetPage = () => {
   }, [
     fetchedCurMonthExpenses.data,
     fetchedCategories.data,
-    expensesCategories,
-    currentMonthExpenses
+    expensesCategories
   ]);
 
   return (

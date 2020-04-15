@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -18,7 +18,6 @@ import axios from "axios";
 import SelectWithAddOption from "../components/select-with-add-option";
 import { format } from "date-fns";
 import { generateId } from "../utils/transform-data.utils";
-import { MonthDataContext } from "../contexts/monthData.context";
 
 const useStyles = makeStyles(dialogStyles);
 

@@ -6,7 +6,7 @@ import useFetchData from "../hooks/useFetchData";
 import { getLastDayOfMonth } from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
-  createTableRows,
+  createTableRows
 } from "../utils/transform-data.utils";
 
 const PivotTablePage = () => {

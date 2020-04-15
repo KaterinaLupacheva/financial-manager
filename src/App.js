@@ -6,7 +6,6 @@ import UserContext from "./contexts/user.context";
 import ExpensesContext from "./contexts/expenses.context";
 import IncomeContext from "./contexts/income.context";
 import { ExpensesCategoriesContextProvider } from "./contexts/expensesCategories.context";
-import { CurrentMonthExpensesContextProvider } from "./contexts/curMonthExpenses.context";
 import { MonthDataContextProvider } from "./contexts/monthData.context";
 import axios from "axios";
 
@@ -94,22 +93,20 @@ const App = () => {
                 <AuthRoute path="/signup" component={SignupPage} />
                 <AuthRoute path="/login" component={LoginPage} />
                 <ExpensesCategoriesContextProvider>
-                  <CurrentMonthExpensesContextProvider>
-                    <MonthDataContextProvider>
-                      <Route path="/month" component={MonthPage} />
-                    </MonthDataContextProvider>
-                    <ExpensesContext.Provider
-                      value={{ expensesPeriodData, setExpensesPeriodData }}
+                  <MonthDataContextProvider>
+                    <Route path="/month" component={MonthPage} />
+                  </MonthDataContextProvider>
+                  <ExpensesContext.Provider
+                    value={{ expensesPeriodData, setExpensesPeriodData }}
+                  >
+                    <Route path="/table" component={PivotTablePage} />
+                    <IncomeContext.Provider
+                      value={{ incomesPeriodData, setIncomesPeriodData }}
                     >
-                      <Route path="/table" component={PivotTablePage} />
-                      <IncomeContext.Provider
-                        value={{ incomesPeriodData, setIncomesPeriodData }}
-                      >
-                        <Route path="/charts" component={ChartsPage} />
-                      </IncomeContext.Provider>
-                      <Route path="/budget" component={BudgetPage} />
-                    </ExpensesContext.Provider>
-                  </CurrentMonthExpensesContextProvider>
+                      <Route path="/charts" component={ChartsPage} />
+                    </IncomeContext.Provider>
+                    <Route path="/budget" component={BudgetPage} />
+                  </ExpensesContext.Provider>
                 </ExpensesCategoriesContextProvider>
               </Switch>
             </Sidebar>
