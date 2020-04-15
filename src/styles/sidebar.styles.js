@@ -55,6 +55,9 @@ export const sidebarStyles = (theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
+    [theme.breakpoints.down("md")]: {
+      padding: 0,
+    },
   },
   contentShift: {
     transition: theme.transitions.create("margin", {

@@ -13,27 +13,26 @@ export const TopBarContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "100vw",
     marginLeft: "0px",
-    flexDirection: "column"
-  }
+    flexDirection: "column",
+  },
 }));
 
-export const StyledCard = styled(withTheme(Card))(props => ({
+export const StyledCard = styled(withTheme(Card))((props) => ({
   background: props.bgcolor,
   [props.theme.breakpoints.down("md")]: {
-    height: "undefined",
-    width: "50vw"
+    width: "50vw",
   },
   margin: "20px",
   height: "15vh",
-  width: "20vw"
+  width: "20vw",
 }));
 
 export const StyledCardContent = styled(CardContent)({
   display: "flex",
-  padding: 0
+  padding: 0,
 });
 
 export const CardInside = styled(Box)({
   padding: "10px",
-  margin: "0 auto"
+  margin: "0 auto",
 });
