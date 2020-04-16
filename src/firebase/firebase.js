@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
 import "firebase/auth";
 
 const config = {
@@ -14,6 +15,39 @@ const config = {
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
+export const firestore = firebase.firestore();
+
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  const userRef = firestore.doc(`users/${userAuth.email}`);
+
+  const snapShot = await userRef.get();
+
+  if (!snapShot.exists) {
+    const { email, uid } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
+        uid,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.log("error creating user", error.message);
+    }
+  }
+
+  return userRef;
+};
+
+export const doCreateUserWithEmailAndPassword = (email, password) =>
+  auth.createUserWithEmailAndPassword(email, password);
+
+export const doSendVerificationEmail = () =>
+  auth.currentUser.sendEmailVerification();
 
 export const doPasswordReset = (email) => auth.sendPasswordResetEmail(email);
 export const doPasswordUpdate = (password) =>

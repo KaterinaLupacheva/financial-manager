@@ -1,46 +1,50 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { withRouter, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import UserContext from "../contexts/user.context";
 import SimpleBackdrop from "../components/simple-backdrop";
+import {
+  createUserProfileDocument,
+  doCreateUserWithEmailAndPassword,
+  doSendVerificationEmail,
+  auth,
+} from "../firebase/firebase";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(formStyles);
 
-const SignupForm = props => {
+const SignupForm = () => {
   const { setUser } = useContext(UserContext);
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState({});
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setOpen(true);
-    const newUserData = {
-      email,
-      password,
-      confirmPassword
-    };
 
-    axios
-      .post(
-        "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/signup",
-        newUserData
-      )
-      .then(res => {
-        setUser(res.data.token);
-        setOpen(false);
-      })
-      .catch(err => {
-        setErrors(err.response.data);
-        setOpen(false);
+    try {
+      const { user } = await doCreateUserWithEmailAndPassword(email, password);
+      await doSendVerificationEmail();
+      await createUserProfileDocument(user);
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          user.getIdToken().then((token) => {
+            setUser(token);
+          });
+        }
       });
+      setOpen(false);
+    } catch (error) {
+      console.error(error);
+      setError(error);
+      setOpen(false);
+    }
   };
 
   return (
@@ -56,11 +60,9 @@ const SignupForm = props => {
             name="email"
             type="email"
             label="Email"
-            helperText={errors.email}
-            error={errors.email ? true : false}
             className={classes.textfield}
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             fullWidth
           />
           <TextField
@@ -68,11 +70,9 @@ const SignupForm = props => {
             name="password"
             type="password"
             label="Password"
-            helperText={errors.password}
-            error={errors.password ? true : false}
             className={classes.textfield}
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             fullWidth
           />
           <TextField
@@ -80,21 +80,15 @@ const SignupForm = props => {
             name="confirmPassword"
             type="password"
             label="Confirm Password"
-            helperText={errors.confirmPassword}
-            error={errors.confirmPassword ? true : false}
             className={classes.textfield}
             value={confirmPassword}
-            onChange={event => setConfirmPassword(event.target.value)}
+            onChange={(event) => setConfirmPassword(event.target.value)}
             fullWidth
           />
-          {errors.general && (
-            <Typography variant="body2" className={classes.customError}>
-              {errors.general}
-            </Typography>
-          )}
           <Button type="submit" variant="contained" className={classes.button}>
             Signup
           </Button>
+          {error && <p style={{ color: "red" }}>{error.message}</p>}
           <br />
           <small>
             Already have an account? Login <Link to="/login">here</Link>
