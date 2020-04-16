@@ -20,6 +20,7 @@ import ChartsPage from "./pages/charts-page";
 import AuthRoute from "./utils/authroute";
 import StartPage from "./pages/start-page";
 import BudgetPage from "./pages/budget-page";
+import ForgotPasswordPage from "./pages/forgot-password-page";
 
 const theme = createMuiTheme({
   palette: {
@@ -46,7 +47,6 @@ const App = () => {
   const [email, setEmail] = useState("");
   const [expensesPeriodData, setExpensesPeriodData] = useState(null);
   const [incomesPeriodData, setIncomesPeriodData] = useState(null);
-  // const [monthData, setMonthData] = useState(null);
 
   const logoutUser = () => {
     localStorage.removeItem("FBIdToken");
@@ -90,8 +90,10 @@ const App = () => {
             <Sidebar>
               <Switch>
                 <Route exact path="/" component={StartPage} />
+
                 <AuthRoute path="/signup" component={SignupPage} />
                 <AuthRoute path="/login" component={LoginPage} />
+                <Route path="/pw-forgot" component={ForgotPasswordPage} />
                 <ExpensesCategoriesContextProvider>
                   <MonthDataContextProvider>
                     <Route path="/month" component={MonthPage} />
