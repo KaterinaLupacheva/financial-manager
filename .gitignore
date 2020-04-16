@@ -19,6 +19,7 @@
 .env.production.local
 
 gapiConfig.js
+.env
 
 npm-debug.log*
 yarn-debug.log*
