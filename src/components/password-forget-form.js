@@ -4,8 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import { doPasswordReset } from "../firebase/firebase";
 
-const PasswordForgetForm = () => {
+const PasswordForgetForm = ({ showMessage }) => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(null);
   const useStyles = makeStyles(formStyles);
   const classes = useStyles();
 
@@ -13,11 +14,11 @@ const PasswordForgetForm = () => {
     event.preventDefault();
     doPasswordReset(email)
       .then(() => {
-        setEmail("");
-        console.log("RESETED");
+        showMessage(email);
       })
       .catch((err) => {
         console.log("ERROR " + err);
+        setError(err);
       });
   };
   return (
@@ -33,8 +34,6 @@ const PasswordForgetForm = () => {
             name="email"
             type="email"
             label="Email"
-            // helperText={errors.email}
-            // error={errors.email ? true : false}
             className={classes.textfield}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -43,6 +42,7 @@ const PasswordForgetForm = () => {
           <Button type="submit" variant="contained" className={classes.button}>
             Reset Password
           </Button>
+          {error && <p>{error.message}</p>}
         </form>
       </Grid>
       <Grid item sm />
