@@ -10,7 +10,7 @@ import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(formStyles);
 
-const LoginForm = props => {
+const LoginForm = (props) => {
   const { setUser } = useContext(UserContext);
   const classes = useStyles();
   const [email, setEmail] = useState("");
@@ -18,11 +18,11 @@ const LoginForm = props => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const userData = {
       email,
-      password
+      password,
     };
     setIsLoading(true);
     axios
@@ -30,11 +30,11 @@ const LoginForm = props => {
         "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
         userData
       )
-      .then(res => {
+      .then((res) => {
         setIsLoading(false);
         setUser(res.data.token);
       })
-      .catch(err => {
+      .catch((err) => {
         setErrors(err.response.data);
         setIsLoading(false);
       });
@@ -57,7 +57,7 @@ const LoginForm = props => {
             error={errors.email ? true : false}
             className={classes.textfield}
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             fullWidth
           />
           <TextField
@@ -69,7 +69,7 @@ const LoginForm = props => {
             error={errors.password ? true : false}
             className={classes.textfield}
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             fullWidth
           />
           {errors.general && (
@@ -83,6 +83,10 @@ const LoginForm = props => {
           <br />
           <small>
             Don't have an account? Signup <Link to="/signup">here</Link>
+          </small>
+          <br />
+          <small>
+            <Link to="/pw-forgot">Forgot password?</Link>
           </small>
         </form>
       </Grid>

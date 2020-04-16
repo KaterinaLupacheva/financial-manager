@@ -25,8 +25,8 @@ const PasswordForgetForm = ({ showMessage }) => {
     <Grid container className={classes.root}>
       <Grid item sm />
       <Grid item sm>
-        <Typography variant="h3" className={classes.title}>
-          Password Forgot
+        <Typography className={classes.title}>
+          Please, enter your email
         </Typography>
         <form noValidate onSubmit={handleSubmit}>
           <TextField
