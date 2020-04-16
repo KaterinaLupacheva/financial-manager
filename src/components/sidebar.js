@@ -108,6 +108,7 @@ const Sidebar = ({ children }) => {
               to={item.route}
               selected={window.location.href.indexOf(item.route) > -1}
               classes={{ selected: classes.selected }}
+              onClick={handleDrawerClose}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name} />
