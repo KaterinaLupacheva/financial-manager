@@ -4,6 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import UserContext from "../contexts/user.context";
+import SimpleBackdrop from "../components/simple-backdrop";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
@@ -16,9 +17,11 @@ const SignupForm = props => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = event => {
     event.preventDefault();
+    setOpen(true);
     const newUserData = {
       email,
       password,
@@ -32,9 +35,11 @@ const SignupForm = props => {
       )
       .then(res => {
         setUser(res.data.token);
+        setOpen(false);
       })
       .catch(err => {
         setErrors(err.response.data);
+        setOpen(false);
       });
   };
 
@@ -97,6 +102,7 @@ const SignupForm = props => {
         </form>
       </Grid>
       <Grid item sm />
+      <SimpleBackdrop open={open} />
     </Grid>
   );
 };
