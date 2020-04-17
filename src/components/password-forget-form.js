@@ -10,13 +10,13 @@ const PasswordForgetForm = ({ showMessage }) => {
   const useStyles = makeStyles(formStyles);
   const classes = useStyles();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     doPasswordReset(email)
       .then(() => {
         showMessage(email);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log("ERROR " + err);
         setError(err);
       });
@@ -36,7 +36,7 @@ const PasswordForgetForm = ({ showMessage }) => {
             label="Email"
             className={classes.textfield}
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={event => setEmail(event.target.value)}
             fullWidth
           />
           <Button type="submit" variant="contained" className={classes.button}>

@@ -17,23 +17,23 @@ const Table = ({ isExpenses, tableData }) => {
   const [editFormIsOpened, openEditForm] = useState(false);
   const name = isExpenses ? "Expenses" : "Income";
 
-  const removeItem = (array) => {
-    return array.filter((obj) => {
+  const removeItem = array => {
+    return array.filter(obj => {
       return obj.id !== rowData.id;
     });
   };
 
-  const handleResponse = (res) => {
+  const handleResponse = res => {
     openConfirmDialog(false);
     if (res === "yes") {
       let requestBody = {};
       if (isExpenses) {
         requestBody = {
-          expenses: removeItem(monthData.expenses),
+          expenses: removeItem(monthData.expenses)
         };
       } else {
         requestBody = {
-          incomes: removeItem(monthData.incomes),
+          incomes: removeItem(monthData.incomes)
         };
       }
 
@@ -53,16 +53,16 @@ const Table = ({ isExpenses, tableData }) => {
           if (isExpenses) {
             setMonthData({
               ...monthData,
-              expenses: requestBody.expenses,
+              expenses: requestBody.expenses
             });
           } else {
             setMonthData({
               ...monthData,
-              incomes: requestBody.incomes,
+              incomes: requestBody.incomes
             });
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
         });
     }
@@ -76,65 +76,63 @@ const Table = ({ isExpenses, tableData }) => {
             {
               title: "Date",
               field: "date",
-              render: (rowData) => {
+              render: rowData => {
                 return rowData.details === "" ? (
                   <span style={{ fontWeight: "bold" }}>{rowData.date}</span>
                 ) : (
                   <span>{rowData.date}</span>
                 );
-              },
+              }
             },
             {
               title: "Sum",
               field: "sum",
-              render: (rowData) => {
+              render: rowData => {
                 return rowData.details === "" ? (
                   <span style={{ fontWeight: "bold" }}>{rowData.sum}</span>
                 ) : (
                   <span>{parseFloat(rowData.sum).toFixed(2)}</span>
                 );
-              },
+              }
             },
             {
               title: `${name}`,
-              field: "details",
+              field: "details"
             },
             {
               title: "Category",
-              field: "category",
-            },
+              field: "category"
+            }
           ]}
           data={tableData.combinedArrays}
-          parentChildData={(row, rows) =>
-            rows.find((a) => a.id === row.parentId)
-          }
+          parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
           options={{
             toolbar: false,
             paging: false,
             headerStyle: {
               backgroundColor: "#9c27b0",
               color: "#FFF",
-              fontWeight: "bold",
+              fontWeight: "bold"
             },
-            actionsColumnIndex: -1,
+            actionsColumnIndex: -1
           }}
           actions={[
-            (rowData) => ({
+            rowData => ({
               icon: "create",
               onClick: (event, rowData) => {
                 setRowData(rowData);
                 openEditForm(true);
               },
-              hidden: !rowData.parentId,
+              hidden: !rowData.parentId
             }),
-            (rowData) => ({
+            rowData => ({
               icon: "delete",
               onClick: (event, rowData) => {
                 openConfirmDialog(true);
                 setRowData(rowData);
               },
-              hidden: !rowData.parentId,
-            }),
+              hidden: !rowData.parentId
+            })
           ]}
           style={{ borderBottom: "1px solid black" }}
         />

@@ -3,11 +3,11 @@ import PasswordForgetForm from "../components/password-forget-form";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   text: {
     margin: "100px auto",
-    width: "50vw",
-  },
+    width: "50vw"
+  }
 }));
 
 const ForgotPasswordPage = () => {
@@ -16,7 +16,7 @@ const ForgotPasswordPage = () => {
 
   const classes = useStyles();
 
-  const showMessage = (email) => {
+  const showMessage = email => {
     setSuccess(true);
     setEmail(email);
   };

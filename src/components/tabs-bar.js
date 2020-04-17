@@ -24,7 +24,7 @@ const TabsBar = ({ tabs }) => {
         classes={{
           root: classes.tabsRoot,
           indicator: classes.displayNone,
-          scrollButtons: classes.displayNone,
+          scrollButtons: classes.displayNone
         }}
         centered
       >
@@ -32,7 +32,7 @@ const TabsBar = ({ tabs }) => {
           var icon = {};
           if (prop.tabIcon) {
             icon = {
-              icon: <prop.tabIcon />,
+              icon: <prop.tabIcon />
             };
           }
           return (
@@ -43,7 +43,7 @@ const TabsBar = ({ tabs }) => {
               classes={{
                 root: classes.tabRootButton,
                 selected: classes.tabSelected,
-                wrapper: classes.tabWrapper,
+                wrapper: classes.tabWrapper
               }}
             />
           );
@@ -52,7 +52,7 @@ const TabsBar = ({ tabs }) => {
       <Card
         raised={true}
         classes={{
-          root: classes.cardStyles,
+          root: classes.cardStyles
         }}
       >
         <CardContent>

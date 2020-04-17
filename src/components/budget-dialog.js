@@ -12,7 +12,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Box,
+  Box
 } from "@material-ui/core";
 import axios from "axios";
 import { ExpensesCategoriesContext } from "../contexts/expensesCategories.context";
@@ -24,11 +24,11 @@ const BudgetDialog = ({
   handleClose,
   emptyCategories,
   editData,
-  handleSubmit,
+  handleSubmit
 }) => {
   const INITIAL_STATE = {
     sum: "",
-    category: "",
+    category: ""
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
@@ -36,10 +36,10 @@ const BudgetDialog = ({
 
   const classes = useStyles();
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setState({
       ...state,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   };
 
@@ -58,7 +58,7 @@ const BudgetDialog = ({
     return valid;
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = event => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
@@ -73,26 +73,26 @@ const BudgetDialog = ({
       tempObject = {
         ...expensesCategories,
         [editData.category]: "",
-        [state.category]: state.sum,
+        [state.category]: state.sum
       };
     } else {
       tempObject = {
         ...expensesCategories,
-        [state.category]: state.sum,
+        [state.category]: state.sum
       };
     }
     const reqBody = {
-      expensesCategories: tempObject,
+      expensesCategories: tempObject
     };
     axios
       .post(
         `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`,
         reqBody
       )
-      .then((res) => {
+      .then(res => {
         handleSubmit();
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   };
@@ -108,7 +108,7 @@ const BudgetDialog = ({
       setState({
         ...state,
         sum: editData.sum,
-        category: editData.category,
+        category: editData.category
       });
     }
   }, [editData]);

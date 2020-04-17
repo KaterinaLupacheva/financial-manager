@@ -44,7 +44,7 @@ const Sidebar = ({ children }) => {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+          [classes.appBarShift]: open
         })}
       >
         <Toolbar className={classes.toolBar}>
@@ -86,7 +86,7 @@ const Sidebar = ({ children }) => {
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper,
+          paper: classes.drawerPaper
         }}
       >
         <div className={classes.drawerHeader}>
@@ -119,7 +119,7 @@ const Sidebar = ({ children }) => {
       </Drawer>
       <main
         className={clsx(classes.content, {
-          [classes.contentShift]: open,
+          [classes.contentShift]: open
         })}
       >
         <div className={classes.drawerHeader} />

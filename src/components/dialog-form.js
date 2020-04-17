@@ -29,7 +29,7 @@ const DialogForm = ({ open, handleClose }) => {
     date: new Date(),
     sum: "",
     details: "",
-    category: "",
+    category: ""
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
@@ -43,21 +43,21 @@ const DialogForm = ({ open, handleClose }) => {
   const handleViewChange = (event, newView) => {
     setState({
       ...state,
-      view: newView,
+      view: newView
     });
   };
 
-  const handleDateChange = (event) => {
+  const handleDateChange = event => {
     setState({
       ...state,
-      date: event,
+      date: event
     });
   };
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setState({
       ...state,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   };
 
@@ -80,7 +80,7 @@ const DialogForm = ({ open, handleClose }) => {
     return valid;
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = event => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
@@ -96,17 +96,17 @@ const DialogForm = ({ open, handleClose }) => {
       id: generateId(),
       sum: state.sum,
       details: state.details,
-      category: state.category,
+      category: state.category
     };
     if (state.view === "expenses") {
       requestBody = {
         ...requestBody,
-        expenseDate: state.date,
+        expenseDate: state.date
       };
     } else {
       requestBody = {
         ...requestBody,
-        incomeDate: state.date,
+        incomeDate: state.date
       };
     }
 
@@ -118,7 +118,7 @@ const DialogForm = ({ open, handleClose }) => {
       .then(() => {
         handleSubmit();
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
 
@@ -183,7 +183,7 @@ const DialogForm = ({ open, handleClose }) => {
                   minDate={new Date("2020-01-01")}
                   maxDate={new Date()}
                   value={state.date}
-                  onChange={(e) => handleDateChange(e)}
+                  onChange={e => handleDateChange(e)}
                   margin="normal"
                 />
               </MuiPickersUtilsProvider>
@@ -214,10 +214,10 @@ const DialogForm = ({ open, handleClose }) => {
               />
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}
-                updatedValue={(value) =>
+                updatedValue={value =>
                   setState({
                     ...state,
-                    category: value,
+                    category: value
                   })
                 }
               />

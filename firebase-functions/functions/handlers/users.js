@@ -5,7 +5,7 @@ const config = require("../util/firebaseConfig");
 const firebase = require("firebase");
 firebase.initializeApp(config);
 
-const { validateSignupData, validateLoginData } = require("../util/validators"); 
+const { validateSignupData, validateLoginData } = require("../util/validators");
 
 exports.signup = (req, res) => {
   const newUser = {
@@ -24,8 +24,7 @@ exports.signup = (req, res) => {
     .then(doc => {
       if (doc.exists) {
         return res.status(400).json({ email: "this email is already taken" });
-      } 
-      else {
+      } else {
         return firebase
           .auth()
           .createUserWithEmailAndPassword(newUser.email, newUser.password);

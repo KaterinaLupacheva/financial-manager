@@ -16,13 +16,13 @@ const ExpansionTable = ({ isExpenses, tableData }) => {
 
   const classes = useStyles();
 
-  const ExpansionPanelDetails = withStyles((theme) => ({
+  const ExpansionPanelDetails = withStyles(theme => ({
     root: {
       padding: theme.spacing(2),
       [theme.breakpoints.down("md")]: {
-        padding: 0,
-      },
-    },
+        padding: 0
+      }
+    }
   }))(MuiExpansionPanelDetails);
 
   return (

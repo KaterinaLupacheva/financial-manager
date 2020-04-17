@@ -12,24 +12,24 @@ export const TopBarContainer = styled(Box)(({ theme }) => ({
   marginLeft: "40px",
   [theme.breakpoints.down("md")]: {
     width: "100vw",
-    marginLeft: "0px",
-  },
+    marginLeft: "0px"
+  }
 }));
 
-export const StyledCard = styled(withTheme(Card))((props) => ({
+export const StyledCard = styled(withTheme(Card))(props => ({
   background: props.bgcolor,
   [props.theme.breakpoints.down("md")]: {
-    width: "50vw",
+    width: "50vw"
   },
   margin: "20px",
   height: "15vh",
-  width: "20vw",
+  width: "20vw"
 }));
 
 export const StyledCardContent = styled(CardContent)({
   display: "flex",
   padding: 0,
-  height: "100%",
+  height: "100%"
 });
 
 export const CardInside = styled(Box)(({ theme }) => ({
@@ -40,6 +40,6 @@ export const CardInside = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
-    height: "100%",
-  },
+    height: "100%"
+  }
 }));

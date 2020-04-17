@@ -7,14 +7,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Autocomplete, {
-  createFilterOptions,
+  createFilterOptions
 } from "@material-ui/lab/Autocomplete";
 import {
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Box,
+  Box
 } from "@material-ui/core";
 import axios from "axios";
 import SnackBar from "./snackbar";
@@ -38,7 +38,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
   const handleClose = () => {
     setDialogValue({
       category: "",
-      type: "",
+      type: ""
     });
 
     toggleOpen(false);
@@ -46,7 +46,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
 
   const [dialogValue, setDialogValue] = useState({
     category: "",
-    type: "",
+    type: ""
   });
 
   const validate = () => {
@@ -64,7 +64,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
     return valid;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
@@ -80,18 +80,18 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
     if (dialogValue.type === "expenses") {
       tempObject = {
         ...expensesCategories,
-        [dialogValue.category]: "",
+        [dialogValue.category]: ""
       };
       reqBody = {
-        expensesCategories: tempObject,
+        expensesCategories: tempObject
       };
     } else {
       tempObject = {
         ...fetchedCategories.data.incomesCategories,
-        [dialogValue.category]: "",
+        [dialogValue.category]: ""
       };
       reqBody = {
-        incomesCategories: tempObject,
+        incomesCategories: tempObject
       };
     }
     axios
@@ -99,11 +99,11 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
         `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`,
         reqBody
       )
-      .then((res) => {
+      .then(res => {
         setMessage(`Category ${dialogValue.category} added`);
         openSnackbar(true);
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   };
@@ -123,7 +123,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
       for (let key of Object.keys(fetchedCategories.data.expensesCategories)) {
         result.push({
           category: key,
-          type: "expenses",
+          type: "expenses"
         });
       }
       setExpensesOptions(result);
@@ -134,7 +134,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
       for (let key of Object.keys(fetchedCategories.data.incomesCategories)) {
         result.push({
           category: key,
-          type: "incomes",
+          type: "incomes"
         });
       }
       setIncomesOptions(result);
@@ -157,7 +157,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
               toggleOpen(true);
               setDialogValue({
                 category: newValue.charAt(0).toUpperCase() + newValue.slice(1),
-                type: "",
+                type: ""
               });
             });
             return;
@@ -169,7 +169,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
               category:
                 newValue.inputValue.charAt(0).toUpperCase() +
                 newValue.inputValue.slice(1),
-              type: "",
+              type: ""
             });
 
             return;
@@ -186,7 +186,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
           if (params.inputValue !== "") {
             filtered.push({
               inputValue: params.inputValue,
-              category: `Add "${params.inputValue}"`,
+              category: `Add "${params.inputValue}"`
             });
           }
 
@@ -194,7 +194,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
         }}
         id="free-solo"
         options={isExpenses ? expensesOptions : incomesOptions}
-        getOptionLabel={(option) => {
+        getOptionLabel={option => {
           // e.g value selected with enter, right from the input
           if (typeof option === "string") {
             return option;
@@ -204,10 +204,10 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
           }
           return option.category;
         }}
-        renderOption={(option) => option.category}
+        renderOption={option => option.category}
         style={{ width: 195, marginTop: "5px" }}
         freeSolo
-        renderInput={(params) => <TextField {...params} label="Category" />}
+        renderInput={params => <TextField {...params} label="Category" />}
       />
       <Dialog
         open={open}
@@ -234,10 +234,10 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
               value={dialogValue.category}
               helperText={errors.category}
               error={errors.category ? true : false}
-              onChange={(event) =>
+              onChange={event =>
                 setDialogValue({
                   ...dialogValue,
-                  category: event.target.value,
+                  category: event.target.value
                 })
               }
               label="Category"
@@ -250,7 +250,7 @@ const SelectWithAddOption = ({ isExpenses, initialValue, updatedValue }) => {
                 label="Type"
                 value={dialogValue.type}
                 error={errors.type ? true : false}
-                onChange={(event) =>
+                onChange={event =>
                   setDialogValue({ ...dialogValue, type: event.target.value })
                 }
                 //   className={classes.selectEmpty}

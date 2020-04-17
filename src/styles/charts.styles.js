@@ -8,8 +8,8 @@ export const StyledChartContainer = styled(Box)(({ theme }) => ({
   margin: "0 auto",
   textAlign: "center",
   [theme.breakpoints.down("md")]: {
-    width: "unset",
-  },
+    width: "unset"
+  }
 }));
 
 export const StyledBarChart = styled(Bar)`

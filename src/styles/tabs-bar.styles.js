@@ -1,13 +1,13 @@
-const tabsBarStyle = (theme) => ({
+const tabsBarStyle = theme => ({
   displayNone: {
-    display: "none !important",
+    display: "none !important"
   },
   tabsRoot: {
     minHeight: "unset !important",
     overflowX: "visible",
     "& $tabRootButton": {
-      fontSize: "0.875rem",
-    },
+      fontSize: "0.875rem"
+    }
   },
   tabRootButton: {
     minHeight: "unset !important",
@@ -24,13 +24,13 @@ const tabsBarStyle = (theme) => ({
     width: "25vw",
     [theme.breakpoints.down("md")]: {
       width: "30vw",
-      marginLeft: "10px",
-    },
+      marginLeft: "10px"
+    }
   },
   tabSelected: {
     backgroundColor: theme.palette.primary.darkPurpleBg,
     color: "#FFF !important",
-    transition: "0.2s background-color 0.1s",
+    transition: "0.2s background-color 0.1s"
   },
   tabWrapper: {
     display: "inline-block",
@@ -45,16 +45,16 @@ const tabsBarStyle = (theme) => ({
     marginTop: "1px",
     "& > svg,& > .material-icons": {
       verticalAlign: "middle",
-      margin: "-1px 5px 0 0 !important",
+      margin: "-1px 5px 0 0 !important"
     },
     [theme.breakpoints.down("md")]: {
       display: "flex",
-      flexDirection: "column",
-    },
+      flexDirection: "column"
+    }
   },
   cardStyles: {
-    margin: 20,
-  },
+    margin: 20
+  }
 });
 
 export default tabsBarStyle;
