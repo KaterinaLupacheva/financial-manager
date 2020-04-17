@@ -40,12 +40,20 @@ const MonthPage = () => {
       `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
     );
     if (monthData) {
-      setExpensesData(createDataForTable(monthData.expenses));
-      setIncomeData(createDataForTable(monthData.incomes));
+      if (monthData.expenses) {
+        setExpensesData(createDataForTable(monthData.expenses));
+      }
+      if (monthData.incomes) {
+        setIncomeData(createDataForTable(monthData.incomes));
+      }
     } else if (fetchedMonthData.data) {
       setMonthData(fetchedMonthData.data);
-      setExpensesData(createDataForTable(fetchedMonthData.data.expenses));
-      setIncomeData(createDataForTable(fetchedMonthData.data.incomes));
+      if (fetchedMonthData.data.expenses) {
+        setExpensesData(createDataForTable(fetchedMonthData.data.expenses));
+      }
+      if (fetchedMonthData.data.incomes) {
+        setIncomeData(createDataForTable(fetchedMonthData.data.incomes));
+      }
     }
   };
 
@@ -104,11 +112,11 @@ const MonthPage = () => {
           </StyledCard>
         )}
       </TopBarContainer>
-      {expensesData && incomeData && !fetchedMonthData.isLoading && (
-        <>
-          <ExpansionTable isExpenses={true} tableData={expensesData} />
-          <ExpansionTable isExpenses={false} tableData={incomeData} />
-        </>
+      {expensesData && !fetchedMonthData.isLoading && (
+        <ExpansionTable isExpenses={true} tableData={expensesData} />
+      )}
+      {incomeData && !fetchedMonthData.isLoading && (
+        <ExpansionTable isExpenses={false} tableData={incomeData} />
       )}
       {!expensesData && !fetchedMonthData.isLoading && (
         <Typography color="error" gutterBottom={true} variant="h4">
