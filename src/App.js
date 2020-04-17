@@ -8,6 +8,7 @@ import IncomeContext from "./contexts/income.context";
 import { ExpensesCategoriesContextProvider } from "./contexts/expensesCategories.context";
 import { MonthDataContextProvider } from "./contexts/monthData.context";
 import axios from "axios";
+import * as ROUTES from "./constants/routes";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Sidebar from "./components/sidebar";
@@ -90,26 +91,32 @@ const App = () => {
           >
             <Sidebar>
               <Switch>
-                <Route exact path="/" component={StartPage} />
+                <Route exact path={ROUTES.HOME} component={StartPage} />
 
-                <AuthRoute path="/signup" component={SignupPage} />
-                <AuthRoute path="/login" component={LoginPage} />
-                <Route path="/pw-forgot" component={ForgotPasswordPage} />
+                <AuthRoute path={ROUTES.SIGN_UP} component={SignupPage} />
+                <AuthRoute path={ROUTES.LOGIN} component={LoginPage} />
+                <Route
+                  path={ROUTES.PASSWORD_FORGET}
+                  component={ForgotPasswordPage}
+                />
                 <ExpensesCategoriesContextProvider>
                   <MonthDataContextProvider>
-                    <Route path="/month" component={MonthPage} />
+                    <Route path={ROUTES.MONTH} component={MonthPage} />
                     {/* <VerifiedRoute path="/month" component={MonthPage} /> */}
                   </MonthDataContextProvider>
                   <ExpensesContext.Provider
                     value={{ expensesPeriodData, setExpensesPeriodData }}
                   >
-                    <Route path="/table" component={PivotTablePage} />
+                    <Route
+                      path={ROUTES.PIVOT_TABLE}
+                      component={PivotTablePage}
+                    />
                     <IncomeContext.Provider
                       value={{ incomesPeriodData, setIncomesPeriodData }}
                     >
-                      <Route path="/charts" component={ChartsPage} />
+                      <Route path={ROUTES.CHARTS} component={ChartsPage} />
                     </IncomeContext.Provider>
-                    <Route path="/budget" component={BudgetPage} />
+                    <Route path={ROUTES.BUDGET} component={BudgetPage} />
                   </ExpensesContext.Provider>
                 </ExpensesCategoriesContextProvider>
               </Switch>
