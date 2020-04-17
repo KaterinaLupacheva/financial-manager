@@ -66,8 +66,8 @@ export const colorsForCharts = [
   lightBlue["A100"]
 ];
 
-export const prepareDataForCategoryChart = (dbData, isExpenses) => {
-  const data = sumPerCategoryAndMonth(dbData.reverse());
+export const prepareDataForCategoryChart = dbData => {
+  const data = sumPerCategoryAndMonth(dbData);
   let labels = [];
   let datasets = [];
   let categories = [];

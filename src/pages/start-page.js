@@ -6,13 +6,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import UserContext from "../contexts/user.context";
 import SimpleBackdrop from "../components/simple-backdrop";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   margin: {
-    margin: theme.spacing(5),
+    margin: theme.spacing(5)
   },
   subtitleMargin: {
-    marginLeft: theme.spacing(5),
-  },
+    marginLeft: theme.spacing(5)
+  }
 }));
 
 const StartPage = () => {
@@ -21,11 +21,11 @@ const StartPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     const userData = {
       email: "demo@demo.com",
-      password: "111111",
+      password: "111111"
     };
     setIsLoading(true);
     axios
@@ -33,12 +33,12 @@ const StartPage = () => {
         "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
         userData
       )
-      .then((res) => {
+      .then(res => {
         setIsLoading(false);
         setUser(res.data.token);
         window.location.href = "/month";
       })
-      .catch((err) => {
+      .catch(err => {
         setErrors(err.response.data);
         setIsLoading(false);
       });

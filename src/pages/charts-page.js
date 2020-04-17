@@ -13,7 +13,7 @@ import ExpensesContext from "../contexts/expenses.context";
 import IncomeContext from "../contexts/income.context";
 import {
   prepareDataForChart,
-  prepareDataForCategoryChart,
+  prepareDataForCategoryChart
 } from "../utils/transform-data.utils";
 
 const ChartsPage = () => {
@@ -23,26 +23,26 @@ const ChartsPage = () => {
   const { incomesPeriodData, setIncomesPeriodData } = useContext(IncomeContext);
   const [incomesDataForChart, setIncomesDataForChart] = useState({
     labels: [],
-    incomes: [],
+    incomes: []
   });
   const [expensesDataForChart, setExpensesDataForChart] = useState({
     labels: [],
-    expenses: [],
+    expenses: []
   });
   const [
     dataForIncomeCategoriesChart,
-    setDataForIncomeCategoriesChart,
+    setDataForIncomeCategoriesChart
   ] = useState({
     labels: [],
-    datasets: [],
+    datasets: []
   });
   const [
     dataForExpensesCategoriesChart,
-    setDataForExpensesCategoriesChart,
+    setDataForExpensesCategoriesChart
   ] = useState({
     labels: [],
     datasets: [],
-    categories: [],
+    categories: []
   });
 
   const [periodData, doFetchData] = useFetchData("");
@@ -69,17 +69,16 @@ const ChartsPage = () => {
     }
 
     if (incomesPeriodData) {
-      console.log("HERE " + incomesPeriodData);
       setIncomesDataForChart(prepareDataForChart(incomesPeriodData, false));
       setDataForIncomeCategoriesChart(
-        prepareDataForCategoryChart(incomesPeriodData, false)
+        prepareDataForCategoryChart(incomesPeriodData)
       );
     }
 
     if (expensesPeriodData) {
       setExpensesDataForChart(prepareDataForChart(expensesPeriodData, true));
       setDataForExpensesCategoriesChart(
-        prepareDataForCategoryChart(expensesPeriodData, true)
+        prepareDataForCategoryChart(expensesPeriodData)
       );
     }
   }, [periodData.data, expensesPeriodData, incomesPeriodData]);
@@ -99,7 +98,7 @@ const ChartsPage = () => {
                   incomesDataForChart={incomesDataForChart}
                   expensesDataForChart={expensesDataForChart}
                 />
-              ),
+              )
             },
             {
               tabName: "Expenses",
@@ -108,7 +107,7 @@ const ChartsPage = () => {
                 <ExpensesByCategories
                   allData={dataForExpensesCategoriesChart}
                 />
-              ),
+              )
             },
             {
               tabName: "Income",
@@ -117,8 +116,8 @@ const ChartsPage = () => {
                 <CategoriesBarChart
                   dataForChart={dataForIncomeCategoriesChart}
                 />
-              ),
-            },
+              )
+            }
           ]}
         />
       )}

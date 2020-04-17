@@ -27,7 +27,7 @@ const useFetchData = initialUrl => {
     }
   }, [url]);
 
-  return [{ data, isLoading, isError }, setUrl];
+  return [{ data, isLoading, isError }, setUrl, setData];
 };
 
 export default useFetchData;
