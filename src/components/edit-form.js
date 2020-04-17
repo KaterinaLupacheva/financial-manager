@@ -21,6 +21,7 @@ import { MonthDataContext } from "../contexts/monthData.context";
 import { format } from "date-fns";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { auth } from "../firebase/firebase";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -94,7 +95,7 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
     return array;
   };
 
-  const updateData = () => {
+  const updateData = async () => {
     let requestBody = {};
     if (state.view === "expenses") {
       requestBody = {
@@ -106,11 +107,17 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
       };
     }
 
+    const token = await auth.currentUser.getIdToken();
     const monthYear = format(new Date(state.date), "MMM-yyyy");
     axios
       .put(
         `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
-        requestBody
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       )
       .then(() => {
         if (state.view === "expenses") {

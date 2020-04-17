@@ -23,11 +23,11 @@ const LoginForm = () => {
     setIsLoading(true);
     try {
       await doSignInUserWithEmailAndPassword(email, password);
+      setIsLoading(false);
       setUser();
     } catch (error) {
       console.error(error);
       setError(error);
-    } finally {
       setIsLoading(false);
     }
   };
