@@ -1,6 +1,10 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import {
+  expensesCategories,
+  incomesCategories
+} from "../constants/default-categories";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -30,9 +34,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
     try {
       await userRef.set({
-        uid,
+        userId: uid,
         email,
         createdAt,
+        expensesCategories,
+        incomesCategories,
         ...additionalData
       });
     } catch (error) {
