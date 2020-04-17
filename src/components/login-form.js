@@ -10,7 +10,7 @@ import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles(formStyles);
 
-const LoginForm = props => {
+const LoginForm = () => {
   const { setUser } = useContext(UserContext);
   const classes = useStyles();
   const [email, setEmail] = useState("");
