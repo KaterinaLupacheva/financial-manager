@@ -23,6 +23,7 @@ import VerifiedRoute from "./utils/verifiedRoute";
 import StartPage from "./pages/start-page";
 import BudgetPage from "./pages/budget-page";
 import ForgotPasswordPage from "./pages/forgot-password-page";
+import { auth } from "./firebase/firebase";
 
 const theme = createMuiTheme({
   palette: {
@@ -58,24 +59,13 @@ const App = () => {
     window.location.href = "/";
   };
 
-  const setUser = token => {
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      if (decodedToken.exp * 1000 < Date.now()) {
-        logoutUser();
-        window.location.href = "/login";
-      } else {
-        localStorage.setItem("FBIdToken", token);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        setAuthenticated(true);
-        setEmail(decodedToken.email);
-      }
+  const setUser = () => {
+    if (auth.currentUser) {
+      setAuthenticated(true);
+    } else {
+      window.location.href = "/login";
     }
   };
-
-  useEffect(() => {
-    setUser(localStorage.FBIdToken);
-  }, [authenticated]);
 
   return (
     <MuiThemeProvider theme={theme}>

@@ -57,6 +57,9 @@ export const doSendVerificationEmail = () =>
     url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT
   });
 
+export const doSignInUserWithEmailAndPassword = (email, password) =>
+  auth.signInWithEmailAndPassword(email, password);
+
 export const doPasswordReset = email => auth.sendPasswordResetEmail(email);
 export const doPasswordUpdate = password =>
   auth.currentUser.updatePassword(password);
