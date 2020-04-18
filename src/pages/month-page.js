@@ -13,7 +13,7 @@ import {
   TopBarContainer,
   StyledCard,
   StyledCardContent,
-  CardInside,
+  CardInside
 } from "../styles/card.styles";
 import { useTheme } from "@material-ui/core/styles";
 import useFetchData from "../hooks/useFetchData";
@@ -25,14 +25,14 @@ const MonthPage = () => {
   const [
     fetchedMonthData,
     doFetchMonthData,
-    setFetchedMonthData,
+    setFetchedMonthData
   ] = useFetchData("");
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
   const { monthData, setMonthData } = useContext(MonthDataContext);
 
-  const changeDate = (newMonth) => {
+  const changeDate = newMonth => {
     setFetchedMonthData(null);
     setMonthData(null);
     setExpensesData(null);
