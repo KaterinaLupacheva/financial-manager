@@ -25,11 +25,17 @@ A simple app for keeping track of the cash flow with charts and pivot table.
     - copy/paste the configuration from your Firebase project's dashboard into .env file
     
     REACT_APP_API_KEY=xxx
+
     REACT_APP_AUTH_DOMAIN=xxx
+
     REACT_APP_DATABASE_URL=xxx
+
     REACT_APP_PROJECT_ID=xxx
+
     REACT_APP_STORAGE_BUCKET=xxx
+
     REACT_APP_MESSAGING_SENDER_ID=xxx
+    
     REACT_APP_APP_ID=xxx
 
     REACT_APP_CONFIRMATION_EMAIL_REDIRECT=http://localhost:3000/month
