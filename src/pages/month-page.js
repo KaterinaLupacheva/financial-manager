@@ -13,7 +13,7 @@ import {
   TopBarContainer,
   StyledCard,
   StyledCardContent,
-  CardInside
+  CardInside,
 } from "../styles/card.styles";
 import { useTheme } from "@material-ui/core/styles";
 import useFetchData from "../hooks/useFetchData";
@@ -22,14 +22,19 @@ import { format } from "date-fns";
 const MonthPage = () => {
   const theme = useTheme();
 
-  const [fetchedMonthData, doFetchMonthData, setFetchedData] = useFetchData("");
+  const [
+    fetchedMonthData,
+    doFetchMonthData,
+    setFetchedMonthData,
+  ] = useFetchData("");
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
   const { monthData, setMonthData } = useContext(MonthDataContext);
 
-  const changeDate = newMonth => {
-    setFetchedData(null);
+  const changeDate = (newMonth) => {
+    setFetchedMonthData(null);
+    setMonthData(null);
     setExpensesData(null);
     setIncomeData(null);
     setMonth(newMonth);
@@ -40,15 +45,14 @@ const MonthPage = () => {
     doFetchMonthData(
       `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
     );
-    // if (monthData) {
-    //   if (monthData.expenses) {
-    //     setExpensesData(createDataForTable(monthData.expenses));
-    //   }
-    //   if (monthData.incomes) {
-    //     setIncomeData(createDataForTable(monthData.incomes));
-    //   }
-    // } else
-    if (fetchedMonthData.data) {
+    if (monthData) {
+      if (monthData.expenses) {
+        setExpensesData(createDataForTable(monthData.expenses));
+      }
+      if (monthData.incomes) {
+        setIncomeData(createDataForTable(monthData.incomes));
+      }
+    } else if (fetchedMonthData.data) {
       setMonthData(fetchedMonthData.data);
       if (fetchedMonthData.data.expenses) {
         setExpensesData(createDataForTable(fetchedMonthData.data.expenses));

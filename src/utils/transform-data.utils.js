@@ -9,12 +9,26 @@ import {
   blueGrey,
   cyan,
   red,
-  lightBlue
+  lightBlue,
 } from "@material-ui/core/colors";
 import { format } from "date-fns";
 import { getMonthsNames } from "../utils/date.utils";
+import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 
-export const sumPerCategoryAndMonth = data => {
+const getMonthYearArray = (startDate, endDate) => {
+  const getMonthsInterval = eachMonthOfInterval({
+    start: new Date(startDate),
+    end: new Date(endDate),
+  });
+
+  let monthYearArray = [];
+  getMonthsInterval.forEach((date) => {
+    monthYearArray.push(format(new Date(date), "MMMM"));
+  });
+  return monthYearArray;
+};
+
+export const sumPerCategoryAndMonth = (data, startDate, endDate) => {
   const dataByCategories = data.reduce((r, a) => {
     r[a.category] = r[a.category] || [];
     r[a.category].push(a);
@@ -22,16 +36,17 @@ export const sumPerCategoryAndMonth = data => {
   }, Object.create(null));
 
   let resultObject = {};
+
   for (let [key, value] of Object.entries(dataByCategories)) {
     resultObject = {
       ...resultObject,
-      [key]: sumPerMonth(value)
+      [key]: sumPerMonth(value, startDate, endDate),
     };
   }
   return resultObject;
 };
 
-export const sumPerCatogyForCurMonth = monthData => {
+export const sumPerCatogyForCurMonth = (monthData) => {
   const sumPerCategory = monthData.reduce((acc, cur) => {
     acc[cur.category] =
       acc[cur.category] + parseFloat(cur.sum.replace(/,/g, "")) ||
@@ -63,11 +78,11 @@ export const colorsForCharts = [
   blueGrey["A100"],
   cyan["A100"],
   red["A100"],
-  lightBlue["A100"]
+  lightBlue["A100"],
 ];
 
-export const prepareDataForCategoryChart = dbData => {
-  const data = sumPerCategoryAndMonth(dbData);
+export const prepareDataForCategoryChart = (dbData, startDate, endDate) => {
+  const data = sumPerCategoryAndMonth(dbData, startDate, endDate);
   let labels = [];
   let datasets = [];
   let categories = [];
@@ -77,12 +92,12 @@ export const prepareDataForCategoryChart = dbData => {
       label: key,
       data: Object.values(data[key]),
       backgroundColor: colorsForCharts[i],
-      hoverBackgroundColor: colorsForCharts[1]
+      hoverBackgroundColor: colorsForCharts[1],
     });
     categories.push({
       name: key,
       avSum: calculateAverageExpenses(Object.values(data[key])),
-      color: colorsForCharts[i]
+      color: colorsForCharts[i],
     });
     i++;
     labels =
@@ -95,21 +110,25 @@ export const prepareDataForCategoryChart = dbData => {
     ...result,
     labels,
     datasets,
-    categories
+    categories,
   };
   return result;
 };
 
-const calculateAverageExpenses = data => {
+const calculateAverageExpenses = (data) => {
   const sum = data.reduce((a, b) => Number(a) + Number(b), 0);
   const avg = sum / data.length || 0;
   return avg.toFixed(2);
 };
 
-const sumPerMonth = data => {
-  const mapDayToMonth = data.reverse().map(entry => ({
+const sumPerMonth = (data, startDate, endDate) => {
+  let monthYearArray = null;
+  if (startDate && endDate) {
+    monthYearArray = getMonthYearArray(startDate, endDate);
+  }
+  const mapDayToMonth = data.map((entry) => ({
     ...entry,
-    month: format(new Date(entry.date), "MMMM")
+    month: format(new Date(entry.date), "MMMM"),
   }));
   const sumPerMonth = mapDayToMonth.reduce((acc, cur) => {
     acc[cur.month] =
@@ -117,27 +136,41 @@ const sumPerMonth = data => {
       parseFloat(cur.sum.replace(/,/g, ""));
     return acc;
   }, {});
+
   let result = {};
-  for (let [key, value] of Object.entries(sumPerMonth)) {
-    result = { ...result, [key]: parseFloat(value).toFixed(2) };
+  if (monthYearArray) {
+    monthYearArray.forEach((month) => {
+      for (let [key, value] of Object.entries(sumPerMonth)) {
+        if (month === key) {
+          result = { ...result, [key]: parseFloat(value).toFixed(2) };
+          return;
+        } else {
+          result = { ...result, [month]: parseFloat(0).toFixed(2) };
+        }
+      }
+    });
+  } else {
+    for (let [key, value] of Object.entries(sumPerMonth)) {
+      result = { ...result, [key]: parseFloat(value).toFixed(2) };
+    }
   }
   return result;
 };
 
 export const prepareDataForChart = (dbData, isExpenses) => {
-  const data = sumPerMonth(dbData.reverse());
+  const data = sumPerMonth(dbData);
   let result = {};
   if (isExpenses) {
     result = {
       ...result,
       labels: Object.keys(data),
-      expenses: Object.values(data)
+      expenses: Object.values(data),
     };
   } else {
     result = {
       ...result,
       labels: Object.keys(data),
-      incomes: Object.values(data)
+      incomes: Object.values(data),
     };
   }
   return result;
@@ -148,39 +181,39 @@ export const createHeadCells = () => {
   let headCells = [
     {
       id: "categories",
-      label: "Categories"
-    }
+      label: "Categories",
+    },
   ];
-  months.forEach(month => {
+  months.forEach((month) => {
     let tempCell = {
       id: month,
-      label: month
+      label: month,
     };
     headCells.push(tempCell);
   });
   headCells.push({
     id: "avg",
     label: "Avg.",
-    right: true
+    right: true,
   });
   return headCells;
 };
 
-export const createTableRows = data => {
+export const createTableRows = (data) => {
   const monthsNames = getMonthsNames()[1];
   const shortMonthsNames = getMonthsNames()[0];
   const rows = [];
   for (let [key, value] of Object.entries(data)) {
     let tempRow = {
       name: key,
-      avg: parseFloat(calculateAverageExpenses(Object.values(data[key])))
+      avg: parseFloat(calculateAverageExpenses(Object.values(data[key]))),
     };
     monthsNames.forEach((month, idx) => {
       tempRow = {
         ...tempRow,
         [shortMonthsNames[idx]]: Object.keys(value).includes(month)
           ? parseFloat(value[month])
-          : parseFloat("0.00")
+          : parseFloat("0.00"),
       };
     });
     rows.push(tempRow);

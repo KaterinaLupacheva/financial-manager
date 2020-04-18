@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
+import jwtDecode from "jwt-decode";
 import UserContext from "./contexts/user.context";
 import ExpensesContext from "./contexts/expenses.context";
 import IncomeContext from "./contexts/income.context";
@@ -22,7 +23,6 @@ import VerifiedRoute from "./utils/verifiedRoute";
 import StartPage from "./pages/start-page";
 import BudgetPage from "./pages/budget-page";
 import ForgotPasswordPage from "./pages/forgot-password-page";
-import { auth } from "./firebase/firebase";
 
 const theme = createMuiTheme({
   palette: {
@@ -58,13 +58,24 @@ const App = () => {
     window.location.href = "/";
   };
 
-  const setUser = () => {
-    if (auth.currentUser) {
-      setAuthenticated(true);
-    } else {
-      window.location.href = "/login";
+  const setUser = token => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        logoutUser();
+        window.location.href = "/login";
+      } else {
+        localStorage.setItem("FBIdToken", token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        setAuthenticated(true);
+        setEmail(decodedToken.email);
+      }
     }
   };
+
+  useEffect(() => {
+    setUser(localStorage.FBIdToken);
+  }, [authenticated]);
 
   return (
     <MuiThemeProvider theme={theme}>

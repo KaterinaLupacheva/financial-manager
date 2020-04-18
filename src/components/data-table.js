@@ -29,11 +29,11 @@ const Table = ({ isExpenses, tableData }) => {
       let requestBody = {};
       if (isExpenses) {
         requestBody = {
-          expenses: removeItem(monthData.expenses)
+          expenses: removeItem(monthData.expenses).length > 0 ? removeItem(monthData.expenses) : null
         };
       } else {
         requestBody = {
-          incomes: removeItem(monthData.incomes)
+          incomes: removeItem(monthData.incomes).length > 0 ? removeItem(monthData.incomes) : null
         };
       }
 
@@ -48,8 +48,9 @@ const Table = ({ isExpenses, tableData }) => {
           requestBody
         )
         .then(() => {
-          openSnackbar(true);
+          console.log('DELETED')
           setMessage("Entry deleted");
+          openSnackbar(true);
           if (isExpenses) {
             setMonthData({
               ...monthData,

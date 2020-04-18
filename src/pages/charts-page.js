@@ -13,7 +13,7 @@ import ExpensesContext from "../contexts/expenses.context";
 import IncomeContext from "../contexts/income.context";
 import {
   prepareDataForChart,
-  prepareDataForCategoryChart
+  prepareDataForCategoryChart,
 } from "../utils/transform-data.utils";
 
 const ChartsPage = () => {
@@ -23,26 +23,26 @@ const ChartsPage = () => {
   const { incomesPeriodData, setIncomesPeriodData } = useContext(IncomeContext);
   const [incomesDataForChart, setIncomesDataForChart] = useState({
     labels: [],
-    incomes: []
+    incomes: [],
   });
   const [expensesDataForChart, setExpensesDataForChart] = useState({
     labels: [],
-    expenses: []
+    expenses: [],
   });
   const [
     dataForIncomeCategoriesChart,
-    setDataForIncomeCategoriesChart
-  ] = useState({
-    labels: [],
-    datasets: []
-  });
-  const [
-    dataForExpensesCategoriesChart,
-    setDataForExpensesCategoriesChart
+    setDataForIncomeCategoriesChart,
   ] = useState({
     labels: [],
     datasets: [],
-    categories: []
+  });
+  const [
+    dataForExpensesCategoriesChart,
+    setDataForExpensesCategoriesChart,
+  ] = useState({
+    labels: [],
+    datasets: [],
+    categories: [],
   });
 
   const [periodData, doFetchData] = useFetchData("");
@@ -55,10 +55,10 @@ const ChartsPage = () => {
         )}`
       );
       if (periodData.data) {
-        if (periodData.data.expenses[0]) {
+        if (periodData.data.expenses) {
           setExpensesPeriodData(periodData.data.expenses);
         }
-        if (periodData.data.incomes[0]) {
+        if (periodData.data.incomes) {
           setIncomesPeriodData(periodData.data.incomes);
         }
       }
@@ -71,14 +71,18 @@ const ChartsPage = () => {
     if (incomesPeriodData) {
       setIncomesDataForChart(prepareDataForChart(incomesPeriodData, false));
       setDataForIncomeCategoriesChart(
-        prepareDataForCategoryChart(incomesPeriodData)
+        prepareDataForCategoryChart(incomesPeriodData, "2020-01-01", new Date())
       );
     }
 
     if (expensesPeriodData) {
       setExpensesDataForChart(prepareDataForChart(expensesPeriodData, true));
       setDataForExpensesCategoriesChart(
-        prepareDataForCategoryChart(expensesPeriodData)
+        prepareDataForCategoryChart(
+          expensesPeriodData,
+          "2020-01-01",
+          new Date()
+        )
       );
     }
   }, [periodData.data, expensesPeriodData, incomesPeriodData]);
@@ -98,7 +102,7 @@ const ChartsPage = () => {
                   incomesDataForChart={incomesDataForChart}
                   expensesDataForChart={expensesDataForChart}
                 />
-              )
+              ),
             },
             {
               tabName: "Expenses",
@@ -107,7 +111,7 @@ const ChartsPage = () => {
                 <ExpensesByCategories
                   allData={dataForExpensesCategoriesChart}
                 />
-              )
+              ),
             },
             {
               tabName: "Income",
@@ -116,8 +120,8 @@ const ChartsPage = () => {
                 <CategoriesBarChart
                   dataForChart={dataForIncomeCategoriesChart}
                 />
-              )
-            }
+              ),
+            },
           ]}
         />
       )}
