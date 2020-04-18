@@ -17,7 +17,7 @@ const SnackBar = ({ message, isOpened, handleSnackBarClose }) => {
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "left"
+          horizontal: "left",
         }}
         open={isOpened}
         autoHideDuration={6000}
