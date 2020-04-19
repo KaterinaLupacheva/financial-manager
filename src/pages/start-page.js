@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import SimpleBackdrop from "../components/simple-backdrop";
 import UserContext from "../contexts/user.context";
+import Footer from "../components/footer";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -57,6 +58,7 @@ const StartPage = () => {
         Demo account
       </Button>
       <SimpleBackdrop open={isLoading} />
+      <Footer />
     </>
   );
 };
