@@ -10,7 +10,11 @@ import { MonthDataContextProvider } from "./contexts/monthData.context";
 import axios from "axios";
 import * as ROUTES from "./constants/routes";
 
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  responsiveFontSizes
+} from "@material-ui/core/styles";
 import Sidebar from "./components/sidebar";
 import SignupPage from "./pages/signup-page";
 import LoginPage from "./pages/login-page";
@@ -24,7 +28,7 @@ import StartPage from "./pages/start-page";
 import BudgetPage from "./pages/budget-page";
 import ForgotPasswordPage from "./pages/forgot-password-page";
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   palette: {
     primary: {
       main: "#e1bee7",
@@ -49,6 +53,7 @@ const App = () => {
   const [email, setEmail] = useState("");
   const [expensesPeriodData, setExpensesPeriodData] = useState(null);
   const [incomesPeriodData, setIncomesPeriodData] = useState(null);
+  theme = responsiveFontSizes(theme);
 
   const logoutUser = () => {
     localStorage.removeItem("FBIdToken");
