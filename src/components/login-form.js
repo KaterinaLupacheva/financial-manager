@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import UserContext from "../contexts/user.context";
 import SimpleBackdrop from "./simple-backdrop";
+import DemoAccountButton from "./demoAccountButton";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
@@ -18,11 +19,11 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const userData = {
       email,
-      password
+      password,
     };
     setIsLoading(true);
     axios
@@ -30,11 +31,11 @@ const LoginForm = () => {
         "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
         userData
       )
-      .then(res => {
+      .then((res) => {
         setIsLoading(false);
         setUser(res.data.token);
       })
-      .catch(err => {
+      .catch((err) => {
         setErrors(err.response.data);
         setIsLoading(false);
       });
@@ -57,7 +58,7 @@ const LoginForm = () => {
             error={errors.email ? true : false}
             className={classes.textfield}
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             fullWidth
           />
           <TextField
@@ -69,7 +70,7 @@ const LoginForm = () => {
             error={errors.password ? true : false}
             className={classes.textfield}
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             fullWidth
           />
           {errors.general && (
@@ -80,6 +81,7 @@ const LoginForm = () => {
           <Button type="submit" variant="contained" className={classes.button}>
             Login
           </Button>
+          <DemoAccountButton />
           <br />
           <small>
             Don't have an account? Signup <Link to="/signup">here</Link>
