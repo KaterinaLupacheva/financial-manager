@@ -44,7 +44,7 @@ const Sidebar = ({ children }) => {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
+          [classes.appBarShift]: open,
         })}
       >
         <Toolbar className={classes.toolBar}>
@@ -64,6 +64,9 @@ const Sidebar = ({ children }) => {
           <Typography variant="h6" noWrap className={classes.title}>
             Financial Manager
           </Typography>
+          <Button color="inherit" component={Link} to={"/"}>
+            Home
+          </Button>
           {authenticated ? (
             <Button color="inherit" onClick={logoutUser}>
               Logout
@@ -86,7 +89,7 @@ const Sidebar = ({ children }) => {
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
         }}
       >
         <div className={classes.drawerHeader}>
@@ -119,7 +122,7 @@ const Sidebar = ({ children }) => {
       </Drawer>
       <main
         className={clsx(classes.content, {
-          [classes.contentShift]: open
+          [classes.contentShift]: open,
         })}
       >
         <div className={classes.drawerHeader} />
