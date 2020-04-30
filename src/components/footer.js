@@ -1,17 +1,17 @@
 import React from "react";
-import Typograhpy from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { FooterContainer } from "../styles/footer.styles";
 
 const Footer = () => (
   <FooterContainer>
-    <Typograhpy className="developed">
+    <Typography className="developed">
       {`Developed by `}
       <a href="https://ramonak.io" target="_blank" rel="noopener noreferrer">
         {`Katsiaryna (Kate) Lupachova`}
       </a>
-    </Typograhpy>
-    <Typograhpy className="source">
+    </Typography>
+    <Typography className="source">
       <a
         href="https://github.com/KaterinaLupacheva/financial-manager"
         target="_blank"
@@ -20,7 +20,7 @@ const Footer = () => (
         <GitHubIcon />
         {`Source `}
       </a>
-    </Typograhpy>
+    </Typography>
   </FooterContainer>
 );
 
