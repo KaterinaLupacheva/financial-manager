@@ -6,6 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
@@ -36,19 +37,19 @@ const stableSort = (array, comparator) => {
     if (order !== 0) return order;
     return a[1] - b[1];
   });
-  return stabilizedThis.map(el => el[0]);
+  return stabilizedThis.map((el) => el[0]);
 };
 
-const EnhancedTableHead = props => {
+const EnhancedTableHead = (props) => {
   const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = property => event => {
+  const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead className={classes.headStyle}>
       <TableRow>
-        {createHeadCells().map(headCell => (
+        {createHeadCells().map((headCell) => (
           <TableCell
             className={classes.headCellStyle}
             key={headCell.id}
@@ -76,7 +77,7 @@ const EnhancedTableHead = props => {
 
 const useStyles = makeStyles(pivotTableStyles);
 
-const PivotTable = ({ rows }) => {
+const PivotTable = ({ rows, totalRow }) => {
   const classes = useStyles();
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("avg");
@@ -120,10 +121,10 @@ const PivotTable = ({ rows }) => {
 
                   return (
                     <TableRow key={row.name}>
-                      <TableCell component="th" id={labelId} scope="row">
+                      <TableCell component="td" id={labelId} scope="row">
                         {row.name}
                       </TableCell>
-                      {monthNames.map(month => (
+                      {monthNames.map((month) => (
                         <TableCell key={`${row.name}-${month}-${row[month]}`}>
                           {row[month].toFixed(2)}
                         </TableCell>
@@ -136,6 +137,26 @@ const PivotTable = ({ rows }) => {
                 }
               )}
             </TableBody>
+            {totalRow.avg ? (
+              <TableFooter>
+                <TableRow>
+                  <TableCell className={classes.totalRow}>
+                    {totalRow.name}
+                  </TableCell>
+                  {monthNames.map((month) => (
+                    <TableCell
+                      key={`${totalRow.name}-${month}`}
+                      className={classes.totalRow}
+                    >
+                      {totalRow[month].toFixed(2)}
+                    </TableCell>
+                  ))}
+                  <TableCell align="right" className={classes.totalRow}>
+                    {totalRow.avg.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              </TableFooter>
+            ) : null}
           </Table>
         </TableContainer>
       </Paper>

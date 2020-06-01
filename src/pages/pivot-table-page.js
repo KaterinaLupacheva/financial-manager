@@ -6,7 +6,8 @@ import useFetchData from "../hooks/useFetchData";
 import { getLastDayOfMonth } from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
-  createTableRows
+  createTableRows,
+  createTotalRow,
 } from "../utils/transform-data.utils";
 
 const PivotTablePage = () => {
@@ -14,6 +15,7 @@ const PivotTablePage = () => {
     ExpensesContext
   );
   const [rows, setRows] = useState([]);
+  const [totalRow, setTotalRow] = useState({});
   const [periodData, doFetch] = useFetchData("");
 
   useEffect(() => {
@@ -37,6 +39,8 @@ const PivotTablePage = () => {
       }
       const rows = createTableRows(sums);
       setRows(rows);
+      const totalRow = createTotalRow(sums);
+      setTotalRow(totalRow);
     };
 
     if (!expensesPeriodData) {
@@ -51,7 +55,7 @@ const PivotTablePage = () => {
       {periodData.isError ? (
         <div>Something went wrong...</div>
       ) : (
-        <PivotTable rows={rows} />
+        <PivotTable rows={rows} totalRow={totalRow} />
       )}
       <SimpleBackdrop open={periodData.isLoading ? true : false} />
     </>

@@ -1,23 +1,29 @@
-export const pivotTableStyles = theme => ({
+export const pivotTableStyles = (theme) => ({
   root: {
-    width: "100%"
+    width: "100%",
   },
   paper: {
     width: "100%",
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 750
+    minWidth: 750,
+  },
+  totalRow: {
+    fontWeight: "bold",
+    fontSize: 14,
+    backgroundColor: theme.palette.primary.darkPurpleBg,
+    color: "#FFF",
   },
   headStyle: {
-    backgroundColor: theme.palette.primary.darkPurpleBg
+    backgroundColor: theme.palette.primary.darkPurpleBg,
   },
   headCellStyle: {
     color: "#FFF",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   title: {
-    padding: "30px"
+    padding: "30px",
   },
   visuallyHidden: {
     border: 0,
@@ -28,6 +34,6 @@ export const pivotTableStyles = theme => ({
     padding: 0,
     position: "absolute",
     top: 20,
-    width: 1
-  }
+    width: 1,
+  },
 });
