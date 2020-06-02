@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import ExposureRoundedIcon from "@material-ui/icons/ExposureRounded";
+import {
+  StyledCard,
+  StyledCardContent,
+  CardInside,
+} from "../../styles/card.styles";
 import {
   StyledBarChart,
   StyledChartContainer,
+  YearChartContainer,
 } from "../../styles/charts.styles";
 
 const GroupedBarChart = ({ incomesDataForChart, expensesDataForChart }) => {
@@ -52,10 +60,26 @@ const GroupedBarChart = ({ incomesDataForChart, expensesDataForChart }) => {
   };
 
   return (
-    <StyledChartContainer>
-      {netResult && <div>{`Net year result: ${netResult}`}</div>}
-      <StyledBarChart data={data} options={options} />
-    </StyledChartContainer>
+    <YearChartContainer>
+      <StyledCard
+        variant="outlined"
+        bgcolor={
+          netResult >= 0
+            ? theme.palette.secondary.lightBg
+            : theme.palette.secondary.palePink
+        }
+      >
+        <StyledCardContent style={{ paddingBottom: 0 }}>
+          <ExposureRoundedIcon fontSize="large" />
+          <CardInside>
+            <Typography variant="h4">{`Net year result: ${netResult}`}</Typography>
+          </CardInside>
+        </StyledCardContent>
+      </StyledCard>
+      <StyledChartContainer>
+        <StyledBarChart data={data} options={options} />
+      </StyledChartContainer>
+    </YearChartContainer>
   );
 };
 

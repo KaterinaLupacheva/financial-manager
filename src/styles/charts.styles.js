@@ -24,3 +24,10 @@ export const StyledHorizontalBarChart = styled(HorizontalBar)`
     margin: 0 auto;
   }
 `;
+
+export const YearChartContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
