@@ -1,13 +1,13 @@
 import React from "react";
 import {
   StyledChartContainer,
-  StyledHorizontalBarChart
+  StyledHorizontalBarChart,
 } from "../../styles/charts.styles";
 
 const CategoriesBarChart = ({ dataForChart }) => {
   const data = {
     labels: dataForChart.labels,
-    datasets: dataForChart.datasets
+    datasets: dataForChart.datasets,
   };
 
   return (
