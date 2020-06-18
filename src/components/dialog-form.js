@@ -29,7 +29,7 @@ const DialogForm = ({ open, handleClose }) => {
     date: new Date(),
     sum: "",
     details: "",
-    category: ""
+    category: "",
   };
   const [state, setState] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});
@@ -43,21 +43,21 @@ const DialogForm = ({ open, handleClose }) => {
   const handleViewChange = (event, newView) => {
     setState({
       ...state,
-      view: newView
+      view: newView,
     });
   };
 
-  const handleDateChange = event => {
+  const handleDateChange = (event) => {
     setState({
       ...state,
-      date: event
+      date: event,
     });
   };
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setState({
       ...state,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -80,7 +80,7 @@ const DialogForm = ({ open, handleClose }) => {
     return valid;
   };
 
-  const handleFormSubmit = event => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
@@ -96,17 +96,17 @@ const DialogForm = ({ open, handleClose }) => {
       id: generateId(),
       sum: state.sum,
       details: state.details,
-      category: state.category
+      category: state.category,
     };
     if (state.view === "expenses") {
       requestBody = {
         ...requestBody,
-        expenseDate: state.date
+        expenseDate: state.date,
       };
     } else {
       requestBody = {
         ...requestBody,
-        incomeDate: state.date
+        incomeDate: state.date,
       };
     }
 
@@ -118,7 +118,7 @@ const DialogForm = ({ open, handleClose }) => {
       .then(() => {
         handleSubmit();
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
 
@@ -139,10 +139,11 @@ const DialogForm = ({ open, handleClose }) => {
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
-        maxWidth="xl"
+        maxWidth="sm"
+        fullWidth={true}
         fullScreen={fullScreen}
       >
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle id="form-dialog-title" className={classes.title}>
           Add expenses (-) or income (+)
         </DialogTitle>
         <form noValidate onSubmit={handleFormSubmit}>
@@ -175,33 +176,36 @@ const DialogForm = ({ open, handleClose }) => {
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
+              className={classes.fieldsContainer}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
+                  className={classes.field}
                   autoOk={true}
                   label="Date"
                   minDate={new Date("2020-01-01")}
                   maxDate={new Date()}
                   value={state.date}
-                  onChange={e => handleDateChange(e)}
-                  margin="normal"
+                  onChange={(e) => handleDateChange(e)}
+                  inputVariant="outlined"
                 />
               </MuiPickersUtilsProvider>
               <TextField
+                className={classes.field}
                 autoFocus
-                margin="normal"
                 name="sum"
                 label="Sum"
                 value={state.sum}
                 type="number"
                 step="0.01"
                 required={true}
-                size="small"
+                variant="outlined"
                 helperText={errors.sum}
                 error={errors.sum ? true : false}
                 onChange={handleChange}
               />
               <TextField
+                className={classes.field}
                 name="details"
                 label="Exp / Inc"
                 type="text"
@@ -210,20 +214,20 @@ const DialogForm = ({ open, handleClose }) => {
                 helperText={errors.details}
                 error={errors.details ? true : false}
                 onChange={handleChange}
-                margin="normal"
+                variant="outlined"
               />
               <SelectWithAddOption
                 isExpenses={state.view === "expenses" ? true : false}
-                updatedValue={value =>
+                updatedValue={(value) =>
                   setState({
                     ...state,
-                    category: value
+                    category: value,
                   })
                 }
               />
             </Box>
           </DialogContent>
-          <DialogActions className={classes.buttons}>
+          <DialogActions>
             <Button
               onClick={clearForm}
               color="secondary"
