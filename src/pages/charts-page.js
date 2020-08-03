@@ -56,10 +56,10 @@ const ChartsPage = () => {
       );
       if (periodData.data) {
         if (periodData.data.expenses) {
-          setExpensesPeriodData(periodData.data.expenses);
+          setExpensesPeriodData(periodData.data.expenses.filter(entry => entry));
         }
         if (periodData.data.incomes) {
-          setIncomesPeriodData(periodData.data.incomes);
+          setIncomesPeriodData(periodData.data.incomes.filter(entry => entry));
         }
       }
     };
