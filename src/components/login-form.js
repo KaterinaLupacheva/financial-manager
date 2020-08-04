@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { withRouter, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import UserContext from "../contexts/user.context";
 import SimpleBackdrop from "./simple-backdrop";
 import DemoAccountButton from "./demoAccountButton";
+import { doSignInWithEmailAndPassword } from "../firebase/firebase";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
@@ -18,26 +19,19 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const userData = {
-      email,
-      password,
-    };
     setIsLoading(true);
-    axios
-      .post(
-        "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
-        userData
-      )
-      .then((res) => {
+    doSignInWithEmailAndPassword(email, password)
+      .then(() => {
         setIsLoading(false);
-        setUser(res.data.token);
+        history.push("/month");
       })
       .catch((err) => {
-        setErrors(err.response.data);
-        setIsLoading(false);
+        console.error(err.message);
+        setErrors(true);
       });
   };
 
