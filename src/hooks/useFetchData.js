@@ -22,7 +22,6 @@ const useFetchData = (initialUrl) => {
                   Authorization: `Bearer ${token}`,
                 },
               });
-              console.log(result);
               setData(result.data);
               setIsLoading(false);
             } catch (err) {

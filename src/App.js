@@ -13,7 +13,7 @@ import * as ROUTES from "./constants/routes";
 import {
   MuiThemeProvider,
   createMuiTheme,
-  responsiveFontSizes
+  responsiveFontSizes,
 } from "@material-ui/core/styles";
 import Sidebar from "./components/sidebar";
 import SignupPage from "./pages/signup-page";
@@ -27,6 +27,7 @@ import VerifiedRoute from "./utils/verifiedRoute";
 import StartPage from "./pages/start-page";
 import BudgetPage from "./pages/budget-page";
 import ForgotPasswordPage from "./pages/forgot-password-page";
+import { auth } from "./firebase/firebase";
 
 let theme = createMuiTheme({
   palette: {
@@ -35,7 +36,7 @@ let theme = createMuiTheme({
       complementary: "#C4E7BE",
       errorText: "#ff1744",
       greenBg: "#00bfa5",
-      darkPurpleBg: "#9c27b0"
+      darkPurpleBg: "#9c27b0",
     },
     secondary: {
       main: "#3e3e3B",
@@ -43,9 +44,9 @@ let theme = createMuiTheme({
       ligthBlue: "#BED9E7",
       text: "#EBECED",
       darkBg: "#f06292",
-      lightBg: "#a7ffeb"
-    }
-  }
+      lightBg: "#a7ffeb",
+    },
+  },
 });
 
 const App = () => {
@@ -56,30 +57,26 @@ const App = () => {
   theme = responsiveFontSizes(theme);
 
   const logoutUser = () => {
-    localStorage.removeItem("FBIdToken");
-    delete axios.defaults.headers.common["Authorization"];
-    setAuthenticated(false);
-    setEmail("");
-    window.location.href = "/";
+    auth
+      .signOut()
+      .then(() => {
+        setAuthenticated(false);
+      })
+      .catch((err) => console.error(err));
   };
 
-  const setUser = token => {
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      if (decodedToken.exp * 1000 < Date.now()) {
-        logoutUser();
-        window.location.href = "/login";
-      } else {
-        localStorage.setItem("FBIdToken", token);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        setAuthenticated(true);
-        setEmail(decodedToken.email);
-      }
+  const setUser = (user) => {
+    if (user) {
+      setAuthenticated(true);
     }
   };
 
   useEffect(() => {
-    setUser(localStorage.FBIdToken);
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setAuthenticated(true);
+      }
+    });
   }, [authenticated]);
 
   return (
@@ -91,7 +88,7 @@ const App = () => {
               authenticated,
               email,
               setUser,
-              logoutUser
+              logoutUser,
             }}
           >
             <Sidebar>
@@ -99,7 +96,7 @@ const App = () => {
                 <Route exact path={ROUTES.HOME} component={StartPage} />
 
                 <AuthRoute path={ROUTES.SIGN_UP} component={SignupPage} />
-                <AuthRoute path={ROUTES.LOGIN} component={LoginPage} />
+                <Route path={ROUTES.LOGIN} component={LoginPage} />
                 <Route
                   path={ROUTES.PASSWORD_FORGET}
                   component={ForgotPasswordPage}

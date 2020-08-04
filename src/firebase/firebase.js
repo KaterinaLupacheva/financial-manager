@@ -3,7 +3,7 @@ import "firebase/firestore";
 import "firebase/auth";
 import {
   expensesCategories,
-  incomesCategories
+  incomesCategories,
 } from "../constants/default-categories";
 
 const config = {
@@ -13,7 +13,7 @@ const config = {
   projectId: process.env.REACT_APP_PROJECT_ID,
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 firebase.initializeApp(config);
@@ -39,7 +39,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         createdAt,
         expensesCategories,
         incomesCategories,
-        ...additionalData
+        ...additionalData,
       });
     } catch (error) {
       console.log("error creating user", error.message);
@@ -49,16 +49,19 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+export const doSignInWithEmailAndPassword = (email, password) =>
+  auth.signInWithEmailAndPassword(email, password);
+
 export const doCreateUserWithEmailAndPassword = (email, password) =>
   auth.createUserWithEmailAndPassword(email, password);
 
 export const doSendVerificationEmail = () =>
   auth.currentUser.sendEmailVerification({
-    url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT
+    url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT,
   });
 
-export const doPasswordReset = email => auth.sendPasswordResetEmail(email);
-export const doPasswordUpdate = password =>
+export const doPasswordReset = (email) => auth.sendPasswordResetEmail(email);
+export const doPasswordUpdate = (password) =>
   auth.currentUser.updatePassword(password);
 
 export default firebase;
