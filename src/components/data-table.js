@@ -7,6 +7,7 @@ import ConfirmDialog from "./confirmDialog";
 import EditForm from "./edit-form";
 import { MonthDataContext } from "../contexts/monthData.context";
 import { format } from "date-fns";
+import { auth } from "../firebase/firebase";
 
 const Table = ({ isExpenses, tableData }) => {
   const { monthData, setMonthData } = useContext(MonthDataContext);
@@ -17,13 +18,13 @@ const Table = ({ isExpenses, tableData }) => {
   const [editFormIsOpened, openEditForm] = useState(false);
   const name = isExpenses ? "Expenses" : "Income";
 
-  const removeItem = array => {
-    return array.filter(obj => {
+  const removeItem = (array) => {
+    return array.filter((obj) => {
       return obj.id !== rowData.id;
     });
   };
 
-  const handleResponse = res => {
+  const handleResponse = (res) => {
     openConfirmDialog(false);
     if (res === "yes") {
       let requestBody = {};
@@ -32,14 +33,14 @@ const Table = ({ isExpenses, tableData }) => {
           expenses:
             removeItem(monthData.expenses).length > 0
               ? removeItem(monthData.expenses)
-              : null
+              : null,
         };
       } else {
         requestBody = {
           incomes:
             removeItem(monthData.incomes).length > 0
               ? removeItem(monthData.incomes)
-              : null
+              : null,
         };
       }
 
@@ -48,29 +49,43 @@ const Table = ({ isExpenses, tableData }) => {
         new Date(dateParts[2], dateParts[1] - 1, dateParts[0], 8),
         "MMM-yyyy"
       );
-      axios
-        .put(
-          `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
-          requestBody
-        )
-        .then(() => {
-          setMessage("Entry deleted");
-          openSnackbar(true);
-          if (isExpenses) {
-            setMonthData({
-              ...monthData,
-              expenses: requestBody.expenses
+
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          user
+            .getIdToken()
+            .then((token) => {
+              axios
+                .put(
+                  `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
+                  requestBody,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                )
+                .then(() => {
+                  setMessage("Entry deleted");
+                  openSnackbar(true);
+                  if (isExpenses) {
+                    setMonthData({
+                      ...monthData,
+                      expenses: requestBody.expenses,
+                    });
+                  } else {
+                    setMonthData({
+                      ...monthData,
+                      incomes: requestBody.incomes,
+                    });
+                  }
+                });
+            })
+            .catch((err) => {
+              console.error(err);
             });
-          } else {
-            setMonthData({
-              ...monthData,
-              incomes: requestBody.incomes
-            });
-          }
-        })
-        .catch(err => {
-          console.error(err);
-        });
+        }
+      });
     }
   };
 
@@ -82,63 +97,65 @@ const Table = ({ isExpenses, tableData }) => {
             {
               title: "Date",
               field: "date",
-              render: rowData => {
+              render: (rowData) => {
                 return rowData.details === "" ? (
                   <span style={{ fontWeight: "bold" }}>{rowData.date}</span>
                 ) : (
                   <span>{rowData.date}</span>
                 );
-              }
+              },
             },
             {
               title: "Sum",
               field: "sum",
-              render: rowData => {
+              render: (rowData) => {
                 return rowData.details === "" ? (
                   <span style={{ fontWeight: "bold" }}>{rowData.sum}</span>
                 ) : (
                   <span>{parseFloat(rowData.sum).toFixed(2)}</span>
                 );
-              }
+              },
             },
             {
               title: `${name}`,
-              field: "details"
+              field: "details",
             },
             {
               title: "Category",
-              field: "category"
-            }
+              field: "category",
+            },
           ]}
           data={tableData.combinedArrays}
-          parentChildData={(row, rows) => rows.find(a => a.id === row.parentId)}
+          parentChildData={(row, rows) =>
+            rows.find((a) => a.id === row.parentId)
+          }
           options={{
             toolbar: false,
             paging: false,
             headerStyle: {
               backgroundColor: "#9c27b0",
               color: "#FFF",
-              fontWeight: "bold"
+              fontWeight: "bold",
             },
-            actionsColumnIndex: -1
+            actionsColumnIndex: -1,
           }}
           actions={[
-            rowData => ({
+            (rowData) => ({
               icon: "create",
               onClick: (event, rowData) => {
                 setRowData(rowData);
                 openEditForm(true);
               },
-              hidden: !rowData.parentId
+              hidden: !rowData.parentId,
             }),
-            rowData => ({
+            (rowData) => ({
               icon: "delete",
               onClick: (event, rowData) => {
                 openConfirmDialog(true);
                 setRowData(rowData);
               },
-              hidden: !rowData.parentId
-            })
+              hidden: !rowData.parentId,
+            }),
           ]}
           style={{ borderBottom: "1px solid black" }}
         />
