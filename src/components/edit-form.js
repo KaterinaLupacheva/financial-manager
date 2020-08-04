@@ -21,6 +21,7 @@ import { MonthDataContext } from "../contexts/monthData.context";
 import { format } from "date-fns";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { auth } from "../firebase/firebase";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -108,28 +109,41 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
       };
     }
 
-    const monthYear = format(new Date(state.date), "MMM-yyyy");
-    axios
-      .put(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
-        requestBody
-      )
-      .then(() => {
-        if (state.view === "expenses") {
-          setMonthData({
-            ...monthData,
-            expenses: requestBody.expenses,
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        user
+          .getIdToken()
+          .then((token) => {
+            const monthYear = format(new Date(state.date), "MMM-yyyy");
+            axios
+              .put(
+                `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
+                requestBody,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then(() => {
+                if (state.view === "expenses") {
+                  setMonthData({
+                    ...monthData,
+                    expenses: requestBody.expenses,
+                  });
+                } else {
+                  setMonthData({
+                    ...monthData,
+                    incomes: requestBody.incomes,
+                  });
+                }
+              });
+          })
+          .catch((err) => {
+            console.error(err);
           });
-        } else {
-          setMonthData({
-            ...monthData,
-            incomes: requestBody.incomes,
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      }
+    });
   };
 
   const clearForm = () => {
