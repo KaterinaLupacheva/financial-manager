@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import { generateId } from "../utils/transform-data.utils";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { auth } from "../firebase/firebase";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -109,18 +110,30 @@ const DialogForm = ({ open, handleClose }) => {
         incomeDate: state.date,
       };
     }
-
-    axios
-      .post(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}`,
-        requestBody
-      )
-      .then(() => {
-        handleSubmit();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        user
+          .getIdToken()
+          .then((token) => {
+            axios
+              .post(
+                `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}`,
+                requestBody,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
+              .then(() => {
+                handleSubmit();
+              });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    });
 
     const handleSubmit = () => {
       window.location.reload();
