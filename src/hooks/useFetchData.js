@@ -1,26 +1,38 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { auth } from "../firebase/firebase";
 
-const useFetchData = initialUrl => {
+const useFetchData = (initialUrl) => {
   const [data, setData] = useState(null);
   const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsError(false);
       setIsLoading(true);
       try {
-        const result = await axios(url, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("FBIdToken")}`
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            try {
+              const token = await user.getIdToken();
+              const result = await axios(url, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              console.log(result);
+              setData(result.data);
+              setIsLoading(false);
+            } catch (err) {
+              setIsError(true);
+            }
           }
         });
-        setData(result.data);
       } catch (error) {
         setIsError(true);
       }
-      setIsLoading(false);
     };
     if (url !== "") {
       fetchData();
