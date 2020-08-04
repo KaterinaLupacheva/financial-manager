@@ -25,7 +25,8 @@ const LoginForm = () => {
     event.preventDefault();
     setIsLoading(true);
     doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((data) => {
+        setUser(data.user);
         setIsLoading(false);
         history.push("/month");
       })
