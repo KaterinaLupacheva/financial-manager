@@ -96,7 +96,7 @@ const App = () => {
                 <Route exact path={ROUTES.HOME} component={StartPage} />
 
                 <AuthRoute path={ROUTES.SIGN_UP} component={SignupPage} />
-                <Route path={ROUTES.LOGIN} component={LoginPage} />
+                <AuthRoute path={ROUTES.LOGIN} component={LoginPage} />
                 <Route
                   path={ROUTES.PASSWORD_FORGET}
                   component={ForgotPasswordPage}
