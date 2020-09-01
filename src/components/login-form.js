@@ -31,8 +31,8 @@ const LoginForm = () => {
         history.push("/month");
       })
       .catch((err) => {
-        console.error(err.message);
-        setErrors(true);
+        setErrors(err);
+        setIsLoading(false);
       });
   };
 
@@ -68,9 +68,9 @@ const LoginForm = () => {
             onChange={(event) => setPassword(event.target.value)}
             fullWidth
           />
-          {errors.general && (
+          {errors && (
             <Typography variant="body2" className={classes.customError}>
-              {errors.general}
+              {errors.message}
             </Typography>
           )}
           <Button type="submit" variant="contained" className={classes.button}>
