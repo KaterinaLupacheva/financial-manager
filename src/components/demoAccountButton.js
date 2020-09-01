@@ -33,26 +33,6 @@ const DemoAccountButton = () => {
         setErrors(err);
         setIsLoading(false);
       });
-
-    // const userData = {
-    //   email: "demo@demo.com",
-    //   password: "111111",
-    // };
-    // setIsLoading(true);
-    // axios
-    //   .post(
-    //     "https://europe-west2-financial-manager-271220.cloudfunctions.net/api/login",
-    //     userData
-    //   )
-    //   .then((res) => {
-    //     setIsLoading(false);
-    //     setUser(res.data.token);
-    //     window.location.href = "/month";
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     setIsLoading(false);
-    //   });
   };
 
   return (
