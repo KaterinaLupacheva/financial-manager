@@ -92,7 +92,7 @@ const MonthPage = () => {
           <StyledCardContent style={{ paddingBottom: 0 }}>
             <TodayIcon fontSize="large" />
             <CardInside>
-              <Typography variant="subtitle1">{`Chose month`}</Typography>
+              <Typography variant="subtitle1">{`Choose month`}</Typography>
               <CustomDatePicker changeDate={changeDate} />
             </CardInside>
           </StyledCardContent>
