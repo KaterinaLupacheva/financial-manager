@@ -1,10 +1,10 @@
 import React, { useEffect, useContext, useState } from "react";
 import PivotTable from "../components/pivot-table";
-import CustomDatePicker from "../components/date-picker";
+import DatePickerCard from "../components/date-picker-card";
 import SimpleBackdrop from "../components/simple-backdrop";
 import ExpensesContext from "../contexts/expenses.context";
 import useFetchData from "../hooks/useFetchData";
-import { getLastDayOfMonth } from "../utils/date.utils";
+import { getLastDayOfMonth, getFirstDayOfMonthMinusSixMonths } from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
   createTableRows,
@@ -12,6 +12,10 @@ import {
 } from "../utils/transform-data.utils";
 
 const PivotTablePage = () => {
+  const [dates, setDates] = useState({
+    startDate: getFirstDayOfMonthMinusSixMonths(new Date()),
+    endDate: getLastDayOfMonth(new Date())
+  })
   const { expensesPeriodData, setExpensesPeriodData } = useContext(
     ExpensesContext
   );
@@ -19,10 +23,15 @@ const PivotTablePage = () => {
   const [totalRow, setTotalRow] = useState({});
   const [periodData, doFetch] = useFetchData("");
 
+  const changeDate = (e) => {
+    console.log(dates);
+    console.log(e);
+  }
+
   useEffect(() => {
     const fetchData = () => {
       doFetch(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/2020-01-01/${getLastDayOfMonth(
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/${dates.startDate}/${getLastDayOfMonth(
           new Date()
         )}`
       );
@@ -57,7 +66,7 @@ const PivotTablePage = () => {
         <div>Something went wrong...</div>
       ) : (
         <>
-          <CustomDatePicker />
+          <DatePickerCard changeDate={changeDate} />
           <PivotTable rows={rows} totalRow={totalRow} />
         </>
       )}

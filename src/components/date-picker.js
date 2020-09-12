@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CustomDatePicker = ({ changeDate }) => {
+const CustomDatePicker = (props) => {
   const [selectedDate, handleDateChange] = useState(new Date());
   const classes = useStyles();
   return (
@@ -25,7 +25,7 @@ const CustomDatePicker = ({ changeDate }) => {
         views={["year", "month"]}
         value={selectedDate}
         onChange={e => {
-          changeDate(e);
+          props.changeDate(e);
           handleDateChange(e);
         }}
         InputProps={{ className: classes.input, disableUnderline: true }}
