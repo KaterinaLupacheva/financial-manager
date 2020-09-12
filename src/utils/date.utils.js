@@ -23,10 +23,10 @@ export const formatFromDDMMYYYY = (date) => {
   return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], 8);
 };
 
-export const getMonthsNames = () => {
+export const getMonthsNames = (startDate, endDate) => {
   const result = eachMonthOfInterval({
-    start: new Date(2020, 0, 1),
-    end: new Date(),
+    start: new Date(startDate),
+    end: new Date(endDate),
   });
   let shortMonthsNames = [];
   let longMonthsNames = [];

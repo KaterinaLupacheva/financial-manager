@@ -47,9 +47,9 @@ const PivotTablePage = () => {
       } else if (expensesPeriodData) {
         sums = sumPerCategoryAndMonth(expensesPeriodData);
       }
-      const rows = createTableRows(sums);
+      const rows = createTableRows(sums, dates.startDate, dates.endDate);
       setRows(rows);
-      const totalRow = createTotalRow(sums);
+      const totalRow = createTotalRow(sums, dates.startDate, dates.endDate);
       setTotalRow(totalRow);
     };
 
@@ -67,7 +67,7 @@ const PivotTablePage = () => {
       ) : (
         <>
           <DatePickerCard changeDate={changeDate} />
-          <PivotTable rows={rows} totalRow={totalRow} />
+          <PivotTable rows={rows} totalRow={totalRow} startDate={dates.startDate} endDate={dates.endDate}/>
         </>
       )}
       <SimpleBackdrop open={periodData.isLoading ? true : false} />

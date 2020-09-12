@@ -176,8 +176,8 @@ export const prepareDataForChart = (dbData, isExpenses) => {
   return result;
 };
 
-export const createHeadCells = () => {
-  const months = getMonthsNames()[0];
+export const createHeadCells = (startDate, endDate) => {
+  const months = getMonthsNames(startDate, endDate)[0];
   let headCells = [
     {
       id: "categories",
@@ -199,9 +199,9 @@ export const createHeadCells = () => {
   return headCells;
 };
 
-export const createTableRows = (data) => {
-  const monthsNames = getMonthsNames()[1];
-  const shortMonthsNames = getMonthsNames()[0];
+export const createTableRows = (data, startDate, endDate) => {
+  const monthsNames = getMonthsNames(startDate, endDate)[1];
+  const shortMonthsNames = getMonthsNames(startDate, endDate)[0];
   const rows = [];
   for (let [key, value] of Object.entries(data)) {
     let tempRow = {
@@ -221,7 +221,7 @@ export const createTableRows = (data) => {
   return rows;
 };
 
-export const createTotalRow = (data) => {
+export const createTotalRow = (data, startDate, endDate) => {
   const totalPerMonth = Object.values(data).reduce((acc, cur) => {
     for (let key of Object.keys(cur)) {
       acc[key] = acc[key] + parseFloat(cur[key]) || parseFloat(cur[key]);
@@ -229,8 +229,8 @@ export const createTotalRow = (data) => {
     return acc;
   }, {});
 
-  const monthsNames = getMonthsNames()[1];
-  const shortMonthsNames = getMonthsNames()[0];
+  const monthsNames = getMonthsNames(startDate, endDate)[1];
+  const shortMonthsNames = getMonthsNames(startDate, endDate)[0];
 
   let transformed = {};
   monthsNames.forEach((month, idx) => {
