@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import PivotTable from "../components/pivot-table";
+import CustomDatePicker from "../components/date-picker";
 import SimpleBackdrop from "../components/simple-backdrop";
 import ExpensesContext from "../contexts/expenses.context";
 import useFetchData from "../hooks/useFetchData";
@@ -55,7 +56,10 @@ const PivotTablePage = () => {
       {periodData.isError ? (
         <div>Something went wrong...</div>
       ) : (
-        <PivotTable rows={rows} totalRow={totalRow} />
+        <>
+          <CustomDatePicker />
+          <PivotTable rows={rows} totalRow={totalRow} />
+        </>
       )}
       <SimpleBackdrop open={periodData.isLoading ? true : false} />
     </>

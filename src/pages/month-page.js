@@ -1,19 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 
-import CustomDatePicker from "../components/date-picker";
+import DatePickerCard from "../components/date-picker-card";
 import FloatingAddButton from "../components/floating-add-button";
 import ExpansionTable from "../components/expansion-table";
 import { Typography } from "@material-ui/core";
 import { createDataForTable } from "../utils/formatData";
 import { MonthDataContext } from "../contexts/monthData.context";
 import SimpleBackdrop from "../components/simple-backdrop";
-import TodayIcon from "@material-ui/icons/Today";
 import ExposureRoundedIcon from "@material-ui/icons/ExposureRounded";
 import {
   TopBarContainer,
   StyledCard,
   StyledCardContent,
-  CardInside
+  CardInside,
 } from "../styles/card.styles";
 import { useTheme } from "@material-ui/core/styles";
 import useFetchData from "../hooks/useFetchData";
@@ -25,14 +24,14 @@ const MonthPage = () => {
   const [
     fetchedMonthData,
     doFetchMonthData,
-    setFetchedMonthData
+    setFetchedMonthData,
   ] = useFetchData("");
   const [expensesData, setExpensesData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
   const [month, setMonth] = useState(new Date());
   const { monthData, setMonthData } = useContext(MonthDataContext);
 
-  const changeDate = newMonth => {
+  const changeDate = (newMonth) => {
     setFetchedMonthData(null);
     setMonthData(null);
     setExpensesData(null);
@@ -85,18 +84,7 @@ const MonthPage = () => {
   return (
     <div>
       <TopBarContainer>
-        <StyledCard
-          variant="outlined"
-          bgcolor={theme.palette.secondary.ligthBlue}
-        >
-          <StyledCardContent style={{ paddingBottom: 0 }}>
-            <TodayIcon fontSize="large" />
-            <CardInside>
-              <Typography variant="subtitle1">{`Choose month`}</Typography>
-              <CustomDatePicker changeDate={changeDate} />
-            </CardInside>
-          </StyledCardContent>
-        </StyledCard>
+        <DatePickerCard changeDate={changeDate} />
         {fetchedMonthData.isLoading ? (
           ""
         ) : (
