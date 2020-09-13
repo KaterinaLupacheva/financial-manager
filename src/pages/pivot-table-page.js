@@ -4,7 +4,10 @@ import DatePickerCard from "../components/date-picker-card";
 import SimpleBackdrop from "../components/simple-backdrop";
 import ExpensesContext from "../contexts/expenses.context";
 import useFetchData from "../hooks/useFetchData";
-import { getLastDayOfMonth, getFirstDayOfMonthMinusSixMonths } from "../utils/date.utils";
+import {
+  getLastDayOfMonth,
+  getFirstDayOfMonthMinusSixMonths,
+} from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
   createTableRows,
@@ -14,8 +17,8 @@ import {
 const PivotTablePage = () => {
   const [dates, setDates] = useState({
     startDate: getFirstDayOfMonthMinusSixMonths(new Date()),
-    endDate: getLastDayOfMonth(new Date())
-  })
+    endDate: getLastDayOfMonth(new Date()),
+  });
   const { expensesPeriodData, setExpensesPeriodData } = useContext(
     ExpensesContext
   );
@@ -26,14 +29,12 @@ const PivotTablePage = () => {
   const changeDate = (e) => {
     console.log(dates);
     console.log(e);
-  }
+  };
 
   useEffect(() => {
     const fetchData = () => {
       doFetch(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/${dates.startDate}/${getLastDayOfMonth(
-          new Date()
-        )}`
+        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/${dates.startDate}/${dates.endDate}`
       );
       if (periodData.data) {
         setExpensesPeriodData(periodData.data.expenses);
@@ -67,7 +68,12 @@ const PivotTablePage = () => {
       ) : (
         <>
           <DatePickerCard changeDate={changeDate} />
-          <PivotTable rows={rows} totalRow={totalRow} startDate={dates.startDate} endDate={dates.endDate}/>
+          <PivotTable
+            rows={rows}
+            totalRow={totalRow}
+            startDate={dates.startDate}
+            endDate={dates.endDate}
+          />
         </>
       )}
       <SimpleBackdrop open={periodData.isLoading ? true : false} />
