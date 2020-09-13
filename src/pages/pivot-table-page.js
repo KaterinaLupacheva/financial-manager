@@ -7,6 +7,7 @@ import useFetchData from "../hooks/useFetchData";
 import {
   getLastDayOfMonth,
   getFirstDayOfMonthMinusSixMonths,
+  getFirstDayOfNextMonth,
 } from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
@@ -35,7 +36,10 @@ const PivotTablePage = () => {
 
   useEffect(() => {
     const fetchData = () => {
-      doFetch(`${BASE_URL}/data/${dates.startDate}/${dates.endDate}`);
+      const firstDayOfNextMonth = getFirstDayOfNextMonth(
+        new Date(dates.endDate)
+      );
+      doFetch(`${BASE_URL}/data/${dates.startDate}/${firstDayOfNextMonth}`);
       if (periodData.data) {
         setExpensesPeriodData(periodData.data.expenses);
       }
