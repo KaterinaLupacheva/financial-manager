@@ -21,7 +21,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const PivotTablePage = () => {
   const [dates, setDates] = useState({
     startDate: getFirstDayOfMonthMinusSixMonths(new Date()),
-    endDate: getLastDayOfCurrentMonth(new Date()),
+    endDate: new Date(),
   });
   const { expensesPeriodData, setExpensesPeriodData } = useContext(
     ExpensesContext
@@ -73,8 +73,8 @@ const PivotTablePage = () => {
       ) : (
         <>
           <TopBarContainer>
-            <DatePickerCard changeDate={changeDate} title={`Start Month`} />
-            <DatePickerCard changeDate={changeDate} title={`End Month`} />
+            <DatePickerCard changeDate={changeDate} title={`Start Month`} date={dates.startDate}/>
+            <DatePickerCard changeDate={changeDate} title={`End Month`} date={dates.endDate}/>
           </TopBarContainer>
           <PivotTable
             rows={rows}

@@ -18,7 +18,7 @@ const DatePickerCard = (props) => {
         <TodayIcon fontSize="large" />
         <CardInside>
           <Typography variant="subtitle1">{props.title}</Typography>
-          <CustomDatePicker changeDate={props.changeDate} />
+          <CustomDatePicker changeDate={props.changeDate} date={props.date}/>
         </CardInside>
       </StyledCardContent>
     </StyledCard>

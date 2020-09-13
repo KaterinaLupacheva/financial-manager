@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CustomDatePicker = (props) => {
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [selectedDate, handleDateChange] = useState(props.date);
   const classes = useStyles();
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
