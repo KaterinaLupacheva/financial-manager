@@ -84,7 +84,7 @@ const MonthPage = () => {
   return (
     <div>
       <TopBarContainer>
-        <DatePickerCard changeDate={changeDate} />
+        <DatePickerCard changeDate={changeDate} title={`Choose month`}/>
         {fetchedMonthData.isLoading ? (
           ""
         ) : (

@@ -14,6 +14,7 @@ import {
   createTableRows,
   createTotalRow,
 } from "../utils/transform-data.utils";
+import { TopBarContainer } from "../styles/card.styles";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -71,7 +72,10 @@ const PivotTablePage = () => {
         <div>Something went wrong...</div>
       ) : (
         <>
-          <DatePickerCard changeDate={changeDate} />
+          <TopBarContainer>
+            <DatePickerCard changeDate={changeDate} title={`Start Month`} />
+            <DatePickerCard changeDate={changeDate} title={`End Month`} />
+          </TopBarContainer>
           <PivotTable
             rows={rows}
             totalRow={totalRow}

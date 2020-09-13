@@ -17,7 +17,7 @@ const DatePickerCard = (props) => {
       <StyledCardContent style={{ paddingBottom: 0 }}>
         <TodayIcon fontSize="large" />
         <CardInside>
-          <Typography variant="subtitle1">{`Choose month`}</Typography>
+          <Typography variant="subtitle1">{props.title}</Typography>
           <CustomDatePicker changeDate={props.changeDate} />
         </CardInside>
       </StyledCardContent>
