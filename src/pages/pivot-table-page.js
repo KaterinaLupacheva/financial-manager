@@ -14,6 +14,8 @@ import {
   createTotalRow,
 } from "../utils/transform-data.utils";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const PivotTablePage = () => {
   const [dates, setDates] = useState({
     startDate: getFirstDayOfMonthMinusSixMonths(new Date()),
@@ -33,9 +35,7 @@ const PivotTablePage = () => {
 
   useEffect(() => {
     const fetchData = () => {
-      doFetch(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/${dates.startDate}/${dates.endDate}`
-      );
+      doFetch(`${BASE_URL}/data/${dates.startDate}/${dates.endDate}`);
       if (periodData.data) {
         setExpensesPeriodData(periodData.data.expenses);
       }

@@ -13,8 +13,10 @@ import ExpensesContext from "../contexts/expenses.context";
 import IncomeContext from "../contexts/income.context";
 import {
   prepareDataForChart,
-  prepareDataForCategoryChart
+  prepareDataForCategoryChart,
 } from "../utils/transform-data.utils";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const ChartsPage = () => {
   const { expensesPeriodData, setExpensesPeriodData } = useContext(
@@ -23,26 +25,26 @@ const ChartsPage = () => {
   const { incomesPeriodData, setIncomesPeriodData } = useContext(IncomeContext);
   const [incomesDataForChart, setIncomesDataForChart] = useState({
     labels: [],
-    incomes: []
+    incomes: [],
   });
   const [expensesDataForChart, setExpensesDataForChart] = useState({
     labels: [],
-    expenses: []
+    expenses: [],
   });
   const [
     dataForIncomeCategoriesChart,
-    setDataForIncomeCategoriesChart
-  ] = useState({
-    labels: [],
-    datasets: []
-  });
-  const [
-    dataForExpensesCategoriesChart,
-    setDataForExpensesCategoriesChart
+    setDataForIncomeCategoriesChart,
   ] = useState({
     labels: [],
     datasets: [],
-    categories: []
+  });
+  const [
+    dataForExpensesCategoriesChart,
+    setDataForExpensesCategoriesChart,
+  ] = useState({
+    labels: [],
+    datasets: [],
+    categories: [],
   });
 
   const [periodData, doFetchData] = useFetchData("");
@@ -50,16 +52,18 @@ const ChartsPage = () => {
   useEffect(() => {
     const fetchData = () => {
       doFetchData(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/data/2020-01-01/${getLastDayOfMonth(
-          new Date()
-        )}`
+        `${BASE_URL}/data/2020-01-01/${getLastDayOfMonth(new Date())}`
       );
       if (periodData.data) {
         if (periodData.data.expenses) {
-          setExpensesPeriodData(periodData.data.expenses.filter(entry => entry));
+          setExpensesPeriodData(
+            periodData.data.expenses.filter((entry) => entry)
+          );
         }
         if (periodData.data.incomes) {
-          setIncomesPeriodData(periodData.data.incomes.filter(entry => entry));
+          setIncomesPeriodData(
+            periodData.data.incomes.filter((entry) => entry)
+          );
         }
       }
     };
@@ -102,7 +106,7 @@ const ChartsPage = () => {
                   incomesDataForChart={incomesDataForChart}
                   expensesDataForChart={expensesDataForChart}
                 />
-              )
+              ),
             },
             {
               tabName: "Expenses",
@@ -111,7 +115,7 @@ const ChartsPage = () => {
                 <ExpensesByCategories
                   allData={dataForExpensesCategoriesChart}
                 />
-              )
+              ),
             },
             {
               tabName: "Income",
@@ -120,8 +124,8 @@ const ChartsPage = () => {
                 <CategoriesBarChart
                   dataForChart={dataForIncomeCategoriesChart}
                 />
-              )
-            }
+              ),
+            },
           ]}
         />
       )}

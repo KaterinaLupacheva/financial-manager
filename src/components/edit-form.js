@@ -25,6 +25,8 @@ import { auth } from "../firebase/firebase";
 
 const useStyles = makeStyles(dialogStyles);
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
   const { monthData, setMonthData } = useContext(MonthDataContext);
   const [state, setState] = useState({});
@@ -116,15 +118,11 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
           .then((token) => {
             const monthYear = format(new Date(state.date), "MMM-yyyy");
             axios
-              .put(
-                `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`,
-                requestBody,
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              )
+              .put(`${BASE_URL}/month/${monthYear}`, requestBody, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
               .then(() => {
                 if (state.view === "expenses") {
                   setMonthData({

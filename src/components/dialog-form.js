@@ -24,6 +24,8 @@ import { auth } from "../firebase/firebase";
 
 const useStyles = makeStyles(dialogStyles);
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const DialogForm = ({ open, handleClose }) => {
   const INITIAL_STATE = {
     view: "expenses",
@@ -117,7 +119,7 @@ const DialogForm = ({ open, handleClose }) => {
           .then((token) => {
             axios
               .post(
-                `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/${state.view}`,
+                `${BASE_URL}/${state.view}`,
                 requestBody,
                 {
                   headers: {

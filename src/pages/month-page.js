@@ -18,6 +18,8 @@ import { useTheme } from "@material-ui/core/styles";
 import useFetchData from "../hooks/useFetchData";
 import { format } from "date-fns";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const MonthPage = () => {
   const theme = useTheme();
 
@@ -41,9 +43,7 @@ const MonthPage = () => {
 
   const fetchData = () => {
     const monthYear = format(new Date(month), "MMM-yyyy");
-    doFetchMonthData(
-      `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
-    );
+    doFetchMonthData(`${BASE_URL}/month/${monthYear}`);
     if (monthData) {
       if (monthData.expenses) {
         setExpensesData(createDataForTable(monthData.expenses));

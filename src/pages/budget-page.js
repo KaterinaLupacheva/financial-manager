@@ -14,6 +14,8 @@ import SimpleBackdrop from "../components/simple-backdrop";
 import axios from "axios";
 import { format } from "date-fns";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 const BudgetPage = () => {
   const theme = useTheme();
   const { expensesCategories, setExpensesCategories } = useContext(
@@ -53,7 +55,7 @@ const BudgetPage = () => {
     };
     axios
       .post(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`,
+        `${BASE_URL}/user`,
         reqBody
       )
       .then(res => {
@@ -71,7 +73,7 @@ const BudgetPage = () => {
   useEffect(() => {
     const fetchExpensesCategories = () => {
       doFetchCategories(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/user`
+        `${BASE_URL}/user`
       );
       if (fetchedCategories.data) {
         setExpensesCategories(fetchedCategories.data.expensesCategories);
@@ -81,7 +83,7 @@ const BudgetPage = () => {
     const fetchCurrentMonthExpenses = () => {
       const monthYear = format(new Date(), "MMM-yyyy");
       doFetchCurMonthExpenses(
-        `https://europe-west2-financial-manager-271220.cloudfunctions.net/api/month/${monthYear}`
+        `${BASE_URL}/month/${monthYear}`
       );
     };
 
