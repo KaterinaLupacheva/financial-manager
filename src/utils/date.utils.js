@@ -11,6 +11,13 @@ export const getLastDayOfMonth = (date) => {
   );
 };
 
+export const getLastDayOfCurrentMonth = (date) => {
+  return format(
+    new Date(date.getFullYear(), date.getMonth() + 1, 0),
+    "yyyy-MM-dd"
+  );
+};
+
 export const getFirstDayOfNextMonth = (date) => {
   return format(
     new Date(date.getFullYear(), date.getMonth() + 1, 1),

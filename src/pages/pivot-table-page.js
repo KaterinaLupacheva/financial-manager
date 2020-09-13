@@ -5,9 +5,9 @@ import SimpleBackdrop from "../components/simple-backdrop";
 import ExpensesContext from "../contexts/expenses.context";
 import useFetchData from "../hooks/useFetchData";
 import {
-  getLastDayOfMonth,
   getFirstDayOfMonthMinusSixMonths,
   getFirstDayOfNextMonth,
+  getLastDayOfCurrentMonth,
 } from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
@@ -20,7 +20,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const PivotTablePage = () => {
   const [dates, setDates] = useState({
     startDate: getFirstDayOfMonthMinusSixMonths(new Date()),
-    endDate: getLastDayOfMonth(new Date()),
+    endDate: getLastDayOfCurrentMonth(new Date()),
   });
   const { expensesPeriodData, setExpensesPeriodData } = useContext(
     ExpensesContext
