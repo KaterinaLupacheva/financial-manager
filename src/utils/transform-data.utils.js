@@ -23,7 +23,7 @@ const getMonthYearArray = (startDate, endDate) => {
 
   let monthYearArray = [];
   getMonthsInterval.forEach((date) => {
-    monthYearArray.push(format(new Date(date), "MMMM"));
+    monthYearArray.push(format(new Date(date), "MMM, yy"));
   });
   return monthYearArray;
 };
@@ -128,7 +128,7 @@ const sumPerMonth = (data, startDate, endDate) => {
   }
   const mapDayToMonth = data.map((entry) => ({
     ...entry,
-    month: format(new Date(entry.date), "MMMM"),
+    month: format(new Date(entry.date), "MMM, yy"),
   }));
   const sumPerMonth = mapDayToMonth.reduce((acc, cur) => {
     acc[cur.month] =
@@ -202,7 +202,7 @@ export const createHeadCells = (startDate, endDate) => {
 export const getMonthNames = (totalRow) => {
   const columnNamesAll = Object.keys(totalRow);
   return columnNamesAll.splice(0, columnNamesAll.length - 2);
-}
+};
 
 export const createHeadCellTitles = (totalRow) => {
   let headCells = [
@@ -228,8 +228,7 @@ export const createHeadCellTitles = (totalRow) => {
 };
 
 export const createTableRows = (data, startDate, endDate) => {
-  const monthsNames = getMonthsNames(startDate, endDate)[1];
-  const shortMonthsNames = getMonthsNames(startDate, endDate)[0];
+  const monthsNames = getMonthYearArray(startDate, endDate);
   const rows = [];
   for (let [key, value] of Object.entries(data)) {
     let tempRow = {
@@ -239,7 +238,7 @@ export const createTableRows = (data, startDate, endDate) => {
     monthsNames.forEach((month, idx) => {
       tempRow = {
         ...tempRow,
-        [shortMonthsNames[idx]]: Object.keys(value).includes(month)
+        [month]: Object.keys(value).includes(month)
           ? parseFloat(value[month])
           : parseFloat("0.00"),
       };
