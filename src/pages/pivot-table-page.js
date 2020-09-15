@@ -30,11 +30,6 @@ const PivotTablePage = () => {
   const [totalRow, setTotalRow] = useState({});
   const [periodData, doFetch] = useFetchData("");
 
-  const changeDate = (e) => {
-    console.log(dates);
-    console.log(e);
-  };
-
   useEffect(() => {
     const fetchData = () => {
       const firstDayOfNextMonth = getFirstDayOfNextMonth(
@@ -59,12 +54,9 @@ const PivotTablePage = () => {
       setTotalRow(totalRow);
     };
 
-    // if (!expensesPeriodData) {
     fetchData();
-    // }
-
     createRowsData();
-  }, [periodData.data, dates.startDate]);
+  }, [periodData.data, dates]);
 
   return (
     <>
@@ -84,7 +76,12 @@ const PivotTablePage = () => {
               date={dates.startDate}
             />
             <DatePickerCard
-              changeDate={changeDate}
+              changeDate={(e) => {
+                setDates({
+                  ...dates,
+                  endDate: formatDate(e),
+                });
+              }}
               title={`End Month`}
               date={dates.endDate}
             />
