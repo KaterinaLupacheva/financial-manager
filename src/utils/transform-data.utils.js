@@ -235,7 +235,7 @@ export const createTableRows = (data, startDate, endDate) => {
       name: key,
       avg: parseFloat(calculateAverageExpenses(Object.values(data[key]))),
     };
-    monthsNames.forEach((month, idx) => {
+    monthsNames.forEach((month) => {
       tempRow = {
         ...tempRow,
         [month]: Object.keys(value).includes(month)
@@ -256,14 +256,13 @@ export const createTotalRow = (data, startDate, endDate) => {
     return acc;
   }, {});
 
-  const monthsNames = getMonthsNames(startDate, endDate)[1];
-  const shortMonthsNames = getMonthsNames(startDate, endDate)[0];
+  const monthsNames = getMonthYearArray(startDate, endDate);
 
   let transformed = {};
-  monthsNames.forEach((month, idx) => {
+  monthsNames.forEach((month) => {
     transformed = {
       ...transformed,
-      [shortMonthsNames[idx]]: parseFloat(totalPerMonth[month]),
+      [month]: parseFloat(totalPerMonth[month]),
     };
   });
 
