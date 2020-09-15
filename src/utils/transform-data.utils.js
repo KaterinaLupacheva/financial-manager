@@ -199,6 +199,34 @@ export const createHeadCells = (startDate, endDate) => {
   return headCells;
 };
 
+export const getMonthNames = (totalRow) => {
+  const columnNamesAll = Object.keys(totalRow);
+  return columnNamesAll.splice(0, columnNamesAll.length - 2);
+}
+
+export const createHeadCellTitles = (totalRow) => {
+  let headCells = [
+    {
+      id: "categories",
+      label: "Categories",
+    },
+  ];
+  const months = getMonthNames(totalRow);
+  months.forEach((month) => {
+    let tempCell = {
+      id: month,
+      label: month,
+    };
+    headCells.push(tempCell);
+  });
+  headCells.push({
+    id: "avg",
+    label: "Avg.",
+    right: true,
+  });
+  return headCells;
+};
+
 export const createTableRows = (data, startDate, endDate) => {
   const monthsNames = getMonthsNames(startDate, endDate)[1];
   const shortMonthsNames = getMonthsNames(startDate, endDate)[0];

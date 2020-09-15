@@ -7,7 +7,7 @@ import useFetchData from "../hooks/useFetchData";
 import {
   getFirstDayOfMonthMinusSixMonths,
   getFirstDayOfNextMonth,
-  getLastDayOfCurrentMonth,
+  formatDate,
 } from "../utils/date.utils";
 import {
   sumPerCategoryAndMonth,
@@ -59,12 +59,12 @@ const PivotTablePage = () => {
       setTotalRow(totalRow);
     };
 
-    if (!expensesPeriodData) {
-      fetchData();
-    }
+    // if (!expensesPeriodData) {
+    fetchData();
+    // }
 
     createRowsData();
-  }, [periodData.data]);
+  }, [periodData.data, dates.startDate]);
 
   return (
     <>
@@ -73,15 +73,23 @@ const PivotTablePage = () => {
       ) : (
         <>
           <TopBarContainer>
-            <DatePickerCard changeDate={changeDate} title={`Start Month`} date={dates.startDate}/>
-            <DatePickerCard changeDate={changeDate} title={`End Month`} date={dates.endDate}/>
+            <DatePickerCard
+              changeDate={(e) => {
+                setDates({
+                  ...dates,
+                  startDate: formatDate(e),
+                });
+              }}
+              title={`Start Month`}
+              date={dates.startDate}
+            />
+            <DatePickerCard
+              changeDate={changeDate}
+              title={`End Month`}
+              date={dates.endDate}
+            />
           </TopBarContainer>
-          <PivotTable
-            rows={rows}
-            totalRow={totalRow}
-            startDate={dates.startDate}
-            endDate={dates.endDate}
-          />
+          <PivotTable rows={rows} totalRow={totalRow} />
         </>
       )}
       <SimpleBackdrop open={periodData.isLoading ? true : false} />

@@ -11,6 +11,10 @@ export const getLastDayOfMonth = (date) => {
   );
 };
 
+export const formatDate = (date) => {
+  return format(new Date(date), "yyyy-MM-dd");
+};
+
 export const getLastDayOfCurrentMonth = (date) => {
   return format(
     new Date(date.getFullYear(), date.getMonth() + 1, 0),

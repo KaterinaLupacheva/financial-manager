@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,7 +11,8 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { createHeadCells } from "../utils/transform-data.utils";
-import { getMonthsNames } from "../utils/date.utils";
+// import { getMonthsNames } from "../utils/date.utils";
+import {createHeadCellTitles, getMonthNames} from "../utils/transform-data.utils";
 import { pivotTableStyles } from "../styles/pivot-table.styles";
 
 const descendingComparator = (a, b, orderBy) => {
@@ -41,7 +42,7 @@ const stableSort = (array, comparator) => {
 };
 
 const EnhancedTableHead = (props) => {
-  const { classes, order, orderBy, onRequestSort, startDate, endDate } = props;
+  const { classes, order, orderBy, onRequestSort, totalRow } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -49,7 +50,7 @@ const EnhancedTableHead = (props) => {
   return (
     <TableHead className={classes.headStyle}>
       <TableRow>
-        {createHeadCells(startDate, endDate).map((headCell) => (
+        {createHeadCellTitles(totalRow).map((headCell) => (
           <TableCell
             className={classes.headCellStyle}
             key={headCell.id}
@@ -77,12 +78,12 @@ const EnhancedTableHead = (props) => {
 
 const useStyles = makeStyles(pivotTableStyles);
 
-const PivotTable = ({ rows, totalRow, startDate, endDate }) => {
+const PivotTable = ({ rows, totalRow }) => {
   const classes = useStyles();
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState("avg");
 
-  const monthNames = getMonthsNames(startDate, endDate)[0];
+  const monthNames = getMonthNames(totalRow);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -113,8 +114,7 @@ const PivotTable = ({ rows, totalRow, startDate, endDate }) => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              startDate={startDate}
-              endDate={endDate}
+              totalRow={totalRow}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy)).map(
