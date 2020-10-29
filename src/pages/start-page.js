@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import UserContext from "../contexts/user.context";
+import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Typograhpy from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 import Footer from "../components/footer";
 import DemoAccountButton from "../components/demoAccountButton";
 
@@ -10,17 +12,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StartPage = () => {
+const StartPage = (props) => {
   const classes = useStyles();
+  const { authenticated } = useContext(UserContext);
+  const { firstStart, setFirstStart } = props;
 
-  return (
+  useEffect(() => {
+    return () => {
+      setFirstStart();
+    };
+  }, []);
+
+  return firstStart && authenticated ? (
+    <Redirect to="month" />
+  ) : (
     <>
-      <Typograhpy variant="h1" align="left" className={classes.margin}>
+      <Typography variant="h1" align="left" className={classes.margin}>
         Financial Manager
-      </Typograhpy>
-      <Typograhpy variant="h4" align="left" className={classes.margin}>
+      </Typography>
+      <Typography variant="h4" align="left" className={classes.margin}>
         Simple app for keeping track of your cash flow
-      </Typograhpy>
+      </Typography>
       <DemoAccountButton />
       <Footer />
     </>

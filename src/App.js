@@ -38,6 +38,7 @@ let theme = createMuiTheme({
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [firstStart, setFirstStart] = useState(true);
   const [email, setEmail] = useState("");
   theme = responsiveFontSizes(theme);
 
@@ -78,7 +79,16 @@ const App = () => {
           >
             <Sidebar>
               <Switch>
-                <Route exact path={ROUTES.HOME} component={StartPage} />
+                <Route
+                  exact
+                  path={ROUTES.HOME}
+                  component={() => (
+                    <StartPage
+                      firstStart={firstStart}
+                      setFirstStart={() => setFirstStart(false)}
+                    />
+                  )}
+                />
                 {authenticated ? <AuthenticatedApp /> : <UnAuthenticatedApp />}
               </Switch>
             </Sidebar>
