@@ -20,7 +20,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import { sidebarStyles } from "../styles/sidebar.styles";
-import {HOME} from '../constants/routes';
+import { HOME } from "../constants/routes";
 
 const useStyles = makeStyles(sidebarStyles);
 
@@ -42,8 +42,8 @@ const Sidebar = ({ children }) => {
 
   const handleLogout = () => {
     logoutUser();
-    history.push({HOME})
-  }
+    history.push(HOME);
+  };
 
   return (
     <div className={classes.root}>

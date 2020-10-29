@@ -7,6 +7,7 @@ import UserContext from "../contexts/user.context";
 import SimpleBackdrop from "./simple-backdrop";
 import DemoAccountButton from "./demoAccountButton";
 import { doSignInWithEmailAndPassword } from "../firebase/firebase";
+import { MONTH } from "../constants/routes";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
@@ -27,13 +28,12 @@ const LoginForm = () => {
     doSignInWithEmailAndPassword(email, password)
       .then((data) => {
         setUser(data.user);
-        setIsLoading(false);
-        history.push("/month");
+        history.push(MONTH);
       })
       .catch((err) => {
         setErrors(err);
-        setIsLoading(false);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
