@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import UserContext from "./contexts/user.context";
-import ExpensesContext from "./contexts/expenses.context";
-import IncomeContext from "./contexts/income.context";
-import { ExpensesCategoriesContextProvider } from "./contexts/expensesCategories.context";
-import { MonthDataContextProvider } from "./contexts/monthData.context";
 import * as ROUTES from "./constants/routes";
 
 import {
@@ -18,17 +10,11 @@ import {
   responsiveFontSizes,
 } from "@material-ui/core/styles";
 import Sidebar from "./components/sidebar";
-import SignupPage from "./pages/signup-page";
-import LoginPage from "./pages/login-page";
-import MonthPage from "./pages/month-page";
 // import MonthPage from "./pages/month-page-gsheets";
-import PivotTablePage from "./pages/pivot-table-page";
-import ChartsPage from "./pages/charts-page";
-import AuthRoute from "./utils/authroute";
 import StartPage from "./pages/start-page";
-import BudgetPage from "./pages/budget-page";
-import ForgotPasswordPage from "./pages/forgot-password-page";
 import { auth } from "./firebase/firebase";
+import UnAuthenticatedApp from "./unauthenticated-app";
+import AuthenticatedApp from "./authenticated-app";
 
 let theme = createMuiTheme({
   palette: {
@@ -50,11 +36,9 @@ let theme = createMuiTheme({
   },
 });
 
-const App = (props) => {
+const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
-  const [expensesPeriodData, setExpensesPeriodData] = useState(null);
-  const [incomesPeriodData, setIncomesPeriodData] = useState(null);
   theme = responsiveFontSizes(theme);
 
   const logoutUser = () => {
@@ -94,34 +78,8 @@ const App = (props) => {
           >
             <Sidebar>
               <Switch>
-                <AuthRoute exact path={ROUTES.HOME} component={StartPage} />
-
-                <AuthRoute path={ROUTES.SIGN_UP} component={SignupPage} />
-                <AuthRoute path={ROUTES.LOGIN} component={LoginPage} />
-                <Route
-                  path={ROUTES.PASSWORD_FORGET}
-                  component={ForgotPasswordPage}
-                />
-                <ExpensesCategoriesContextProvider>
-                  <MonthDataContextProvider>
-                    <Route path={ROUTES.MONTH} component={MonthPage} />
-                    {/* <VerifiedRoute path="/month" component={MonthPage} /> */}
-                  </MonthDataContextProvider>
-                  <ExpensesContext.Provider
-                    value={{ expensesPeriodData, setExpensesPeriodData }}
-                  >
-                    <Route
-                      path={ROUTES.PIVOT_TABLE}
-                      component={PivotTablePage}
-                    />
-                    <IncomeContext.Provider
-                      value={{ incomesPeriodData, setIncomesPeriodData }}
-                    >
-                      <Route path={ROUTES.CHARTS} component={ChartsPage} />
-                    </IncomeContext.Provider>
-                    <Route path={ROUTES.BUDGET} component={BudgetPage} />
-                  </ExpensesContext.Provider>
-                </ExpensesCategoriesContextProvider>
+                <Route exact path={ROUTES.HOME} component={StartPage} />
+                {authenticated ? <AuthenticatedApp /> : <UnAuthenticatedApp />}
               </Switch>
             </Sidebar>
           </UserContext.Provider>

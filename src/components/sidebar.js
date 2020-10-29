@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import UserContext from "../contexts/user.context";
 import clsx from "clsx";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useHistory } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { MENU_LIST_ITEMS } from "../utils/menuListItems";
 import Drawer from "@material-ui/core/Drawer";
@@ -20,6 +20,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import { sidebarStyles } from "../styles/sidebar.styles";
+import {HOME} from '../constants/routes';
 
 const useStyles = makeStyles(sidebarStyles);
 
@@ -28,6 +29,7 @@ const Sidebar = ({ children }) => {
 
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
   const [open, setOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -37,6 +39,11 @@ const Sidebar = ({ children }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleLogout = () => {
+    logoutUser();
+    history.push({HOME})
+  }
 
   return (
     <div className={classes.root}>
@@ -68,7 +75,7 @@ const Sidebar = ({ children }) => {
             Home
           </Button>
           {authenticated ? (
-            <Button color="inherit" onClick={logoutUser}>
+            <Button color="inherit" onClick={handleLogout}>
               Logout
             </Button>
           ) : (
