@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { formStyles } from "../styles/form.styles";
 import UserContext from "../contexts/user.context";
@@ -8,8 +8,9 @@ import {
   createUserProfileDocument,
   doCreateUserWithEmailAndPassword,
   doSendVerificationEmail,
-  auth
+  auth,
 } from "../firebase/firebase";
+import { MONTH } from "../constants/routes";
 
 import { Grid, Typography, TextField, Button } from "@material-ui/core";
 
@@ -17,6 +18,7 @@ const useStyles = makeStyles(formStyles);
 
 const SignupForm = () => {
   const { setUser } = useContext(UserContext);
+  const history = useHistory();
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +26,7 @@ const SignupForm = () => {
   const [error, setError] = useState({});
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setOpen(true);
 
@@ -32,17 +34,17 @@ const SignupForm = () => {
       const { user } = await doCreateUserWithEmailAndPassword(email, password);
       // await doSendVerificationEmail();
       await createUserProfileDocument(user);
-      auth.onAuthStateChanged(user => {
+      auth.onAuthStateChanged((user) => {
         if (user) {
-          user.getIdToken().then(token => {
+          user.getIdToken().then((token) => {
             setUser(token);
           });
         }
       });
-      setOpen(false);
-    } catch (error) {
-      console.error(error);
-      setError(error);
+      history.push(MONTH);
+    } catch (err) {
+      console.error(err);
+      setError(err);
       setOpen(false);
     }
   };
@@ -62,7 +64,7 @@ const SignupForm = () => {
             label="Email"
             className={classes.textfield}
             value={email}
-            onChange={event => setEmail(event.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             fullWidth
           />
           <TextField
@@ -72,7 +74,7 @@ const SignupForm = () => {
             label="Password"
             className={classes.textfield}
             value={password}
-            onChange={event => setPassword(event.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             fullWidth
           />
           <TextField
@@ -82,7 +84,7 @@ const SignupForm = () => {
             label="Confirm Password"
             className={classes.textfield}
             value={confirmPassword}
-            onChange={event => setConfirmPassword(event.target.value)}
+            onChange={(event) => setConfirmPassword(event.target.value)}
             fullWidth
           />
           <Button type="submit" variant="contained" className={classes.button}>

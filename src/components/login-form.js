@@ -32,6 +32,7 @@ const LoginForm = () => {
       })
       .catch((err) => {
         setErrors(err);
+        setIsLoading(false);
       });
   };
 
