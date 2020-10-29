@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import "./App.css";
-import jwtDecode from "jwt-decode";
 import UserContext from "./contexts/user.context";
 import ExpensesContext from "./contexts/expenses.context";
 import IncomeContext from "./contexts/income.context";
 import { ExpensesCategoriesContextProvider } from "./contexts/expensesCategories.context";
 import { MonthDataContextProvider } from "./contexts/monthData.context";
-import axios from "axios";
 import * as ROUTES from "./constants/routes";
 
 import {
@@ -23,7 +25,6 @@ import MonthPage from "./pages/month-page";
 import PivotTablePage from "./pages/pivot-table-page";
 import ChartsPage from "./pages/charts-page";
 import AuthRoute from "./utils/authroute";
-import VerifiedRoute from "./utils/verifiedRoute";
 import StartPage from "./pages/start-page";
 import BudgetPage from "./pages/budget-page";
 import ForgotPasswordPage from "./pages/forgot-password-page";
@@ -49,7 +50,7 @@ let theme = createMuiTheme({
   },
 });
 
-const App = () => {
+const App = (props) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
   const [expensesPeriodData, setExpensesPeriodData] = useState(null);
@@ -93,7 +94,7 @@ const App = () => {
           >
             <Sidebar>
               <Switch>
-                <Route exact path={ROUTES.HOME} component={StartPage} />
+                <AuthRoute exact path={ROUTES.HOME} component={StartPage} />
 
                 <AuthRoute path={ROUTES.SIGN_UP} component={SignupPage} />
                 <AuthRoute path={ROUTES.LOGIN} component={LoginPage} />
