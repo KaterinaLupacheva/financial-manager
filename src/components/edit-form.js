@@ -22,6 +22,7 @@ import { format } from "date-fns";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { auth } from "../firebase/firebase";
+import useFetchData from "../hooks/useFetchData";
 
 const useStyles = makeStyles(dialogStyles);
 
@@ -29,6 +30,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
   const { monthData, setMonthData } = useContext(MonthDataContext);
+  const [fetchedMonthData, doFetchMonthData] = useFetchData("");
   const [state, setState] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -82,66 +84,73 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
     event.preventDefault();
     const isValid = validate();
     if (isValid) {
-      updateData();
+      const newMonthYear = format(new Date(state.date), "MMM-yyyy");
+      const currentMonthYear = format(new Date(monthData.date), "MMM-yyyy");
+      if (currentMonthYear === newMonthYear) {
+        updateData(monthData, currentMonthYear);
+      } else {
+        //fetch new month data
+        doFetchMonthData(`${BASE_URL}/month/${newMonthYear}`);
+
+        //update new array
+        //delete row from old month
+      }
+      // updateData();
       clearForm();
     }
   };
 
-  const updateArray = (array) => {
-    const idx = array.findIndex((obj) => obj.id === rowData.id);
-    array[idx] = {
-      ...array[idx],
-      date: state.date,
-      details: state.details,
-      category: state.category,
-      sum: state.sum,
+  const updateData = (dataArray, monthYear) => {
+    const requestBody = {
+      [state.view]: updateArray(dataArray[state.view]),
     };
-    return array;
+
+    console.log(requestBody);
+
+    //  auth.onAuthStateChanged(async (user) => {
+    //       if (user) {
+    //         user
+    //           .getIdToken()
+    //           .then((token) => {
+    //             axios
+    //               .put(`${BASE_URL}/month/${monthYear}`, requestBody, {
+    //                 headers: {
+    //                   Authorization: `Bearer ${token}`,
+    //                 },
+    //               })
+    //               .then(() => {
+    //                 if (state.view === "expenses") {
+    //                   setMonthData({
+    //                     ...monthData,
+    //                     expenses: requestBody.expenses,
+    //                   });
+    //                 } else {
+    //                   setMonthData({
+    //                     ...monthData,
+    //                     incomes: requestBody.incomes,
+    //                   });
+    //                 }
+    //               });
+    //           })
+    //           .catch((err) => {
+    //             console.error(err);
+    //           });
+    //       }
+    //     });
   };
 
-  const updateData = () => {
-    let requestBody = {};
-    if (state.view === "expenses") {
-      requestBody = {
-        expenses: updateArray(monthData.expenses),
+  const updateArray = (array) => {
+    if (array) {
+      const idx = array.findIndex((obj) => obj.id === rowData.id);
+      array[idx] = {
+        ...array[idx],
+        date: state.date,
+        details: state.details,
+        category: state.category,
+        sum: state.sum,
       };
-    } else {
-      requestBody = {
-        incomes: updateArray(monthData.incomes),
-      };
+      return array;
     }
-
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        user
-          .getIdToken()
-          .then((token) => {
-            const monthYear = format(new Date(state.date), "MMM-yyyy");
-            axios
-              .put(`${BASE_URL}/month/${monthYear}`, requestBody, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              })
-              .then(() => {
-                if (state.view === "expenses") {
-                  setMonthData({
-                    ...monthData,
-                    expenses: requestBody.expenses,
-                  });
-                } else {
-                  setMonthData({
-                    ...monthData,
-                    incomes: requestBody.incomes,
-                  });
-                }
-              });
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      }
-    });
   };
 
   const clearForm = () => {
@@ -158,6 +167,15 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
       category: rowData.category,
     });
   }, [rowData, isExpenses]);
+
+  useEffect(() => {
+    if (fetchedMonthData.data) {
+      updateData(
+        fetchedMonthData.data,
+        format(new Date(state.date), "MMM-yyyy")
+      );
+    }
+  }, [fetchedMonthData, state.date]);
 
   return (
     <div>
