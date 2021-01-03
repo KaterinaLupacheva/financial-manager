@@ -92,51 +92,71 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
         //fetch new month data
         doFetchMonthData(`${BASE_URL}/month/${newMonthYear}`);
 
-        //update new array
-        //delete row from old month
+        //delete row from current month
+        updateCurrentMonth(currentMonthYear);
       }
-      // updateData();
       clearForm();
     }
+  };
+
+  const updateNewMonth = (apiData) => {
+    apiData[state.view].push({
+      id: rowData.id,
+      date: state.date,
+      details: state.details,
+      category: state.category,
+      sum: state.sum,
+    });
+    const requestBody = {
+      [state.view]: apiData[state.view],
+    };
+    apiCall(requestBody, format(new Date(state.date), "MMM-yyyy"));
+  };
+
+  const updateCurrentMonth = (currentMonthYear) => {
+    const requestBody = {
+      [state.view]: monthData[state.view].filter((el) => el.id !== rowData.id),
+    };
+    apiCall(requestBody, currentMonthYear, true);
+  };
+
+  const updateView = (requestBody) => {
+    setMonthData({
+      ...monthData,
+      ...requestBody,
+    });
+  };
+
+  const apiCall = (requestBody, monthYear, isUpdateView) => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        user
+          .getIdToken()
+          .then((token) => {
+            axios
+              .put(`${BASE_URL}/month/${monthYear}`, requestBody, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then(() => {
+                if (isUpdateView) {
+                  updateView(requestBody);
+                }
+              });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    });
   };
 
   const updateData = (dataArray, monthYear) => {
     const requestBody = {
       [state.view]: updateArray(dataArray[state.view]),
     };
-
-    console.log(requestBody);
-
-    //  auth.onAuthStateChanged(async (user) => {
-    //       if (user) {
-    //         user
-    //           .getIdToken()
-    //           .then((token) => {
-    //             axios
-    //               .put(`${BASE_URL}/month/${monthYear}`, requestBody, {
-    //                 headers: {
-    //                   Authorization: `Bearer ${token}`,
-    //                 },
-    //               })
-    //               .then(() => {
-    //                 if (state.view === "expenses") {
-    //                   setMonthData({
-    //                     ...monthData,
-    //                     expenses: requestBody.expenses,
-    //                   });
-    //                 } else {
-    //                   setMonthData({
-    //                     ...monthData,
-    //                     incomes: requestBody.incomes,
-    //                   });
-    //                 }
-    //               });
-    //           })
-    //           .catch((err) => {
-    //             console.error(err);
-    //           });
-    //       }
-    //     });
+    apiCall(requestBody, monthYear, true);
   };
 
   const updateArray = (array) => {
@@ -169,13 +189,11 @@ const EditForm = ({ open, handleClose, rowData, isExpenses }) => {
   }, [rowData, isExpenses]);
 
   useEffect(() => {
-    if (fetchedMonthData.data) {
-      updateData(
-        fetchedMonthData.data,
-        format(new Date(state.date), "MMM-yyyy")
-      );
+    const { data, isLoading, isError } = fetchedMonthData;
+    if (data && !isLoading && !isError) {
+      updateNewMonth(data);
     }
-  }, [fetchedMonthData, state.date]);
+  }, [fetchedMonthData]);
 
   return (
     <div>
