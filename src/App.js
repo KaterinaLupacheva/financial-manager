@@ -15,6 +15,7 @@ import StartPage from "./pages/start-page";
 import { auth } from "./firebase/firebase";
 import UnAuthenticatedApp from "./unauthenticated-app";
 import AuthenticatedApp from "./authenticated-app";
+import useViewCounter from "./useViewCounter.hook";
 
 let theme = createMuiTheme({
   palette: {
@@ -41,6 +42,8 @@ const App = () => {
   const [firstStart, setFirstStart] = useState(true);
   const [email, setEmail] = useState("");
   theme = responsiveFontSizes(theme);
+
+  useViewCounter();
 
   const logoutUser = () => {
     auth
